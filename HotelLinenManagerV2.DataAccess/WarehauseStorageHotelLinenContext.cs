@@ -14,5 +14,10 @@ namespace HotelLinenManagerV2.DataAccess
         {
         }
         public DbSet<HotelLinen> HotelLinens { get; set; }
+        public DbSet<Warehause> Warehauses { get; set; }
+        public DbSet<User> Users { get; set; }
+
+
+
     }
 }
