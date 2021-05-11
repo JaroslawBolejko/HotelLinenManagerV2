@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="API\Domain\Requests\HotelLinens\" />
+    <Folder Include="API\Domain\Requests\Invoices\" />
+    <Folder Include="API\Domain\Requests\Companies\" />
+    <Folder Include="API\Domain\Requests\GoodsIssuedRecivedNotes\" />
+    <Folder Include="API\Domain\Requests\Warehauses\" />
+    <Folder Include="API\Domain\Requests\Users\" />
+    <Folder Include="API\Domain\Responses\Companies\" />
+    <Folder Include="API\Domain\Responses\GoodsIssuedRecivedNotes\" />
+    <Folder Include="API\Domain\Responses\HotelLinens\" />
+    <Folder Include="API\Domain\Responses\Invoices\" />
+    <Folder Include="API\Domain\Responses\Users\" />
+    <Folder Include="API\Domain\Responses\Warehauses\" />
+    <Folder Include="API\Handlers\Companies\" />
+    <Folder Include="API\Handlers\GoodsIssuedRecivedNotes\" />
+    <Folder Include="API\Handlers\HotelLinens\" />
+    <Folder Include="API\Handlers\Invoices\" />
+    <Folder Include="API\Handlers\Users\" />
+    <Folder Include="API\Handlers\Warehauses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+</Project>

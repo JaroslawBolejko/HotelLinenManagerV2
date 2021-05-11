@@ -18,7 +18,6 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     {
         [Required]
         public WarehauseType WarehauseType { get; set; }
-        public int HotelLinenId { get; set; }
         public HotelLinen HotelLinen { get; set; }
         public int HotelLinenAmount { get; set; }
         public int CompanyId { get; set; }

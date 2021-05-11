@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelLinenManagerV2.DataAccess;
+using MediatR;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 
 namespace HotelLinenManagerV2
 {
@@ -26,7 +30,10 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddMediatR(typeof(ResponseBase<>));
+            services.AddDbContext<WarehauseStorageHotelLinenContext>(
+                opt =>
+                opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
