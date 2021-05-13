@@ -6,8 +6,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public class Invoice : EntityBase
     {
-        public List<Company> Company { get; set; }
-        public List<HotelLinen> HotelLinen { get; set; }
+        public List<Company> Companies { get; set; }
+        public List<HotelLinen> HotelLinens { get; set; }
         [Required]
         public DateTime PaymentDate { get; set; }
         [Required]

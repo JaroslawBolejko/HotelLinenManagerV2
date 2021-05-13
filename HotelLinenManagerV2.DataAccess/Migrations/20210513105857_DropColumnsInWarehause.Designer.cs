@@ -4,35 +4,22 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20210513105857_DropColumnsInWarehause")]
+    partial class DropColumnsInWarehause
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CompanyInvoice", b =>
-                {
-                    b.Property<int>("CompaniesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoicesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CompaniesId", "InvoicesId");
-
-                    b.HasIndex("InvoicesId");
-
-                    b.ToTable("CompanyInvoice");
-                });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Company", b =>
                 {
@@ -41,40 +28,12 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("TaxNumber")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<int>("Type")
+                    b.Property<int?>("InvoiceId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
 
                     b.ToTable("Company");
                 });
@@ -258,19 +217,11 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.ToTable("Warehauses");
                 });
 
-            modelBuilder.Entity("CompanyInvoice", b =>
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Company", b =>
                 {
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", null)
-                        .WithMany()
-                        .HasForeignKey("CompaniesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Invoice", null)
-                        .WithMany()
-                        .HasForeignKey("InvoicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Company")
+                        .HasForeignKey("InvoiceId");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", b =>
@@ -282,11 +233,11 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Invoice", null)
-                        .WithMany("HotelLinens")
+                        .WithMany("HotelLinen")
                         .HasForeignKey("InvoiceId");
 
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Warehause", "Warehause")
-                        .WithMany("HotelLinens")
+                        .WithMany()
                         .HasForeignKey("WarehauseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -310,17 +261,12 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Warehause", b =>
                 {
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Company")
-                        .WithMany("Warehauses")
+                        .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Company", b =>
-                {
-                    b.Navigation("Warehauses");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinenType", b =>
@@ -330,12 +276,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Invoice", b =>
                 {
-                    b.Navigation("HotelLinens");
-                });
+                    b.Navigation("Company");
 
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Warehause", b =>
-                {
-                    b.Navigation("HotelLinens");
+                    b.Navigation("HotelLinen");
                 });
 #pragma warning restore 612, 618
         }
