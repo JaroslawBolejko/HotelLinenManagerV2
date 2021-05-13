@@ -28,4 +28,8 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HotelLinenManagerV2.DataAccess\HotelLinenManagerV2.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -33,6 +33,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public string City { get; set; }
         public List<Warehause> Warehauses { get; set; }
         public List<Invoice> Invoices { get; set; } 
+        public List<LaundryService> LaundryServices { get; set; }
 
 
     }

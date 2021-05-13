@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20210513211706_AddLaundryServiceRelationWithCompany")]
+    partial class AddLaundryServiceRelationWithCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +133,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Property<int?>("InvoiceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LaundryServiceId")
+                    b.Property<int>("LaundryServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("NameWithShortDescription")
@@ -382,7 +384,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.LaundryService", "LaundryService")
                         .WithMany("HotelLinens")
-                        .HasForeignKey("LaundryServiceId");
+                        .HasForeignKey("LaundryServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("HotelLinenType");
 

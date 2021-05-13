@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelLinenManagerV2.DataAccess.Entities
@@ -6,8 +7,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     public class HotelLinen : EntityBase
     {
         [Required]
-        public int WarehauseId { get; set; }
-        public Warehause Warehause { get; set; }
+        public List<Warehause> Warehauses { get; set; }
         [Required]
         public int HotelLinenTypeId { get; set; }
         public HotelLinenType HotelLinenType { get; set; }
@@ -17,5 +17,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 
         [Required]
         public ushort Amount { get; set; }
+        public HLBaseQuantity HLBaseQuantity { get; set; }
+        public int? LaundryServiceId { get; set; }
+        public LaundryService LaundryService { get; set; }
     }
 }
