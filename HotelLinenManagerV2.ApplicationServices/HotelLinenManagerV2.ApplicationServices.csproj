@@ -5,25 +5,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="API\Domain\ErrorHandling\" />
+    <Folder Include="API\Domain\Validiators\" />
+    <Folder Include="API\Domain\Requests\HLBaseQuantities\" />
     <Folder Include="API\Domain\Requests\HotelLinens\" />
+    <Folder Include="API\Domain\Requests\HotelLinenTypes\" />
     <Folder Include="API\Domain\Requests\Invoices\" />
     <Folder Include="API\Domain\Requests\Companies\" />
     <Folder Include="API\Domain\Requests\GoodsIssuedRecivedNotes\" />
+    <Folder Include="API\Domain\Requests\LaundryService\" />
     <Folder Include="API\Domain\Requests\Users\" />
     <Folder Include="API\Domain\Responses\Companies\" />
     <Folder Include="API\Domain\Responses\GoodsIssuedRecivedNotes\" />
+    <Folder Include="API\Domain\Responses\HLBaseQuantities\" />
     <Folder Include="API\Domain\Responses\HotelLinens\" />
+    <Folder Include="API\Domain\Responses\HotelLinenTypes\" />
     <Folder Include="API\Domain\Responses\Invoices\" />
+    <Folder Include="API\Domain\Responses\LaundryService\" />
     <Folder Include="API\Domain\Responses\Users\" />
     <Folder Include="API\Handlers\Companies\" />
     <Folder Include="API\Handlers\GoodsIssuedRecivedNotes\" />
+    <Folder Include="API\Handlers\HLBaseQuantities\" />
     <Folder Include="API\Handlers\HotelLinens\" />
+    <Folder Include="API\Handlers\HotelLinenTypes\" />
     <Folder Include="API\Handlers\Invoices\" />
+    <Folder Include="API\Handlers\LaundryService\" />
     <Folder Include="API\Handlers\Users\" />
     <Folder Include="API\Handlers\Warehauses\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>

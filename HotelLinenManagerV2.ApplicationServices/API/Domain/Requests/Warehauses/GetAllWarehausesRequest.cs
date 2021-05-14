@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Warehauses;
+using MediatR;
 
 namespace HotelLinenManagerV2.Controllers
 {
-    public class GetAllWarehausesRequest
+    public class GetAllWarehausesRequest : IRequest<GetAllWarehausesResponse>
     {
     }
 }

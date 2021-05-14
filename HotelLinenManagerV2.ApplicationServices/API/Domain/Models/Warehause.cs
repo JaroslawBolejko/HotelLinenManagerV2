@@ -7,6 +7,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
 
     public  class Warehause
     {
+        public int Id { get; set; }
         public string WarehauseType { get; set; }
         // public List<string> NameWithShortDescription { get; set; }
         // public List<int?> Amount {get;set;}
