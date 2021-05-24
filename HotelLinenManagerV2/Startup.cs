@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using HotelLinenManagerV2.DataAccess;
 using MediatR;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
+using HotelLinenManagerV2.DataAccess.CQRS;
 
 namespace HotelLinenManagerV2
 {
@@ -30,6 +32,9 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ICommandExecutor, CommandExecutor>();
+            services.AddTransient<IQueryExecutor, QueryExecutor>();
+            services.AddAutoMapper(typeof(HotelLinensProfile).Assembly);
             services.AddMediatR(typeof(ResponseBase<>));
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>

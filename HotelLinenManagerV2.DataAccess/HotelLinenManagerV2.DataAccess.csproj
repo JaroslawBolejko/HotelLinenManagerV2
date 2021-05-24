@@ -21,21 +21,15 @@
     <Folder Include="CQRS\Commands\Companies\" />
     <Folder Include="CQRS\Commands\GoodsIssuedRecivedNotes\" />
     <Folder Include="CQRS\Commands\HLBaseQuantities\" />
-    <Folder Include="CQRS\Commands\HotelLinens\" />
     <Folder Include="CQRS\Commands\HotelLinenTypes\" />
     <Folder Include="CQRS\Commands\Invoices\" />
     <Folder Include="CQRS\Commands\LaundryService\" />
-    <Folder Include="CQRS\Commands\Users\" />
-    <Folder Include="CQRS\Commands\Warehauses\" />
     <Folder Include="CQRS\Queries\Companies\" />
     <Folder Include="CQRS\Queries\GoodsIssuedRecivedNotes\" />
-    <Folder Include="CQRS\Queries\HotelLinens\" />
     <Folder Include="CQRS\Queries\Invoices\" />
     <Folder Include="CQRS\Queries\HotelLinenTypes\" />
     <Folder Include="CQRS\Queries\HLBaseQuantities\" />
     <Folder Include="CQRS\Queries\LaundryService\" />
-    <Folder Include="CQRS\Queries\Users\" />
-    <Folder Include="CQRS\Queries\Warehauses\" />
   </ItemGroup>
 
 </Project>
