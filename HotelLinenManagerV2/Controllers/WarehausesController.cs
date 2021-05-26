@@ -10,11 +10,11 @@ namespace HotelLinenManagement.Controllers
     [ApiController]
     [Route("[controller]")]
 
-    public class WarehausesesController : ControllerBase/*ApiControllerBase*/
+    public class WarehausesController : ControllerBase/*ApiControllerBase*/
     {
         private readonly IMediator mediator;
 
-        public WarehausesesController(IMediator mediator/*, ILogger<WarehausesesController logger*/) /*: base(mediator, logger)*/
+        public WarehausesController(IMediator mediator/*, ILogger<WarehausesController logger*/) /*: base(mediator, logger)*/
         {
             //  logger.LogInformation("We are in Warehauses");
             this.mediator = mediator;
@@ -57,13 +57,13 @@ namespace HotelLinenManagement.Controllers
         }
 
         [HttpPut]
-        [Route("")]
-        public async Task<IActionResult> PutWarehauseById([FromBody] PutWarehauseByIdRequest request)
+        [Route("{warehauseId}")]
+        public async Task<IActionResult> UpdateWarehauseById([FromBody]  UpdateWarehauseByIdRequest request, int warehauseId)
         {
-
+            request.Id = warehauseId;
             var response = await this.mediator.Send(request);
             return this.Ok(response);
-            //  return this.HandleRequest<PutWarehauseByIdRequest, PutWarehauseByIdResponse>(request);
+            //  return this.HandleRequest<UpdateWarehauseByIdRequest, UpdateWarehauseByIdResponse>(request);
 
         }
 
@@ -72,9 +72,9 @@ namespace HotelLinenManagement.Controllers
         public async Task<IActionResult> DeleteWarehauseById([FromRoute] DeleteWarehauseByIdRequest request)
         {
 
-            //var request = new GetWarehauseByIdRequest()
+            //request = new DeleteWarehauseByIdRequest()
             //{
-            //    WarehauseId = warehauseId
+            //    Id = warehauseId
             //};
             var response = await this.mediator.Send(request);
             return this.Ok(response);

@@ -31,7 +31,6 @@
     <Folder Include="API\Handlers\Invoices\" />
     <Folder Include="API\Handlers\LaundryService\" />
     <Folder Include="API\Handlers\Users\" />
-    <Folder Include="API\Handlers\Warehauses\" />
   </ItemGroup>
 
   <ItemGroup>

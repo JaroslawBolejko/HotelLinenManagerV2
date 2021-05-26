@@ -2,7 +2,7 @@
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Responses
 {
-    public class PutWarehauseByIdResponse : ResponseBase<Warehause>
+    public class UpdateWarehauseByIdResponse : ResponseBase<Warehause>
     {
     }
 }
