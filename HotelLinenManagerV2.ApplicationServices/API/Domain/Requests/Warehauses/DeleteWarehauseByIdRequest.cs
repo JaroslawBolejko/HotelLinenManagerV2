@@ -5,6 +5,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses
 {
     public class DeleteWarehauseByIdRequest : IRequest<DeleteWarehauseByIdResponse>
     {
-        public int warehauseId { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
 {
@@ -12,20 +13,20 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                  .ForMember(x => x.NameWithShortDescription, y => y.MapFrom(z => z.NameWithShortDescription))
                  .ForMember(x => x.HotelLinenTypeId, y => y.MapFrom(z => z.HotelLinenTypeId));
 
-            //this.CreateMap<CreateHotelLinenRequest, DataAccess.Entities.HotelLinen>()
-            //     .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-            //     .ForMember(x => x.NameWithShortDescription, y => y.MapFrom(z => z.NameWithShortDescription))
-            //     .ForMember(x => x.HotelLinenTypeId, y => y.MapFrom(z => z.HotelLinenTypeId));
+            this.CreateMap<CreateHotelLinenRequest, DataAccess.Entities.HotelLinen>()
+                 .ForMember(x => x.NameWithShortDescription, y => y.MapFrom(z => z.NameWithShortDescription))
+                 .ForMember(x => x.HotelLinenTypeId, y => y.MapFrom(z => z.HotelLinenTypeId));
 
-            //this.CreateMap<PutHotelLinenRequest, DataAccess.Entities.HotelLinen>()
-            //     .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-            //     .ForMember(x => x.NameWithShortDescription, y => y.MapFrom(z => z.NameWithShortDescription))
-            //     .ForMember(x => x.HotelLinenTypeId, y => y.MapFrom(z => z.HotelLinenTypeId));
+            this.CreateMap<UpdateHotelLinenByIdRequest, DataAccess.Entities.HotelLinen>()
+                 .ForMember(x => x.Id, y => y.MapFrom(z => z.id))
+                 .ForMember(x => x.NameWithShortDescription, y => y.MapFrom(z => z.NameWithShortDescription))
+                 .ForMember(x => x.HotelLinenTypeId, y => y.MapFrom(z => z.HotelLinenTypeId));
 
 
-            //this.CreateMap<DeleteHotelLinenByIdRequest, DataAccess.Entities.HotelLinen>()
-            //     .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-         
+            this.CreateMap<DeleteHotelLinenByIdRequest, DataAccess.Entities.HotelLinen>()
+                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
+
+
 
         }
     }

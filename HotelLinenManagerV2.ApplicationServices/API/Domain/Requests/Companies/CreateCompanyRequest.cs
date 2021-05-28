@@ -1,0 +1,23 @@
+﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
+using HotelLinenManagerV2.DataAccess.Entities;
+using MediatR;
+
+namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
+{
+    public class CreateCompanyRequest : IRequest<CreateCompanyResponse>
+    {
+        public int Id { get; set; }
+        public CompanyType Type { get; set; }
+        public string Name { get; set; }
+
+        public string TaxNumber { get; set; }
+
+        public string Street { get; set; }
+
+        public string Number { get; set; }
+
+        public string ZipCode { get; set; }
+
+        public string City { get; set; }
+    }
+}

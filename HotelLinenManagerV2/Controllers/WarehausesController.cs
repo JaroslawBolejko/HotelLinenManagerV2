@@ -60,7 +60,7 @@ namespace HotelLinenManagement.Controllers
         [Route("{warehauseId}")]
         public async Task<IActionResult> UpdateWarehauseById([FromBody]  UpdateWarehauseByIdRequest request, int warehauseId)
         {
-            request.Id = warehauseId;
+            request.id = warehauseId;
             var response = await this.mediator.Send(request);
             return this.Ok(response);
             //  return this.HandleRequest<UpdateWarehauseByIdRequest, UpdateWarehauseByIdResponse>(request);
@@ -69,13 +69,13 @@ namespace HotelLinenManagement.Controllers
 
         [HttpDelete]
         [Route("{warehauseId}")]
-        public async Task<IActionResult> DeleteWarehauseById([FromRoute] DeleteWarehauseByIdRequest request)
+        public async Task<IActionResult> DeleteWarehauseById([FromRoute] int warehauseId)
         {
 
-            //request = new DeleteWarehauseByIdRequest()
-            //{
-            //    Id = warehauseId
-            //};
+            var request = new DeleteWarehauseByIdRequest()
+            {
+                Id = warehauseId
+            };
             var response = await this.mediator.Send(request);
             return this.Ok(response);
             // return this.HandleRequest<DeleteWarehauseByIdRequest, DeleteWarehauseByIdResponse>(request);

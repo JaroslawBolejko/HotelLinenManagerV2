@@ -18,13 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Commands\Companies\" />
     <Folder Include="CQRS\Commands\GoodsIssuedRecivedNotes\" />
     <Folder Include="CQRS\Commands\HLBaseQuantities\" />
     <Folder Include="CQRS\Commands\HotelLinenTypes\" />
     <Folder Include="CQRS\Commands\Invoices\" />
     <Folder Include="CQRS\Commands\LaundryService\" />
-    <Folder Include="CQRS\Queries\Companies\" />
     <Folder Include="CQRS\Queries\GoodsIssuedRecivedNotes\" />
     <Folder Include="CQRS\Queries\Invoices\" />
     <Folder Include="CQRS\Queries\HotelLinenTypes\" />
