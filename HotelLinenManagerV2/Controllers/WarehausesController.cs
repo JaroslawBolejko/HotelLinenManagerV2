@@ -1,33 +1,30 @@
 ﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses;
-using HotelLinenManagerV2.Controllers;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Warehauses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace HotelLinenManagement.Controllers
+namespace HotelLinenManagerV2.Controllers
 {
     // [Authorize]
     [ApiController]
     [Route("[controller]")]
 
-    public class WarehausesController : ControllerBase/*ApiControllerBase*/
+    public class WarehausesController : ApiControllerBase
     {
-        private readonly IMediator mediator;
 
-        public WarehausesController(IMediator mediator/*, ILogger<WarehausesController logger*/) /*: base(mediator, logger)*/
+
+        public WarehausesController(IMediator mediator/*, ILogger<WarehausesController logger*/) : base(mediator)/*, logger)*/
         {
             //  logger.LogInformation("We are in Warehauses");
-            this.mediator = mediator;
         }
 
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllWarehausess([FromQuery] GetAllWarehausesRequest request)
         {
-
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
-            // return this.HandleRequest<GetAllWarehausesRequest, GetAllWarehausesResponse>(request);
+            return await this.HandleRequest<GetAllWarehausesRequest, GetAllWarehausesResponse>(request);
         }
 
         [HttpGet]
@@ -40,9 +37,7 @@ namespace HotelLinenManagement.Controllers
                 WarehauseId = warehauseId
             };
 
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
-            // return this.HandleRequest<GetWarehauseByIdRequest, GetWarehauseByIdResponse>(request);
+            return await this.HandleRequest<GetWarehauseByIdRequest, GetWarehauseByIdResponse>(request);
 
         }
 
@@ -50,36 +45,26 @@ namespace HotelLinenManagement.Controllers
         [Route("")]
         public async Task<IActionResult> CreateWarehause([FromBody] CreateWarehauseRequest request)
         {
-
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
-            // return this.HandleRequest<CreateWarehauseRequest, CreateWarehauseResponse>(request);
+            return await this.HandleRequest<CreateWarehauseRequest, CreateWarehauseResponse>(request);
         }
 
         [HttpPut]
         [Route("{warehauseId}")]
-        public async Task<IActionResult> UpdateWarehauseById([FromBody]  UpdateWarehauseByIdRequest request, int warehauseId)
+        public async Task<IActionResult> UpdateWarehauseById([FromBody] UpdateWarehauseByIdRequest request, int warehauseId)
         {
             request.id = warehauseId;
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
-            //  return this.HandleRequest<UpdateWarehauseByIdRequest, UpdateWarehauseByIdResponse>(request);
-
+            return await this.HandleRequest<UpdateWarehauseByIdRequest, UpdateWarehauseByIdResponse>(request);
         }
 
         [HttpDelete]
         [Route("{warehauseId}")]
         public async Task<IActionResult> DeleteWarehauseById([FromRoute] int warehauseId)
         {
-
             var request = new DeleteWarehauseByIdRequest()
             {
                 Id = warehauseId
             };
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
-            // return this.HandleRequest<DeleteWarehauseByIdRequest, DeleteWarehauseByIdResponse>(request);
-
+            return await this.HandleRequest<DeleteWarehauseByIdRequest, DeleteWarehauseByIdResponse>(request);
         }
     }
 }

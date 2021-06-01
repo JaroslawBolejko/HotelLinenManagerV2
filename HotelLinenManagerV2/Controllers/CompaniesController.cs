@@ -1,4 +1,5 @@
 ﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,21 +8,18 @@ namespace HotelLinenManagerV2.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CompaniesController : ControllerBase
+    public class CompaniesController : ApiControllerBase
     {
-        private readonly IMediator mediator;
-
-        public CompaniesController(IMediator mediator)
+       public CompaniesController(IMediator mediator) : base(mediator)
         {
-            this.mediator = mediator;
-        }
+
+        } 
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllCompanies([FromQuery]GetAllCompaniesRequest request)
+        public async Task<IActionResult> GetAllCompanies([FromQuery] GetAllCompaniesRequest request)
         {
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return await this.HandleRequest<GetAllCompaniesRequest, GetAllCompaniesResponse>(request);
         }
 
         [HttpGet]
@@ -32,23 +30,22 @@ namespace HotelLinenManagerV2.Controllers
             {
                 Id = companyId
             };
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return await this.HandleRequest<GetCompanyByIdRequest, GetCompanyByIdResponse>(request);
         }
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyRequest request)
         {
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return await this.HandleRequest<CreateCompanyRequest, CreateCompanyResponse>(request);
         }
+
         [HttpPut]
         [Route("{companyId}")]
         public async Task<IActionResult> UpdateCompanyById([FromBody] UpdateCompanyByIdRequest request, int companyId)
         {
             request.id = companyId;
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return await this.HandleRequest<UpdateCompanyByIdRequest, UpdateCompanyByIdResponse>(request);
         }
         [HttpDelete]
         [Route("{companyId}")]
@@ -58,8 +55,7 @@ namespace HotelLinenManagerV2.Controllers
             {
                 Id = companyId
             };
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return await this.HandleRequest<DeleteCompanyByIdRequest, DeleteCompanyByIdResponse>(request);
         }
 
     }

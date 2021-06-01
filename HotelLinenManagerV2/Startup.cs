@@ -17,6 +17,8 @@ using MediatR;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
 using HotelLinenManagerV2.DataAccess.CQRS;
+using FluentValidation.AspNetCore;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.WarehauseValidation;
 
 namespace HotelLinenManagerV2
 {
@@ -32,6 +34,8 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateWarehauseValidator>());
             services.AddTransient<ICommandExecutor, CommandExecutor>();
             services.AddTransient<IQueryExecutor, QueryExecutor>();
             services.AddAutoMapper(typeof(HotelLinensProfile).Assembly);
