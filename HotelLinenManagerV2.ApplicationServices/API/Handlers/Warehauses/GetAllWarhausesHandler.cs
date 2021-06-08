@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Warehauses;
@@ -24,8 +25,20 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
         public async Task<GetAllWarehausesResponse> Handle(GetAllWarehausesRequest request, CancellationToken cancellationToken)
         {
-            var query = new GetWarehausesQuery() { };
+            var query = new GetWarehausesQuery() 
+            {
+                WarehauseNumber=request.WarehauseNumber
+            };
             var getWarehauses = await this.queryExecutor.Execute(query);
+
+            if(getWarehauses==null)
+            {
+                return new GetAllWarehausesResponse
+                {
+                    Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
+                };
+            }
+
             var mappedWarehase = this.mapper.Map<List<Warehause>>(getWarehauses);
 
             return new GetAllWarehausesResponse()

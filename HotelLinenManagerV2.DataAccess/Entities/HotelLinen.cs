@@ -14,7 +14,9 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [MaxLength(100)]
         public string NameWithShortDescription { get; set; }
-
+        [Required]
+        [MaxLength(50)]
+        public string Color { get; set; }
         [Required]
         public ushort Amount { get; set; }
         public HLBaseQuantity HLBaseQuantity { get; set; }

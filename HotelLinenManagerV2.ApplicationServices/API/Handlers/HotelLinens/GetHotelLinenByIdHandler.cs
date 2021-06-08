@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens;
@@ -28,6 +29,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
                 Id = request.Id
             };
             var hotelLinen = await this.queryExecutor.Execute(query);
+            if (hotelLinen == null)
+            {
+                return new GetHotelLinenByIdResponse
+                {
+                    Error = new ErrorModel(ErrorType.NotFound)
+                };
+            }
+
             var mappedHotelLinen = this.mapper.Map<HotelLinen>(hotelLinen);
             var response = new GetHotelLinenByIdResponse()
             {

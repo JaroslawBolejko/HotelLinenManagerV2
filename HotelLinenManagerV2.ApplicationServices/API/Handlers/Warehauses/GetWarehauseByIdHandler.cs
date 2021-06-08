@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Warehauses;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,6 +29,15 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
                 Id = request.WarehauseId
             };
             var getWarehause = await this.queryExecutor.Execute(query);
+
+            if (getWarehause == null)
+            {
+                return new GetWarehauseByIdResponse
+                {
+                    Error = new ErrorModel(ErrorType.NotFound)
+                };
+            }
+
             var mappedWarehause = this.mapper.Map<Warehause>(getWarehause);
             return new GetWarehauseByIdResponse()
             {

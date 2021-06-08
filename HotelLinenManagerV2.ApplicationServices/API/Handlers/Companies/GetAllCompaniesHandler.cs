@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
@@ -24,8 +25,19 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<GetAllCompaniesResponse> Handle(GetAllCompaniesRequest request, CancellationToken cancellationToken)
         {
-            var query = new GetCompaniesQuery() { };
+            var query = new GetCompaniesQuery()
+            {
+            Name = request.Name,
+            TaxNumber = request.TaxNumber
+            };
             var companiesFromDb = await this.queryExecutor.Execute(query);
+            if(companiesFromDb==null)
+            {
+                return new GetAllCompaniesResponse()
+                {
+                    Error =  new ErrorModel(ErrorType.NotFound)
+                };
+            }
             var mappedCompanies = this.mapper.Map<List<Company>>(companiesFromDb);
             var response = new GetAllCompaniesResponse()
             {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
 using HotelLinenManagerV2.DataAccess.CQRS;
@@ -27,6 +28,15 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
                 Id = request.Id
             };
             var companyFromDb = await this.queryExecutor.Execute(query);
+
+            if (companyFromDb == null)
+            {
+                return new GetCompanyByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.NotFound)
+                };
+            }
+
             var response = new GetCompanyByIdResponse()
 
             {

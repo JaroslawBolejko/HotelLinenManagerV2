@@ -13,8 +13,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
         public int Id { get; set; }
         public override async Task<Company> Execute(WarehauseStorageHotelLinenContext context)
         {
-          return  await context.Companies.FirstOrDefaultAsync(x=>x.Id == this.Id);
-            
+            return await context.Companies.FirstOrDefaultAsync(x => x.Id == this.Id);
         }
     }
 }

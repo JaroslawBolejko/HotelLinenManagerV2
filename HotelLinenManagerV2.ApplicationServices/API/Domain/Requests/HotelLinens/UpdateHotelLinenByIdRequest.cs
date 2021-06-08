@@ -7,6 +7,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinen
     {
         public int id;
         public string NameWithShortDescription { get; set; }
+        public string Color { get; set; }
         public int HotelLinenTypeId { get; set; }
+        public ushort Amount { get; set; }
     }
 }

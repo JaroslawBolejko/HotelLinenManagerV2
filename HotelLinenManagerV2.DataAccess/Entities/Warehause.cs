@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public enum WarehauseType: byte
     {
-        CleanLinenWarehause,
-        DirtyLinenWarehause,
-        Room
+        CleanLinenWarehause=1,
+        DirtyLinenWarehause=2,
+        Room=3
 
     }
   
