@@ -8,5 +8,6 @@
         }
 
         public string Error { get; }
+        
     }
 }

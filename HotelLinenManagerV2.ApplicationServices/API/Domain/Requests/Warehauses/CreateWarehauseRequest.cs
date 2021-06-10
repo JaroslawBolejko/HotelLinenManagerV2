@@ -11,7 +11,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses
         public string Name { get; set; }
         public int? WarehauseNumber { get; set; }
 
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
     }
 }

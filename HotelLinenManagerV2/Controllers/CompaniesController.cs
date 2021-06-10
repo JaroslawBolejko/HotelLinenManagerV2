@@ -2,6 +2,7 @@
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
@@ -10,9 +11,9 @@ namespace HotelLinenManagerV2.Controllers
     [Route("[controller]")]
     public class CompaniesController : ApiControllerBase
     {
-       public CompaniesController(IMediator mediator) : base(mediator)
+       public CompaniesController(IMediator mediator, ILogger<CompaniesController> logger) : base(mediator,logger)
         {
-
+            logger.LogInformation("We are in Company");
         } 
 
         [HttpGet]

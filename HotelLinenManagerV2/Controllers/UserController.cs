@@ -2,6 +2,7 @@
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
@@ -10,7 +11,7 @@ namespace HotelLinenManagerV2.Controllers
     [Route("[controller]")]
     public class UserController : ApiControllerBase
     {
-        public UserController(IMediator mediator) : base(mediator)
+        public UserController(IMediator mediator, ILogger<UserController> logger) : base(mediator, logger)
         {
 
         }

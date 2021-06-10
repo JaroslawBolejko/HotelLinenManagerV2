@@ -3,6 +3,7 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Warehauses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
@@ -15,9 +16,9 @@ namespace HotelLinenManagerV2.Controllers
     {
 
 
-        public WarehausesController(IMediator mediator/*, ILogger<WarehausesController logger*/) : base(mediator)/*, logger)*/
+        public WarehausesController(IMediator mediator, ILogger<WarehausesController> logger) : base(mediator, logger)
         {
-            //  logger.LogInformation("We are in Warehauses");
+             logger.LogInformation("We are in Warehauses");
         }
 
         [HttpGet]

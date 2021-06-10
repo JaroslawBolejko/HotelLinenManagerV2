@@ -14,10 +14,10 @@ namespace HotelLinenManagerV2.Controllers
         private readonly IMediator mediator;
         private readonly ILogger logger;
 
-        protected ApiControllerBase(IMediator mediator/*, ILogger logger*/)
+        protected ApiControllerBase(IMediator mediator, ILogger logger)
         {
             this.mediator = mediator;
-            //this.logger = logger;
+            this.logger = logger;
         }
         protected async Task<IActionResult> HandleRequest<TRequest, TResponse>(TRequest request)
             where TRequest : IRequest<TResponse>
@@ -25,10 +25,12 @@ namespace HotelLinenManagerV2.Controllers
         {
             if (!this.ModelState.IsValid)
             {
+                
                 return this.BadRequest(
                          this.ModelState
                          .Where(x => x.Value.Errors.Any())
                          .Select(x => new { property = x.Key, errors = x.Value.Errors }));
+                            
             }
             ////      var username = this.User.FindFirstValue(ClaimTypes.Name);
             //if (User.Claims.FirstOrDefault() != null)
@@ -42,8 +44,7 @@ namespace HotelLinenManagerV2.Controllers
             var response = await this.mediator.Send(request);
             if (response.Error != null)
             {
-                //Logowanie błedów w dobym miejscu, poprawić żeby pojawiałe się uszczegółowiony błąd
-                //logger.LogError("An error Occured ");
+                
                 return this.ErrorResopnse(response.Error);
             }
 
@@ -53,6 +54,7 @@ namespace HotelLinenManagerV2.Controllers
         private IActionResult ErrorResopnse(ErrorModel errorModel)
         {
             var httpCode = GetHttpStatusCode(errorModel.Error);
+            logger.LogError($"An Error occured :{(int)httpCode} {httpCode.ToString()}");
             return StatusCode((int)httpCode, errorModel);
         }
 

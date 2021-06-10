@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20210609091546_RelationsUpdateInHotelLinen")]
+    partial class RelationsUpdateInHotelLinen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +145,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("WarehauseId")
+                    b.Property<int?>("WarehauseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -374,15 +376,11 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .WithMany("HotelLinens")
                         .HasForeignKey("LaundryServiceId");
 
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Warehause", "Warhause")
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Warehause", null)
                         .WithMany("HotelLinens")
-                        .HasForeignKey("WarehauseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WarehauseId");
 
                     b.Navigation("HotelLinenType");
-
-                    b.Navigation("Warhause");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.User", b =>
