@@ -1,24 +1,18 @@
+using FluentValidation.AspNetCore;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.WarehauseValidation;
+using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
+using HotelLinenManagerV2.DataAccess;
+using HotelLinenManagerV2.DataAccess.CQRS;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelLinenManagerV2.DataAccess;
-using MediatR;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
-using HotelLinenManagerV2.DataAccess.CQRS;
-using FluentValidation.AspNetCore;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.WarehauseValidation;
 
 namespace HotelLinenManagerV2
 {
@@ -34,6 +28,7 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IGUSDataConnector, GUSDataConnector>();
             services.AddMvcCore()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateWarehauseValidator>());
             services.AddTransient<ICommandExecutor, CommandExecutor>();

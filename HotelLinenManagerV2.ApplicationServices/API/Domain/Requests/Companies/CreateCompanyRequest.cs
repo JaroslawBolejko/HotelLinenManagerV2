@@ -6,7 +6,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
 {
     public class CreateCompanyRequest : IRequest<CreateCompanyResponse>
     {
-        public int Id { get; set; }
         public CompanyType Type { get; set; }
         public string Name { get; set; }
 

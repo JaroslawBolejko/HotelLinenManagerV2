@@ -2,6 +2,7 @@
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
+using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.Companies;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies;
@@ -17,8 +18,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
         private readonly ICommandExecutor commandExecutor;
         private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
+        private readonly IGUSDataConnector gUSDataConnector;
 
-        public CreateCompanyHandler(ICommandExecutor commandExecutor,IQueryExecutor queryExecutor ,IMapper mapper)
+
+        public CreateCompanyHandler(ICommandExecutor commandExecutor,IQueryExecutor queryExecutor ,IMapper mapper, IGUSDataConnector gUSDataConnector)
         {
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;
@@ -27,10 +30,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<CreateCompanyResponse> Handle(CreateCompanyRequest request, CancellationToken cancellationToken)
         {
+         //  var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>("6111315767");
+
+
             var query = new GetCompaniesQuery()
             {
                 Name = request.Name,
                 TaxNumber = request.TaxNumber
+                //Name = daneZGUS.Dane.Nazwa
             };
             var companiesFromDb = await this.queryExecutor.Execute(query);
             if (companiesFromDb != null)
