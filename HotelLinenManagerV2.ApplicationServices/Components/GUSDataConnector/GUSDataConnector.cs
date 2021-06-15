@@ -1,4 +1,5 @@
 ﻿using GusData;
+using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -12,9 +13,10 @@ namespace HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector
     {
 
         public UslugaBIRzewnPublClient uslugaBIRzewn;
-        readonly static string AdresUslugi = "https://wyszukiwarkaregon.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc";
+        readonly string AdresUslugi = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("GUSAppSettings")["GUSAdresUslugi"];
         readonly string sid;
-
+        readonly string tokken = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("GUSAppSettings")["GUSApiTokken"];
+      
         public GUSDataConnector()
         {
             uslugaBIRzewn = new UslugaBIRzewnPublClient();
@@ -26,11 +28,10 @@ namespace HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector
             uslugaBIRzewn.Endpoint.Binding = customBinding;
 
             sid = Loguj().Result;
-
         }
         async Task<string> Loguj()
         {
-            var klucz = await uslugaBIRzewn.ZalogujAsync("");
+            var klucz = await uslugaBIRzewn.ZalogujAsync(tokken);
             return klucz.ZalogujResult;
         }
 
