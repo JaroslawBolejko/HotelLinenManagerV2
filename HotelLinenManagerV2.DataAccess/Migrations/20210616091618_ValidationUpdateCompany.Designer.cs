@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20210616091618_ValidationUpdateCompany")]
+    partial class ValidationUpdateCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,15 +58,8 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApartmentNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("EMail")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -87,10 +82,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("TelefonNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

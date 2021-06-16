@@ -33,6 +33,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                  .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount))
                  .ForMember(x => x.WarehauseId, y => y.MapFrom(z => z.WarehauseId));
 
+            this.CreateMap<PatchHotelLinenByIdRequest, DataAccess.Entities.HotelLinen>()
+                 .ForMember(x => x.Id, y => y.MapFrom(z => z.id))
+                 .ForMember(x => x.NameWithShortDescription, y => y.MapFrom(z => z.NameWithShortDescription))
+                 .ForMember(x => x.Color, y => y.MapFrom(z => z.Color))
+                 .ForMember(x => x.HotelLinenTypeId, y => y.MapFrom(z => z.HotelLinenTypeId))
+                 .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount))
+                 .ForMember(x => x.WarehauseId, y => y.MapFrom(z => z.WarehauseId));
+
 
 
 

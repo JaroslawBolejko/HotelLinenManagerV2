@@ -14,9 +14,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.City, y => y.MapFrom(z => z.City))
                 .ForMember(x => x.Street, y => y.MapFrom(z => z.Street))
                 .ForMember(x => x.Number, y => y.MapFrom(z => z.Number))
+                .ForMember(x => x.ApartmentNumber, y => y.MapFrom(z => z.ApartmentNumber))
                 .ForMember(x => x.ZipCode, y => y.MapFrom(z => z.ZipCode))
                 .ForMember(x => x.TaxNumber, y => y.MapFrom(z => z.TaxNumber))
-                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number));
+                .ForMember(x => x.Email, y => y.MapFrom(z => z.EMail))
+                .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
 
             this.CreateMap<CreateCompanyRequest,DataAccess.Entities.Company>()
                 .ForMember(x => x.Type, y => y.MapFrom(z => z.Type))
@@ -26,7 +28,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Number, y => y.MapFrom(z => z.Number))
                 .ForMember(x => x.ZipCode, y => y.MapFrom(z => z.ZipCode))
                 .ForMember(x => x.TaxNumber, y => y.MapFrom(z => z.TaxNumber))
-                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number));
+                .ForMember(x => x.ApartmentNumber, y => y.MapFrom(z => z.ApartmentNumber))
+                .ForMember(x => x.EMail, y => y.MapFrom(z => z.Email))
+                .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
 
             this.CreateMap<UpdateCompanyByIdRequest, DataAccess.Entities.Company>()
                 .ForMember(x=>x.Id,y=>y.MapFrom(z=>z.id))
@@ -37,10 +41,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Number, y => y.MapFrom(z => z.Number))
                 .ForMember(x => x.ZipCode, y => y.MapFrom(z => z.ZipCode))
                 .ForMember(x => x.TaxNumber, y => y.MapFrom(z => z.TaxNumber))
-                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number));
+                .ForMember(x => x.ApartmentNumber, y => y.MapFrom(z => z.ApartmentNumber))
+                .ForMember(x => x.EMail, y => y.MapFrom(z => z.Email))
+                .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
 
             this.CreateMap<DeleteCompanyByIdRequest, DataAccess.Entities.Company>()
               .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
+            
         }
     }
 }

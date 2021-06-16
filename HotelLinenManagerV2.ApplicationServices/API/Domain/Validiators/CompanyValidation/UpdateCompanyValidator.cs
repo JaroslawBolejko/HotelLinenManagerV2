@@ -14,7 +14,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Company
         {
             this.RuleFor(x => x.Type).NotEmpty().IsInEnum().WithMessage("Wybierz Pralnia lub Hotel");
             this.RuleFor(x => x.Name).NotEmpty().MaximumLength(250).WithMessage("Pole {PropertyName} nie może być puste");
-            this.RuleFor(x => x.TaxNumber).NotEmpty().WithMessage("Podaj NIP.").Length(12).WithMessage("Format NIP'u to 111-111-1111");
+            this.RuleFor(x => x.TaxNumber).NotEmpty().WithMessage("Podaj NIP.").MaximumLength(12).WithMessage("Format NIP nie jest własciwy!");
             this.RuleFor(x => x.Street).NotEmpty().MaximumLength(50).WithMessage("Pole {PropertyName} nie może być puste");
             this.RuleFor(x => x.Number).NotEmpty().MaximumLength(10).WithMessage("Pole {PropertyName} nie może być puste");
             this.RuleFor(x => x.ZipCode).NotEmpty().Length(6).WithMessage("Pole {PropertyName} nie może być puste");

@@ -49,6 +49,14 @@ namespace HotelLinenManagerV2.Controllers
             return await this.HandleRequest<UpdateHotelLinenByIdRequest, UpdateHotelLinenByIdResponse>(request);
         }
 
+        //[HttpPatch]
+        //[Route("{hotelLinenId}")]
+        //public async Task<IActionResult> PatchHotelLinenById(int hotelLinenId,[FromBody] PatchHotelLinenByIdRequest request)
+        //{
+           
+        //    return await this.HandleRequest<PatchHotelLinenByIdRequest, PatchHotelLinenByIdResponse>(request);
+        //}
+
         [HttpDelete]
         [Route("{hotelLinenId}")]
         public async Task<IActionResult> DeleteHotelLinenById([FromRoute] int hotelLinenId)

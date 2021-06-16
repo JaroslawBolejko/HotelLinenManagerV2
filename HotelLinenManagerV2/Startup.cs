@@ -39,6 +39,8 @@ namespace HotelLinenManagerV2
                 opt =>
                 opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
             services.AddControllers();
+            // services.AddControllers().AddNewtonsoftJson();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "HotelLinenManagerV2", Version = "v2" });

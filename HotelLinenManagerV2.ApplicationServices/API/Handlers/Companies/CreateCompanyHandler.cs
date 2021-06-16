@@ -8,6 +8,7 @@ using HotelLinenManagerV2.DataAccess.CQRS.Commands.Companies;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies;
 using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,18 +21,32 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
         private readonly IMapper mapper;
         private readonly IGUSDataConnector gUSDataConnector;
 
-
         public CreateCompanyHandler(ICommandExecutor commandExecutor,IQueryExecutor queryExecutor ,IMapper mapper, IGUSDataConnector gUSDataConnector)
         {
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;
+            this.gUSDataConnector = gUSDataConnector;
         }
 
         public async Task<CreateCompanyResponse> Handle(CreateCompanyRequest request, CancellationToken cancellationToken)
         {
-         //  var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>("6111315767");
 
+            var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>(request.TaxNumber);
+
+            var result = string.IsNullOrEmpty(request.City) && string.IsNullOrEmpty(request.Name) && string.IsNullOrEmpty(request.Number)
+                && string.IsNullOrEmpty(request.Street) && string.IsNullOrEmpty(request.ZipCode);
+
+            if (result == true)
+            {
+                request.City = daneZGUS.Dane.Miejscowosc;
+                request.Name = daneZGUS.Dane.Nazwa;
+                request.Number = daneZGUS.Dane.NrNieruchomosci;
+                //przerób na stringa
+                //request.ApartmentNumber = Convert.ToUInt16(daneZGUS.Dane.NrLokalu);
+                request.Street = daneZGUS.Dane.Ulica;
+                request.ZipCode = daneZGUS.Dane.KodPocztowy;
+            }
 
             var query = new GetCompaniesQuery()
             {
