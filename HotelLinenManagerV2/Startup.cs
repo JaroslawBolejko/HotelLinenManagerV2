@@ -38,13 +38,13 @@ namespace HotelLinenManagerV2
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>
                 opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
-            services.AddControllers();
-            // services.AddControllers().AddNewtonsoftJson();
+             // services.AddControllers();
+             services.AddControllers().AddNewtonsoftJson();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "HotelLinenManagerV2", Version = "v2" });
-            });
+            }).AddSwaggerGenNewtonsoftSupport();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.HotelLinens;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens;
-using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
-using Microsoft.AspNetCore.JsonPatch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +29,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
         {
             var query = new GetHotelLinenQuery()
             {
-                Id = request.id
+                Id = request.Id
             };
             var getHotelLinen = await this.queryExecutor.Execute(query);
 
@@ -45,13 +40,17 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
                     Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
-             
-            var mappedhotelLinen = this.mapper.Map<HotelLinen>(request);
+            var hotelLinenModel = this.mapper.Map<API.Domain.Models.HotelLinen>(getHotelLinen);
+
+            request.LinenUpdate.ApplyTo(hotelLinenModel);
+
+            var hotelLinenEntity = this.mapper.Map<DataAccess.Entities.HotelLinen>(hotelLinenModel);
 
             var command = new UpdateHotelLinenByIdCommand()
             {
-                Parameter = mappedhotelLinen
+                Parameter = hotelLinenEntity
             };
+
             var updatedHotelLinen = await this.commandExecutor.Execute(command);
             var resopnse = new PatchHotelLinenByIdResponse()
             {

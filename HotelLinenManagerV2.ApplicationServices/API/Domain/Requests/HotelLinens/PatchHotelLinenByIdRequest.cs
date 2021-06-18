@@ -1,15 +1,14 @@
-﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens;
+﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens;
 using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens
 {
     public class PatchHotelLinenByIdRequest : IRequest<PatchHotelLinenByIdResponse>
     {
-        public int id;
-        public string NameWithShortDescription { get; set; }
-        public string Color { get; set; }
-        public int HotelLinenTypeId { get; set; }
-        public ushort Amount { get; set; }
-        public int WarehauseId { get; set; }
+        public int Id { get; set; }
+        public JsonPatchDocument<HotelLinen> LinenUpdate { get; set; }
+       
     }
 }

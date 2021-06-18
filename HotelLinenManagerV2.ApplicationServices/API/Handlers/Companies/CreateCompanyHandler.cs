@@ -8,7 +8,6 @@ using HotelLinenManagerV2.DataAccess.CQRS.Commands.Companies;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies;
 using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
