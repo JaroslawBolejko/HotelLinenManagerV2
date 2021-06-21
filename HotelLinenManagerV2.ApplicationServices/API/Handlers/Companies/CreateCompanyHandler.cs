@@ -38,12 +38,16 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             try
             {
 
-                var result = string.IsNullOrEmpty(request.City) && string.IsNullOrEmpty(request.Name) && string.IsNullOrEmpty(request.Number)
-                    && string.IsNullOrEmpty(request.Street);
-                var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>(request.TaxNumber);
+                var isEmpty = string.IsNullOrEmpty(request.City) || string.IsNullOrEmpty(request.Name)
+                    || string.IsNullOrEmpty(request.Number) || string.IsNullOrEmpty(request.Street)
+                    || string.IsNullOrEmpty(request.Street) || string.IsNullOrEmpty(request.ApartmentNumber);
+                var isNameEmpty = string.IsNullOrEmpty(request.Name);
 
-                if (result == true)
+
+                if (isEmpty == true)
                 {
+                    var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>(request.TaxNumber);
+
                     request.City = daneZGUS.Dane.Miejscowosc;
                     request.Name = daneZGUS.Dane.Nazwa;
                     request.Number = daneZGUS.Dane.NrNieruchomosci;
@@ -52,7 +56,16 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
                     request.ZipCode = daneZGUS.Dane.KodPocztowy;
                     this.logger.LogInformation("Pobrano dane z GUS");
                 }
-               /// tu trzeba popracować!!! na tym bo przepuszcza dane
+                if (isNameEmpty == true)
+                {
+                    this.logger.LogError("Podano nieistniejący w bazie GUS NIP");
+                    return new CreateCompanyResponse()
+                    {
+                        Error = new ErrorModel(ErrorType.NotFound + " Podana firma nie istnieje w bazie GUS!")
+                    };
+                }
+
+
             }
             catch (Exception ex)
             {

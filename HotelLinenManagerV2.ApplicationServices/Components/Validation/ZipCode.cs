@@ -22,6 +22,7 @@ namespace HotelLinenManagerV2.ApplicationServices.Components.Validation
             }
 
             if (position == 2 && isNumber == true) return true;
+            else if (string.IsNullOrEmpty(code)) return true;
             return false;
 
         }

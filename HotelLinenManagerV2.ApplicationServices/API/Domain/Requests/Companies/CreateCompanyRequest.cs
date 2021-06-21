@@ -1,12 +1,13 @@
 ﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
+using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
 using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
+using System.Collections.Generic;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
 {
     public class CreateCompanyRequest : IRequest<CreateCompanyResponse>
     {
-
         public CompanyType Type { get; set; }
         public string Name { get; set; }
         public string TaxNumber { get; set; }
