@@ -5,19 +5,18 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public enum CompanyType
     {
-        Hotel,
-        Laundry
+        Hotel=1,
+        Laundry=2
     }
     public class Company : EntityBase
     {
         [Required]
         public CompanyType Type { get; set; }
-
         [Required]
         [MaxLength(250)]
         public string Name { get; set; }
         [Required]
-        [MaxLength(15)]
+        [StringLength(10)]
         public string TaxNumber { get; set; }
         [Required]
         [MaxLength(50)]
@@ -25,7 +24,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [MaxLength(10)]
         public string Number { get; set; }
-        public ushort ApartmentNumber { get; set; }
+        public string ApartmentNumber { get; set; }
         [Required]
         [StringLength(6)]
         public string ZipCode { get; set; }

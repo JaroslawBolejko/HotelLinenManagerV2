@@ -3,6 +3,7 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.WarehauseValidation;
 using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
+using HotelLinenManagerV2.ApplicationServices.Components.Validation;
 using HotelLinenManagerV2.DataAccess;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using MediatR;
@@ -28,6 +29,8 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IStartsWithDigit, StartsWithDigit>();
+            services.AddTransient<IZipCode,ZipCode>();
             services.AddTransient<IGUSDataConnector, GUSDataConnector>();
             services.AddMvcCore()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateWarehauseValidator>());

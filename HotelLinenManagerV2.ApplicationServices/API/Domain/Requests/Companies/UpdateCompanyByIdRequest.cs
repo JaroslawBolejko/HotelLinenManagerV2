@@ -15,7 +15,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
         public string Street { get; set; }
 
         public string Number { get; set; }
-        public ushort ApartmentNumber { get; set; }
+        public string ApartmentNumber { get; set; }
 
         public string ZipCode { get; set; }
 
