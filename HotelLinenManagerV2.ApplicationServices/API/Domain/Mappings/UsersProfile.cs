@@ -37,8 +37,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
             //    .ForMember(x => x.Username, y => y.MapFrom(z => z.Username))
             //    .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
 
-            //this.CreateMap<DeleteUserByIdRequest, DataAccess.Entities.User>()
-            //        .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
+            this.CreateMap<DeleteUserByIdRequest, DataAccess.Entities.User>()
+                    .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
         }
     }
 }

@@ -4,7 +4,7 @@ using static HotelLinenManagerV2.DataAccess.Entities.User;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
 {
-    public class UpdateUserByIdRequest : IRequest<UpdateUserByIdResponse>
+    public class UpdateUserByIdRequest : RequestBase, IRequest<UpdateUserByIdResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

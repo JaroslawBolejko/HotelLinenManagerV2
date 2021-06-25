@@ -12,6 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,12 +35,16 @@ namespace HotelLinenManagerV2
         {
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-            services.AddTransient<IPasswordHasher, PasswordHasher>();
-            services.AddTransient<IStartsWithDigit, StartsWithDigit>();
-            services.AddTransient<IZipCode,ZipCode>();
-            services.AddTransient<IGUSDataConnector, GUSDataConnector>();
             services.AddMvcCore()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateWarehauseValidator>());
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<IStartsWithDigit, StartsWithDigit>();
+            services.AddTransient<IZipCode, ZipCode>();
+            services.AddTransient<IGUSDataConnector, GUSDataConnector>();
             services.AddTransient<ICommandExecutor, CommandExecutor>();
             services.AddTransient<IQueryExecutor, QueryExecutor>();
             services.AddAutoMapper(typeof(HotelLinensProfile).Assembly);
@@ -47,8 +52,8 @@ namespace HotelLinenManagerV2
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>
                 opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
-             // services.AddControllers();
-             services.AddControllers().AddNewtonsoftJson();
+            // services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddSwaggerGen(c =>
             {
@@ -69,7 +74,7 @@ namespace HotelLinenManagerV2
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

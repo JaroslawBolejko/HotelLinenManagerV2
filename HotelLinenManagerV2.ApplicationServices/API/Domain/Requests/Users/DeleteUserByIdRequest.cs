@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
 {
-    public class DeleteUserByIdRequest : IRequest<DeleteUserByIdResponse>
+    public class DeleteUserByIdRequest : RequestBase, IRequest<DeleteUserByIdResponse>
     {
         public int Id { get; set; }
     }

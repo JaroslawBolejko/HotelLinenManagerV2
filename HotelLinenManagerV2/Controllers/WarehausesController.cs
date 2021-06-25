@@ -2,13 +2,14 @@
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Warehauses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
 {
-    // [Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
 

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses
 {
-    public class UpdateWarehauseByIdRequest : IRequest<UpdateWarehauseByIdResponse>
+    public class UpdateWarehauseByIdRequest : RequestBase, IRequest<UpdateWarehauseByIdResponse>
     {
 
         public int id;

@@ -26,12 +26,22 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
         public async Task<CreateWarehauseResponse> Handle(CreateWarehauseRequest request, CancellationToken cancellationToken)
         {
+            if (request.AuthenticationRole == "UserLaundry")
+            {
+                return new CreateWarehauseResponse
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+            }
+
             var query = new GetWarehausesQuery()
             {
               WarehauseNumber=request.WarehauseNumber,
               CompanyId = request.CompanyId
             };
+
             var getWarhause = await this.queryExecutor.Execute(query);
+
             if(getWarhause!=null)
             {
                 return new CreateWarehauseResponse()
@@ -39,11 +49,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
                     Error = new ErrorModel(ErrorType.Conflict + " Magazyn o podanym numerze już istnieje")
                 };
             }
+
             var mappedWarehause = this.mapper.Map<DataAccess.Entities.Warehause>(request);
             var command = new CreateWarehauseCommand()
             {
                 Parameter = mappedWarehause
             };
+
             var wareHauseFromDB = await this.commandExecutor.Execute(command);
             return new CreateWarehauseResponse()
             {

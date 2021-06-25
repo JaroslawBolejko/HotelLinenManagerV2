@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
 {
-    public class UpdateCompanyByIdRequest : IRequest<UpdateCompanyByIdResponse>
+    public class UpdateCompanyByIdRequest : RequestBase, IRequest<UpdateCompanyByIdResponse>
     {
         public int id;
         public CompanyType Type { get; set; }

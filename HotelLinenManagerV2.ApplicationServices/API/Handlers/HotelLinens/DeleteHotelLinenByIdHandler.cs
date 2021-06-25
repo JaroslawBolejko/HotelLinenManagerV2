@@ -28,6 +28,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
 
         public async Task<DeleteHotelLinenByIdResponse> Handle(DeleteHotelLinenByIdRequest request, CancellationToken cancellationToken)
         {
+            if (request.AuthenticationRole == "UserLaundry")
+            {
+                return new DeleteHotelLinenByIdResponse
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+            }
 
             var query = new GetHotelLinenQuery()
             {

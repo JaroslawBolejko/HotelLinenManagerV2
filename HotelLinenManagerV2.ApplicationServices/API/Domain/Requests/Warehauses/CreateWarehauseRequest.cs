@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses
 {
-    public class CreateWarehauseRequest : IRequest<CreateWarehauseResponse>
+    public class CreateWarehauseRequest : RequestBase, IRequest<CreateWarehauseResponse>
     {
         public WarehauseType WarehauseType { get; set; }
 

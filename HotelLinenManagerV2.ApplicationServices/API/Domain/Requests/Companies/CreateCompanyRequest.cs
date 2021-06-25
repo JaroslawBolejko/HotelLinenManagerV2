@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
 {
-    public class CreateCompanyRequest : IRequest<CreateCompanyResponse>
+    public class CreateCompanyRequest : RequestBase, IRequest<CreateCompanyResponse>
     {
         public CompanyType Type { get; set; }
         public string Name { get; set; }

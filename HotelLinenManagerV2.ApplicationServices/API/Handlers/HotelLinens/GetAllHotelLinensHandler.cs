@@ -25,6 +25,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
 
         public async Task<GetAllHotelLinenResponse> Handle(GetAllHotelLinenRequest request, CancellationToken cancellationToken)
         {
+            if (request.AuthenticationRole == "UserLaundry")
+            {
+                return new GetAllHotelLinenResponse
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+            }
 
             var query = new GetHotelLinensQuery()
             {

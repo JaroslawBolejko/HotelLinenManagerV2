@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses
 {
-    public class GetAllWarehausesRequest : IRequest<GetAllWarehausesResponse>
+    public class GetAllWarehausesRequest : RequestBase, IRequest<GetAllWarehausesResponse>
     {
         public int? WarehauseNumber { get; set; }
 

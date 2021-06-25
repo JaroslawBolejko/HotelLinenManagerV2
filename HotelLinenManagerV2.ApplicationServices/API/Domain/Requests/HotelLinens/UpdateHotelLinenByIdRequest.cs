@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens
 {
-    public  class UpdateHotelLinenByIdRequest : IRequest<UpdateHotelLinenByIdResponse>
+    public  class UpdateHotelLinenByIdRequest : RequestBase, IRequest<UpdateHotelLinenByIdResponse>
     {
         public int id;
         public string NameWithShortDescription { get; set; }

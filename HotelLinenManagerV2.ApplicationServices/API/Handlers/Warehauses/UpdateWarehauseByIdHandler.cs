@@ -31,6 +31,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
         public async Task<UpdateWarehauseByIdResponse> Handle(UpdateWarehauseByIdRequest request, CancellationToken cancellationToken)
         {
+            if (request.AuthenticationRole == "UserLaundry")
+            {
+                return new UpdateWarehauseByIdResponse
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+            }
+
             var query = new GetWarehauseQuery()
             {
                 Id=request.id

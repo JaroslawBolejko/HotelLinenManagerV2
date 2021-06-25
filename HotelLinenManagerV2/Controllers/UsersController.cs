@@ -1,12 +1,14 @@
 ﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Users;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ApiControllerBase
@@ -27,6 +29,7 @@ namespace HotelLinenManagerV2.Controllers
             return await this.HandleRequest<GetUserMeRequest, GetUserMeResponse>(request);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
@@ -36,7 +39,7 @@ namespace HotelLinenManagerV2.Controllers
 
         [HttpDelete]
         [Route("id")]
-        public async Task<IActionResult> deleteUser([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             var request = new DeleteUserByIdRequest()
             {

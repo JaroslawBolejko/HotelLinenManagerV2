@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.JsonPatch;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens
 {
-    public class PatchHotelLinenByIdRequest : IRequest<PatchHotelLinenByIdResponse>
+    public class PatchHotelLinenByIdRequest : RequestBase, IRequest<PatchHotelLinenByIdResponse>
     {
         public int Id { get; set; }
         public JsonPatchDocument<HotelLinen> LinenUpdate { get; set; }

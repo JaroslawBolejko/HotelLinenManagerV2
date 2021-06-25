@@ -4,6 +4,7 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens;
 using HotelLinenManagerV2.DataAccess;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class HotelLinensController : ApiControllerBase

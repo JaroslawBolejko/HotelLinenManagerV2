@@ -4,7 +4,7 @@ using static HotelLinenManagerV2.DataAccess.Entities.User;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
 {
-    public class CreateUserRequest : IRequest<CreateUserResponse>
+    public class CreateUserRequest : RequestBase, IRequest<CreateUserResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -14,5 +14,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
         public string Password { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Salt { get; set; }
+
     }
 }
