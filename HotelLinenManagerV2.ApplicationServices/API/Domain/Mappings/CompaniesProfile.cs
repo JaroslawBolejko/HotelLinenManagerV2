@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
+using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
 {
@@ -47,7 +48,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
 
             this.CreateMap<DeleteCompanyByIdRequest, DataAccess.Entities.Company>()
               .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
-            
+
+           // this.CreateMap<RootDaneSzukajPodmioty, CreateCompanyRequest>();
         }
     }
 }

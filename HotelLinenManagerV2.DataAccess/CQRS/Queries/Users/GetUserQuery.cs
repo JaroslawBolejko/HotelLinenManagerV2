@@ -6,10 +6,22 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
 {
     public class GetUserQuery : QueryBase<User>
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int? CompanyId { get; set; }
+        public string Email { get; set; }
         public string Username { get; set; }
         public override async Task<User> Execute(WarehauseStorageHotelLinenContext context)
         {
-            var result = await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
+           if(!string.IsNullOrEmpty(this.FirstName)
+                && !string.IsNullOrEmpty(this.LastName)
+                && !string.IsNullOrEmpty(this.Email)
+                && this.CompanyId !=null)
+            {
+              return  await context.Users.FirstOrDefaultAsync(x => x.FirstName == this.FirstName
+                && x.LastName == this.LastName && x.Email == this.Email && x.CompanyId == this.CompanyId);
+            }
+                var result = await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
             return result;
 
         }

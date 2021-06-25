@@ -3,10 +3,13 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.WarehauseValidation;
 using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
+using HotelLinenManagerV2.ApplicationServices.Components.PasswordHasher;
 using HotelLinenManagerV2.ApplicationServices.Components.Validation;
+using HotelLinenManagerV2.Authentication;
 using HotelLinenManagerV2.DataAccess;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +32,9 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IStartsWithDigit, StartsWithDigit>();
             services.AddTransient<IZipCode,ZipCode>();
             services.AddTransient<IGUSDataConnector, GUSDataConnector>();

@@ -41,8 +41,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
                 var isEmpty = string.IsNullOrEmpty(request.City) || string.IsNullOrEmpty(request.Name)
                     || string.IsNullOrEmpty(request.Number) || string.IsNullOrEmpty(request.Street)
                     || string.IsNullOrEmpty(request.Street) || string.IsNullOrEmpty(request.ApartmentNumber);
-                var isNameEmpty = string.IsNullOrEmpty(request.Name);
-
+                
 
                 if (isEmpty == true)
                 {
@@ -54,8 +53,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
                     request.ApartmentNumber = daneZGUS.Dane.NrLokalu;
                     request.Street = daneZGUS.Dane.Ulica;
                     request.ZipCode = daneZGUS.Dane.KodPocztowy;
+
+                    // this.mapper.Map(daneZGUS.Dane, request); TU popracować jak to zmapować?
                     this.logger.LogInformation("Pobrano dane z GUS");
                 }
+                var isNameEmpty = string.IsNullOrEmpty(request.Name);
                 if (isNameEmpty == true)
                 {
                     this.logger.LogError("Podano nieistniejący w bazie GUS NIP");

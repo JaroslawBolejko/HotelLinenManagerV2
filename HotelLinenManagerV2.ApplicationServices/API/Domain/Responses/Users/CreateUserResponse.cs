@@ -2,7 +2,7 @@
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Users
 {
-    public class GetUserByUsernameResponse : ResponseBase<User>
+    public class CreateUserResponse : ResponseBase<User>
     {
     }
 }
