@@ -6,6 +6,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
 {
     public class GetUserQuery : QueryBase<User>
     {
+        public int? Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int? CompanyId { get; set; }
@@ -21,6 +22,11 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
               return  await context.Users.FirstOrDefaultAsync(x => x.FirstName == this.FirstName
                 && x.LastName == this.LastName && x.Email == this.Email && x.CompanyId == this.CompanyId);
             }
+           if(this.Id!=null)
+            {
+                return await context.Users.FirstOrDefaultAsync(x => x.Id == this.Id);
+            }
+          
                 var result = await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
             return result;
 
