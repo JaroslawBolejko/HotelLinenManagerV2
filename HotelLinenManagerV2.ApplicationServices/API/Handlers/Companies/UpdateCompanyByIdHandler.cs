@@ -27,6 +27,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<UpdateCompanyByIdResponse> Handle(UpdateCompanyByIdRequest request, CancellationToken cancellationToken)
         {
+            if(request.AuthenticationCompanyId != request.id)
+            {
+                return new UpdateCompanyByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.UnsupportedMethod)
+                };
+            }
+
             var query = new GetCompanyQuery() 
             {
                 Id = request.id

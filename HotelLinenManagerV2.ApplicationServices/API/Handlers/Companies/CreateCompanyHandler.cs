@@ -35,6 +35,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<CreateCompanyResponse> Handle(CreateCompanyRequest request, CancellationToken cancellationToken)
         {
+            if (request.AuthenticationRole != "HotelAdmin")
+            {
+                return new CreateCompanyResponse()
+                {
+                    Error = new ErrorModel(ErrorType.UnsupportedMethod)
+                };
+            }
             try
             {
 

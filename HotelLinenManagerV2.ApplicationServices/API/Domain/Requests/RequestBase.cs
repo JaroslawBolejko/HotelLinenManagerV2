@@ -4,5 +4,6 @@
     {
         public string AuthenticationName { get; set; }
         public string AuthenticationRole { get; set; }
+        public int AuthenticationCompanyId { get; set; }
     }
 }

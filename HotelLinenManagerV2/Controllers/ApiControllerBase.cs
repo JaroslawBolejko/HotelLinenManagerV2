@@ -39,7 +39,7 @@ namespace HotelLinenManagerV2.Controllers
             {
                 (request as RequestBase).AuthenticationName = this.User.FindFirstValue(ClaimTypes.Name);
                 (request as RequestBase).AuthenticationRole = this.User.FindFirstValue(ClaimTypes.Role);
-              //  (request as RequestBase).AuthenticationId = Int32.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                (request as RequestBase).AuthenticationCompanyId = Int32.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
             }
 
             var response = await this.mediator.Send(request);

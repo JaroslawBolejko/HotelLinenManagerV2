@@ -51,6 +51,16 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 .Include(x=>x.HotelLinens)               
                 .ToListAsync();
 
+            //var result2 =  await context.Warehauses
+            //    .Join(context.HotelLinens, warehause => warehause.Id, hotelLinen => hotelLinen.WarehauseId, (warehause, hotelLinen) => new
+            //    {
+            //        id = warehause.Id,
+            //        name = warehause.Name,
+            //        number = warehause.WarehauseNumber,
+            //        linenName = hotelLinen.NameWithShortDescription,
+            //        quantity = hotelLinen.Amount
+            //    }).ToListAsync();
+
             return result;
         }
     }

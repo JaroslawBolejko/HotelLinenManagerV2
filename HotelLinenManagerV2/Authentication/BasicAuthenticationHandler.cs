@@ -79,7 +79,7 @@ namespace HotelLinenManagerV2.Authentication
             }
 
             var claims = new[] {
-               // new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.CompanyId.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Permission.ToString())
             };

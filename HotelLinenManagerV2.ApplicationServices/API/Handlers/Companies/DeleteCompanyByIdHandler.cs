@@ -27,6 +27,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<DeleteCompanyByIdResponse> Handle(DeleteCompanyByIdRequest request, CancellationToken cancellationToken)
         {
+            if (request.AuthenticationCompanyId != request.Id)
+            {
+                return new DeleteCompanyByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.UnsupportedMethod)
+                };
+            }
+
             var query = new GetCompanyQuery()
             {
                 Id = request.Id
