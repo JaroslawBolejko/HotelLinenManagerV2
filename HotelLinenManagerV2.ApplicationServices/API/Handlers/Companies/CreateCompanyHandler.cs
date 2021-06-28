@@ -3,6 +3,7 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
 using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
+using HotelLinenManagerV2.ApplicationServices.Components.NullOrEmptyCheker;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.Companies;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies;
@@ -22,20 +23,22 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
         private readonly IMapper mapper;
         private readonly IGUSDataConnector gUSDataConnector;
         private readonly ILogger logger;
+        private readonly INullOrEmptyChecker nullOrEmptyChecker;
 
         public CreateCompanyHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor,
-            IMapper mapper, IGUSDataConnector gUSDataConnector, ILogger<CreateCompanyHandler> logger)
+            IMapper mapper, IGUSDataConnector gUSDataConnector, ILogger<CreateCompanyHandler> logger, INullOrEmptyChecker nullOrEmptyChecker)
         {
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;
             this.gUSDataConnector = gUSDataConnector;
             this.logger = logger;
+            this.nullOrEmptyChecker = nullOrEmptyChecker;
         }
 
         public async Task<CreateCompanyResponse> Handle(CreateCompanyRequest request, CancellationToken cancellationToken)
         {
-            if (request.AuthenticationRole != "HotelAdmin")
+            if (request.AuthenticationRole != "AdminHotel")
             {
                 return new CreateCompanyResponse()
                 {
@@ -44,24 +47,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             }
             try
             {
-
-                var isEmpty = string.IsNullOrEmpty(request.City) || string.IsNullOrEmpty(request.Name)
-                    || string.IsNullOrEmpty(request.Number) || string.IsNullOrEmpty(request.Street)
-                    || string.IsNullOrEmpty(request.Street) || string.IsNullOrEmpty(request.ApartmentNumber);
-                
-
+                bool isEmpty = nullOrEmptyChecker.IsEmptyOrNull(request.Name, request.City, request.Street);
                 if (isEmpty == true)
                 {
                     var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>(request.TaxNumber);
-
-                    request.City = daneZGUS.Dane.Miejscowosc;
-                    request.Name = daneZGUS.Dane.Nazwa;
-                    request.Number = daneZGUS.Dane.NrNieruchomosci;
-                    request.ApartmentNumber = daneZGUS.Dane.NrLokalu;
-                    request.Street = daneZGUS.Dane.Ulica;
-                    request.ZipCode = daneZGUS.Dane.KodPocztowy;
-
-                    // this.mapper.Map(daneZGUS.Dane, request); TU popracować jak to zmapować?
+                    this.mapper.Map(daneZGUS, request);
                     this.logger.LogInformation("Pobrano dane z GUS");
                 }
                 var isNameEmpty = string.IsNullOrEmpty(request.Name);
@@ -73,7 +63,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
                         Error = new ErrorModel(ErrorType.NotFound + " Podana firma nie istnieje w bazie GUS!")
                     };
                 }
-
 
             }
             catch (Exception ex)

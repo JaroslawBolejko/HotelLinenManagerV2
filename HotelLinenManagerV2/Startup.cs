@@ -3,6 +3,7 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.WarehauseValidation;
 using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
+using HotelLinenManagerV2.ApplicationServices.Components.NullOrEmptyCheker;
 using HotelLinenManagerV2.ApplicationServices.Components.PasswordHasher;
 using HotelLinenManagerV2.ApplicationServices.Components.Validation;
 using HotelLinenManagerV2.Authentication;
@@ -41,6 +42,7 @@ namespace HotelLinenManagerV2
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.AddTransient<INullOrEmptyChecker, NullOrEmptyChecker>();
             services.AddTransient<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IStartsWithDigit, StartsWithDigit>();
             services.AddTransient<IZipCode, ZipCode>();

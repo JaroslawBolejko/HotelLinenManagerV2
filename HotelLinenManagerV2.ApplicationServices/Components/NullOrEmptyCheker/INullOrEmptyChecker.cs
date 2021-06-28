@@ -2,8 +2,8 @@
 
 namespace HotelLinenManagerV2.ApplicationServices.Components.NullOrEmptyCheker
 {
-    interface INullOrEmptyChecker
+   public interface INullOrEmptyChecker
     {
-        public bool IsEmptyOrNull(Company company);
+        public bool IsEmptyOrNull<T>(T parameter1, T prameter2, T parameter3);
     }
 }
