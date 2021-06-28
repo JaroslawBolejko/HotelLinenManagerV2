@@ -10,6 +10,7 @@ using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using static HotelLinenManagerV2.DataAccess.Entities.User;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
 {
@@ -51,6 +52,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
             var auth = passwordHasher.Hash(request.Password);
             request.Password = auth[0];
             request.Salt = auth[1];
+
+            if (request.Workplace.Equals("Laundry"))
+                request.Permission = (Role)2;
+            request.Permission = (Role)1;
+
 
             var mappedUser = this.mapper.Map<User>(request);
             var command = new CreateUserCommand()

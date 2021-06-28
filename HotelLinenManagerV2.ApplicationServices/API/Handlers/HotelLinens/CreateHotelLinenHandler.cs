@@ -37,16 +37,16 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
 
             var query = new GetHotelLinensQuery()
             {
-               HotelLinenTypeId =  request.HotelLinenTypeId,
-               NameWithShortDescription = request.NameWithShortDescription,
-               WarehauseId = request.WarehauseId
+                HotelLinenTypeId = request.HotelLinenTypeId,
+                NameWithShortDescription = request.NameWithShortDescription,
+                WarehauseId = request.WarehauseId
             };
             var getWarhause = await this.queryExecutor.Execute(query);
             if (getWarhause != null)
             {
                 return new CreateHotelLinenResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict+" Bielizna o podanym typie oraz nazwie już istnieje!")
+                    Error = new ErrorModel(ErrorType.Conflict + " Bielizna o podanym typie oraz nazwie już istnieje!")
                 };
             }
             var mappedCommand = this.mapper.Map<HotelLinen>(request);
@@ -55,10 +55,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
                 Parameter = mappedCommand
             };
             var createdHotelLinen = await this.commandExecutor.Execute(command);
+
             var response = new CreateHotelLinenResponse()
             {
+
                 Data = this.mapper.Map<API.Domain.Models.HotelLinen>(createdHotelLinen)
+
             };
+
             return response;
         }
     }

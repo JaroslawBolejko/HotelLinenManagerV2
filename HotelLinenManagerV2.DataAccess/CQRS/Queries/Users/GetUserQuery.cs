@@ -1,5 +1,6 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
@@ -19,8 +20,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
                 && !string.IsNullOrEmpty(this.Email)
                 && this.CompanyId !=null)
             {
-              return  await context.Users.FirstOrDefaultAsync(x => x.FirstName == this.FirstName
-                && x.LastName == this.LastName && x.Email == this.Email && x.CompanyId == this.CompanyId);
+
+                return await context.Users.FirstOrDefaultAsync(x => x.FirstName == this.FirstName
+                 && x.LastName == this.LastName && x.Email == this.Email && x.CompanyId == this.CompanyId);
+                      
             }
 
            if(this.Id!=null)

@@ -11,14 +11,12 @@ namespace HotelLinenManagerV2.DataAccess.Entities
             UserLaundry=3 
 
         }
-        public enum Position
+        public enum PlaceOfWork
         {
-            Employee=1,
-            Manager=2,
-            Owner=3 
+            Hotel=1,
+            Loundry=2
         }
-
-
+        
         public int CompanyId { get; set; }
         public Company Company { get; set; }
         [Required]
@@ -28,8 +26,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [MaxLength(100)]
         public string LastName { get; set; }
         [Required]
-        public Position PositionType { get; set; }
-       
+        public PlaceOfWork Workplace { get; set; }
         [Required]
         public Role Permission { get; set; }
         [Required]
