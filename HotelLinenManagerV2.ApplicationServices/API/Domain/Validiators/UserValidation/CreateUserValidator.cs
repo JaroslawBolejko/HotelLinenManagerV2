@@ -13,7 +13,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.UserVal
                 .MinimumLength(2).MaximumLength(100);
             this.RuleFor(x=>x.LastName).NotEmpty().WithMessage("Pole {PropertyName} nie może być puste!")
                 .MinimumLength(2).MaximumLength(100);
-            this.RuleFor(x => x.WorkPlace).IsInEnum().WithMessage("Niewłaściwy typ {PropertyName}. Wybierz z listy dostępnych!");
+            this.RuleFor(x => x.Workplace).IsInEnum().WithMessage("Niewłaściwy typ {PropertyName}. Wybierz z listy dostępnych!");
             this.RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Pole {PropertyName} nie może być puste!");
             this.RuleFor(x => x.Permission).IsInEnum().WithMessage("Niewłaściwy typ {PropertyName}. Wybierz z listy dostępnych!");
             this.RuleFor(x => x.Password).NotEmpty().MaximumLength(50);
