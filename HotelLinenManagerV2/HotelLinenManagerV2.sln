@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelLinenManagerV2.DataAcc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelLinenManagerV2.ApplicationServices", "..\HotelLinenManagerV2.ApplicationServices\HotelLinenManagerV2.ApplicationServices.csproj", "{6FCA1689-6676-493F-BB65-AD327AB3DB6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "..\BlazorApp\BlazorApp.csproj", "{CA8838ED-C2B2-4DA1-94FB-FF13EE504C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "..\ZKJ_BlazorApp-main\BlazorApp.csproj", "{53088D33-5D3C-4716-A552-79E8479E79E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{6FCA1689-6676-493F-BB65-AD327AB3DB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FCA1689-6676-493F-BB65-AD327AB3DB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FCA1689-6676-493F-BB65-AD327AB3DB6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA8838ED-C2B2-4DA1-94FB-FF13EE504C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA8838ED-C2B2-4DA1-94FB-FF13EE504C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA8838ED-C2B2-4DA1-94FB-FF13EE504C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA8838ED-C2B2-4DA1-94FB-FF13EE504C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53088D33-5D3C-4716-A552-79E8479E79E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53088D33-5D3C-4716-A552-79E8479E79E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53088D33-5D3C-4716-A552-79E8479E79E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53088D33-5D3C-4716-A552-79E8479E79E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

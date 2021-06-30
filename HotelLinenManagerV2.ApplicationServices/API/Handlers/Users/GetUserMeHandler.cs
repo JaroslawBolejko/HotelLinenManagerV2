@@ -28,7 +28,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
             {
                 var query = new GetUserQuery()
                 {
-                    //  Username = request.AuthenticationName
+                      Username = request.AuthenticationName
 
                 };
 

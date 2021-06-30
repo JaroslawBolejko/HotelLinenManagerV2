@@ -31,23 +31,14 @@ namespace BlazorApp.Services
         public async Task Login(string username, string password)
         {
             // User = await _httpService.Post<User>("/users/authenticate", new { username, password });
-            User = new User
+            User = new User()
             {
                 AuthData = $"{username}:{password}".EncodeBase64()
+
             };
             await _localStorageService.SetItem("user", User);
-            User = await _httpService.Get<User>("/Users/me");
-
+            User = await _httpService.Get<User>("/Users/me"); 
         }
-        //public async Task Register (string username, string password)
-        //{
-        //    User = new User
-        //    {
-        //       Username = username,
-        //       Password = password
-        //    };
-        //    await _httpService.Post<User>("/Users", User);
-        //}
 
         public async Task Logout()
         {

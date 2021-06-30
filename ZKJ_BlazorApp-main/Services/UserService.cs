@@ -17,8 +17,7 @@ namespace BlazorApp.Services
         {
             return await _httpService.Get<IEnumerable<User>>("/Users");
         }
-
-        public async Task<User> Get()
+        public async Task<User> GetMe()
         {
             return await _httpService.Get<User>("/Users/me");
         }

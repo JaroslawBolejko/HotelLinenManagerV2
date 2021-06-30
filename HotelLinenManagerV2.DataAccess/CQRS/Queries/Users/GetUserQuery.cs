@@ -31,8 +31,8 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
                 return await context.Users.FirstOrDefaultAsync(x => x.Id == this.Id);
             }
           
-            var result = await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
-            return result;
+        return await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
+           
 
         }
     }

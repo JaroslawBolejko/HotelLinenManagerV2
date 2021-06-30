@@ -19,6 +19,14 @@ namespace HotelLinenManagerV2.Controllers
         }
 
         [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetALLUsers([FromQuery] GetAllUsersRequest request)
+        {
+            return await this.HandleRequest<GetAllUsersRequest, GetAllUsersResponse>(request);
+        }
+            
+
+        [HttpGet]
         [Route("{me}")]
         public async Task<IActionResult> GetUsers([FromRoute] string me)
         {

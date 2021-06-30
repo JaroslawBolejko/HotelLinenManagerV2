@@ -8,7 +8,6 @@
         User User { get; }
         Task Initialize();
         Task Login(string username, string password);
-       // Task Register(string username, string password);
         Task Logout();
     }
 }
