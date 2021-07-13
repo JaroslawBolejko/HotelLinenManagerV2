@@ -11,6 +11,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
         public int? HotelLinenTypeId { get; set; }
         public string NameWithShortDescription { get; set; }
         public int? WarehauseId { get; set; }
+        public int? CompanyId { get; set; }
         public override async Task<List<HotelLinen>> Execute(WarehauseStorageHotelLinenContext context)
         {
             if (this.HotelLinenTypeId != null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId != null)
@@ -50,6 +51,12 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 }
                 return null;
             }
+            //if(this.CompanyId != null)
+            //{
+            //    return await context.HotelLinens
+            //        .Include(x=>x.Warhause.)
+            //}
+
             else
             {
                 return await context.HotelLinens.ToListAsync();

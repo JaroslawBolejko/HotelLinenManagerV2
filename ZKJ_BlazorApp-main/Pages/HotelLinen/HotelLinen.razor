@@ -1,0 +1,46 @@
+﻿@page "/Hotellinens"
+@attribute [Authorize]
+@inject IHotelLinenService HotelLinenService
+<div>
+    <a class="btn btn-primary" href='/addHotelLinen'>Add</a>
+</div>
+
+<div class="card mt-4">
+    <h4 class="card-header">HotelLinen</h4>
+    <div class="card-body">
+        <h6>HotelLinen from secure api end point</h6>
+        @if (loading)
+        {<div class="spinner-border spinner-border-sm"></div>}
+        @if (hotelLinens != null)
+        {<ul>
+                @foreach (var hotelLinen in hotelLinens)
+                {
+                    <tr>
+                      
+                        <td>@hotelLinen.NameWithShortDescription</td>
+                        
+                        <td>
+                            <a class="btn btn-primary" href='/hotellinens/@hotelLinen.Id'>Edit</a>  |
+                            <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>
+                        </td>
+                    </tr>
+}
+            </ul>}
+    </div>
+</div>
+
+@code { private bool loading;
+    private IEnumerable<Models.HotelLinen> hotelLinens;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        hotelLinens = await HotelLinenService.GetAll();
+        loading = false;
+    }
+
+    protected async Task DeleteHotelLinen(int id)
+    {
+        await HotelLinenService.Delete(id);
+        hotelLinens = await HotelLinenService.GetAll();
+    } }

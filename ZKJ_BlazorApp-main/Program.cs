@@ -18,7 +18,9 @@ namespace BlazorApp
             builder.Services
                 .AddScoped<IAuthenticationService, AuthenticationService>()
                 .AddScoped<IUserService, UserService>()
-                .AddScoped<IBookCasesService, BookCasesService>()
+                .AddScoped<ICompanyService, CompanyService>()
+                .AddScoped<IWarehauseService, WarehauseService>()
+                .AddScoped<IHotelLinenService, HotelLinenService>()
                 .AddScoped<IHttpService, HttpService>()
                 .AddScoped<ILocalStorageService, LocalStorageService>();
 

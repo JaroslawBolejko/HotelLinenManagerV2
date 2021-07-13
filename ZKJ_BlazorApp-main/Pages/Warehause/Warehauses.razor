@@ -1,0 +1,30 @@
+﻿@page "/Warehauses"
+@attribute [Authorize]
+@inject IWarehauseService WarehauseService
+
+<div class="card mt-4">
+    <h4 class="card-header">Warehauses</h4>
+    <div class="card-body">
+        <h6>List of company Warehauses</h6>
+        @if (loading)
+        {
+<div class="spinner-border spinner-border-sm"></div>}
+        @if (warehauses != null)
+        {
+<ul>
+    @foreach (var warehause in warehauses)
+    {
+<li>@warehause.Name</li>                }
+</ul>}
+    </div>
+</div>
+
+@code { private bool loading;
+    private IEnumerable<Models.Warehause> warehauses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        warehauses = await WarehauseService.GetAll();
+        loading = false;
+    } }

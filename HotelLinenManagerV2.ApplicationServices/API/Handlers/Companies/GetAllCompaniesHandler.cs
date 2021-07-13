@@ -29,22 +29,19 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<GetAllCompaniesResponse> Handle(GetAllCompaniesRequest request, CancellationToken cancellationToken)
         {
-            
 
-          //  var daneZGUS = await this.gUSDataConnector.szukajPodmioty<RootDaneSzukajPodmioty>("6111315767");
-
-            
             var query = new GetCompaniesQuery()
             {
-            Name = request.Name,
-            TaxNumber = request.TaxNumber
+                Name = request.Name,
+                TaxNumber = request.TaxNumber,
+                CompanyId = request.AuthenticationCompanyId
             };
             var companiesFromDb = await this.queryExecutor.Execute(query);
-            if(companiesFromDb==null)
+            if (companiesFromDb == null)
             {
                 return new GetAllCompaniesResponse()
                 {
-                    Error =  new ErrorModel(ErrorType.NotFound)
+                    Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
             var mappedCompanies = this.mapper.Map<List<Company>>(companiesFromDb);
