@@ -7,5 +7,6 @@
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAll();
+        Task<User> GetMe();
     }
 }

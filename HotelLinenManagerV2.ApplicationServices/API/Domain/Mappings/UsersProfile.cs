@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
 {
@@ -17,6 +19,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Permission, y => y.MapFrom(z => z.Permission))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.Username))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
+              //  .ForMember(x => x.Name, y => y.MapFrom(z => z.Company.Name));
+             
 
             this.CreateMap<CreateUserRequest, DataAccess.Entities.User>()
                 .ForMember(x => x.FirstName, y => y.MapFrom(z => z.FirstName))

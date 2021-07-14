@@ -7,5 +7,8 @@ namespace BlazorApp.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string AuthData { get; set; }
+       // public int CompanyId { get; set; }
+        public string Permission { get; set; }
+        public string Email { get; set; }
     }
 }

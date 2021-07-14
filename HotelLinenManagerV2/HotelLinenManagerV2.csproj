@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HotelLinenManagerV2.ApplicationServices\HotelLinenManagerV2.ApplicationServices.csproj" />
     <ProjectReference Include="..\HotelLinenManagerV2.DataAccess\HotelLinenManagerV2.DataAccess.csproj" />
+    <ProjectReference Include="..\ZKJ_BlazorApp-main\BlazorApp.csproj" />
   </ItemGroup>
 
 </Project>

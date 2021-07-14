@@ -1,5 +1,6 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,9 +31,26 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
             {
                 return await context.Users.FirstOrDefaultAsync(x => x.Id == this.Id);
             }
-          
-        return await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
-           
+            if (!string.IsNullOrEmpty(this.Username))
+            {
+                var result = await context.Users
+                  .Join(context.Companies, user => user.CompanyId,
+                  company => company.Id, (user, company) => new
+                  {
+                      CompanyName = company.Name
+                  }).ToListAsync();
+                // zrobić podobny myk jak w hotellinen - utworzyć liste typu entity i przypisac do Company company result.CompanyName 
+                var fromDB = await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
+                List<User> newList = new();
+              
+
+
+
+
+                return await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
+
+            }
+            return null;
 
         }
     }

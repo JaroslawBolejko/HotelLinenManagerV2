@@ -8,28 +8,27 @@
         <h6>Your personal data</h6>
         @if (loading)
         {
-            <div class="spinner-border spinner-border-sm"></div>
-        }
-        @if (users != null)
-        {
+<div class="spinner-border spinner-border-sm"></div>}
+        @if (user != null)
+         {
             <ul>
-                @foreach (var user in users)
-                {
-                    <li>@user.FirstName @user.LastName</li>
-                }
+                <li>First name and last name: @user.FirstName @user.LastName</li>
+                <li>Username : @user.Username</li>
+                <li>Email : @user.Email</li>
+                <li>Role : @user.Permission</li>
+
+    
             </ul>
-        }
+         }
     </div>
 </div>
 
-@code {
-    private bool loading;
-    private IEnumerable<User> users;
+@code { private bool loading;
+            private User user;
 
-    protected override async Task OnInitializedAsync()
-    {
-        loading = true;
-        users = await UserService.GetAll();
-        loading = false;
-    }
-}
+            protected override async Task OnInitializedAsync()
+            {
+                loading = true;
+                user = await UserService.GetMe();
+                loading = false;
+            } }
