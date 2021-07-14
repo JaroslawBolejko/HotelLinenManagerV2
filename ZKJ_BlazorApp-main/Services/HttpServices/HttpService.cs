@@ -1,4 +1,5 @@
 using BlazorApp.Models;
+using BlazorApp.Services.LocalStorages;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.HttpServices
 {
     public class HttpService : IHttpService
     {

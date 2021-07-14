@@ -1,8 +1,9 @@
 using BlazorApp.Models;
+using BlazorApp.Services.HttpServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Users
 {
     public class UserService : IUserService
     {

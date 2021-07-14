@@ -19,14 +19,14 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 if (context.HotelLinens.Any(x => x.HotelLinenTypeId == this.HotelLinenTypeId
                     && x.NameWithShortDescription == this.NameWithShortDescription && x.WarehauseId == this.WarehauseId))
                 {
-                    return await context.HotelLinens.Where(x => x.HotelLinenTypeId == this.HotelLinenTypeId 
+                    return await context.HotelLinens.Where(x => x.HotelLinenTypeId == this.HotelLinenTypeId
                     && x.HotelLinenTypeId == this.HotelLinenTypeId && x.WarehauseId == this.WarehauseId)
                     .ToListAsync();
                 }
                 return null;
             }
 
-            if (this.HotelLinenTypeId == null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId ==null)
+            if (this.HotelLinenTypeId == null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId == null)
             {
                 if (context.HotelLinens.Any(x => x.NameWithShortDescription == this.NameWithShortDescription))
                 {
@@ -51,11 +51,31 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 }
                 return null;
             }
-            //if(this.CompanyId != null)
-            //{
-            //    return await context.HotelLinens
-            //        .Include(x=>x.Warhause.)
-            //}
+
+            // Teraz powyższe warunki są nie potrzebne, zawsze będzie wchodził tylko w ten więc albo roższeżyć pozostałe o ten albo je wykasować
+            if (this.CompanyId != null)
+            {
+                var result = await context.Warehauses
+                    .Join(context.HotelLinens, warehause => warehause.Id,
+                    hotelLinen => hotelLinen.WarehauseId, (warehause, hotelLinen) => new
+                        {
+                             CompanyId = warehause.CompanyId,
+                             WarehauseId = warehause.Id,
+                             Id = hotelLinen.Id
+                        }).ToListAsync();
+
+                List<HotelLinen> returnList = new();
+               
+                var result2 = result.Where(x => x.CompanyId == this.CompanyId).Select(x=>x.Id).ToList();
+                for (int i = 0; i < result2.Count; i++)
+                {
+                    var item = await context.HotelLinens.Where(x => x.Id == result2[i]).ToListAsync();
+                    if (item != null) returnList.AddRange(item);
+                }
+                return returnList;
+
+            }
+
 
             else
             {

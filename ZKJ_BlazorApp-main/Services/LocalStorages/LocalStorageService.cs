@@ -2,7 +2,7 @@ using Microsoft.JSInterop;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.LocalStorages
 {
     public class LocalStorageService : ILocalStorageService
     {

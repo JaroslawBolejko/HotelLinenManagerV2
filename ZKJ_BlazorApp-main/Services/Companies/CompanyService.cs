@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using BlazorApp.Models;
+using BlazorApp.Services.HttpServices;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Companies
 {
     public class CompanyService : ICompanyService
     {
@@ -12,9 +14,9 @@ namespace BlazorApp.Services
             this.httpService = httpService;
         }
 
-        public async Task<IEnumerable<Models.Company>> GetAll()
+        public async Task<IEnumerable<Company>> GetAll()
         {
-            return await this.httpService.Get<IEnumerable<Models.Company>>("/Companies");
+            return await this.httpService.Get<IEnumerable<Company>>("/Companies");
         }
     }
 }

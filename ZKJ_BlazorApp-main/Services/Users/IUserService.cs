@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Services
+﻿namespace BlazorApp.Services.Users
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

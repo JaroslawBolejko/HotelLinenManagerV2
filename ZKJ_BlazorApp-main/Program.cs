@@ -1,5 +1,11 @@
 using BlazorApp.Helpers;
-using BlazorApp.Services;
+using BlazorApp.Services.Authentications;
+using BlazorApp.Services.Companies;
+using BlazorApp.Services.HotelLinens;
+using BlazorApp.Services.HttpServices;
+using BlazorApp.Services.LocalStorages;
+using BlazorApp.Services.Users;
+using BlazorApp.Services.Warehauses;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;

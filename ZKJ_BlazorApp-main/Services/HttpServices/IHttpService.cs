@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Services
+﻿namespace BlazorApp.Services.HttpServices
 {
     using System.Threading.Tasks;
 

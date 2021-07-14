@@ -1,4 +1,4 @@
-﻿@page "/Hotellinens"
+﻿@page "/HotelLinens"
 @attribute [Authorize]
 @inject IHotelLinenService HotelLinenService
 <div>
@@ -8,7 +8,7 @@
 <div class="card mt-4">
     <h4 class="card-header">HotelLinen</h4>
     <div class="card-body">
-        <h6>HotelLinen from secure api end point</h6>
+        <h6>List of hotelLinen</h6>
         @if (loading)
         {<div class="spinner-border spinner-border-sm"></div>}
         @if (hotelLinens != null)

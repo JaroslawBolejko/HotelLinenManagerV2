@@ -1,9 +1,11 @@
 using BlazorApp.Helpers;
 using BlazorApp.Models;
+using BlazorApp.Services.HttpServices;
+using BlazorApp.Services.LocalStorages;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Authentications
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -37,7 +39,7 @@ namespace BlazorApp.Services
 
             };
             await _localStorageService.SetItem("user", User);
-            User = await _httpService.Get<User>("/Users/me"); 
+            User = await _httpService.Get<User>("/Users/me");
         }
 
         public async Task Logout()

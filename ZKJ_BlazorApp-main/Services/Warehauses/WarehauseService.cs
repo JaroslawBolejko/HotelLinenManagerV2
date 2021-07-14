@@ -1,10 +1,9 @@
 ﻿using BlazorApp.Models;
-using System;
+using BlazorApp.Services.HttpServices;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Services
+namespace BlazorApp.Services.Warehauses
 {
     public class WarehauseService : IWarehauseService
     {
@@ -17,7 +16,7 @@ namespace BlazorApp.Services
 
         public async Task<IEnumerable<Warehause>> GetAll()
         {
-            return await this.httpService.Get<IEnumerable<Warehause>>("/Warehauses");
+            return await httpService.Get<IEnumerable<Warehause>>("/Warehauses");
         }
     }
 }

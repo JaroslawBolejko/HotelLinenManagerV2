@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Services
+﻿namespace BlazorApp.Services.Authentications
 {
     using System.Threading.Tasks;
     using BlazorApp.Models;
