@@ -12,6 +12,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string Permission { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-       // public Company Name { get; set; }
+        public Company Company { get; set; }
     }
 }

@@ -18,6 +18,10 @@ namespace BlazorApp.Services.HotelLinens
         {
             return  await this.httpService.Get<IEnumerable<HotelLinen>>("/HotelLinens");
         }
+        public async Task<IEnumerable<HotelLinen>>GetWarehauseLinen(int warehauseId)
+        {
+            return await this.httpService.Get<IEnumerable<HotelLinen>>("/HotelLinens?WarehauseId={warehauseId}");
+        }
         public async Task<HotelLinen> GetById(int id)
         {
             return await this.httpService.Get<HotelLinen>($"/HotelLinens/{id}");

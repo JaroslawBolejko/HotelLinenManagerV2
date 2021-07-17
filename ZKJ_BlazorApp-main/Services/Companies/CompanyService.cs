@@ -18,5 +18,9 @@ namespace BlazorApp.Services.Companies
         {
             return await this.httpService.Get<IEnumerable<Company>>("/Companies");
         }
+        public async Task<Company> GetCompanyById(int id)
+        {
+            return await this.httpService.Get<Company>($"/Companies/{id}");
+        }
     }
 }

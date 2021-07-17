@@ -1,6 +1,8 @@
 ﻿@page "/Users"
 @attribute [Authorize]
 @inject IUserService UserService
+@inject ICompanyService CompanyService
+@*@inject ILocalStorageService LocalStorageService*@
 
 <div class="card mt-4">
     <h4 class="card-header">Users</h4>
@@ -16,19 +18,21 @@
                 <li>Username : @user.Username</li>
                 <li>Email : @user.Email</li>
                 <li>Role : @user.Permission</li>
-
-    
+                <li>Company : @company.Name</li>
             </ul>
          }
     </div>
 </div>
 
 @code { private bool loading;
-            private User user;
+    private User user;
+    private Company company;
 
-            protected override async Task OnInitializedAsync()
-            {
-                loading = true;
-                user = await UserService.GetMe();
-                loading = false;
-            } }
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        user = await UserService.GetMe();
+        //user = await LocalStorageService.GetItem<User>("user");
+        company = await CompanyService.GetCompanyById(user.CompanyId);
+        loading = false;
+    } }

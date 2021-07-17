@@ -14,7 +14,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
         public int? CompanyId { get; set; }
         public override async Task<List<HotelLinen>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            if (this.HotelLinenTypeId != null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId != null)
+            if (this.HotelLinenTypeId != null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId != null )
             {
                 if (context.HotelLinens.Any(x => x.HotelLinenTypeId == this.HotelLinenTypeId
                     && x.NameWithShortDescription == this.NameWithShortDescription && x.WarehauseId == this.WarehauseId))
@@ -26,7 +26,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 return null;
             }
 
-            if (this.HotelLinenTypeId == null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId == null)
+            if (this.HotelLinenTypeId == null && !string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId == null )
             {
                 if (context.HotelLinens.Any(x => x.NameWithShortDescription == this.NameWithShortDescription))
                 {
@@ -35,7 +35,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 return null;
             }
 
-            if (this.HotelLinenTypeId != null && string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId == null)
+            if (this.HotelLinenTypeId != null && string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId == null )
             {
                 if (context.HotelLinens.Any(x => x.HotelLinenTypeId == this.HotelLinenTypeId))
                 {
@@ -43,7 +43,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 }
                 return null;
             }
-            if (this.HotelLinenTypeId == null && string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId != null)
+            if (this.HotelLinenTypeId == null && string.IsNullOrEmpty(this.NameWithShortDescription) && this.WarehauseId != null )
             {
                 if (context.HotelLinens.Any(x => x.WarehauseId == this.WarehauseId))
                 {
