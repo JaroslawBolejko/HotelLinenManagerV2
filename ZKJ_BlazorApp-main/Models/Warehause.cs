@@ -8,5 +8,6 @@ namespace BlazorApp.Models
         public string Name { get; set; }
         public int? WarehauseNumber { get; set; }
         public List<HotelLinen> HotelLinen { get; set; }
+        public string Test { get; set; }
     }
 }
