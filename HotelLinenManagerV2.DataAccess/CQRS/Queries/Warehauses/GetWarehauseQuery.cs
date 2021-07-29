@@ -1,6 +1,7 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
 {
@@ -9,10 +10,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
         public int Id { get; set; }
         public override async Task<Warehause> Execute(WarehauseStorageHotelLinenContext context)
         {
-            var result = await context.Warehauses.FirstOrDefaultAsync(x => x.Id == this.Id);
 
-            return result;
-
+            return await context.Warehauses.Where(x => x.Id == this.Id)
+                .Include(x => x.HotelLinens)
+                .FirstOrDefaultAsync();
         }
     }
 }

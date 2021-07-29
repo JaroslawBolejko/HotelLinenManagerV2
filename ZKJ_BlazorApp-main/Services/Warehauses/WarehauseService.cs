@@ -16,7 +16,18 @@ namespace BlazorApp.Services.Warehauses
 
         public async Task<IEnumerable<Warehause>> GetAll()
         {
-            return await httpService.Get<IEnumerable<Warehause>>("/Warehauses");
+            return await this.httpService.Get<IEnumerable<Warehause>>("/Warehauses");
+        }
+
+        public async Task<Warehause> GetWarehauseById(int id)
+        {
+            return await this.httpService.Get<Warehause>($"/Warehauses/{id}");
+
+        }
+        public async Task<int> Update(Warehause warehause)
+        {
+            var result = await this.httpService.Put<Warehause>($"/Warehauses/{warehause.Id}", warehause);
+            return result.Id;
         }
     }
 }

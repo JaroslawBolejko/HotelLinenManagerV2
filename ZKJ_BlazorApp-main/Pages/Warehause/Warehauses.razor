@@ -7,24 +7,24 @@
     <div class="card-body">
         <h6>List of company warehauses</h6>
         @if (loading)
-         {
+        {
             <div class="spinner-border spinner-border-sm"></div>
-         }
+        }
         @if (warehauses != null)
         {
-            <ul>
-                @foreach (var warehause in warehauses)
-                {
-                    <li>Nazwa magazynu: <strong>@warehause.Name</strong> nr. pomieszczenia - @warehause.WarehauseNumber</li>
-                    <ul>
-                        @foreach (var item in warehause.HotelLinen)
-                        {
-                            <li>@item.NameWithShortDescription - @item.Amount szt.</li>
-                        }
-                    </ul>
-                    
-                }
-            </ul>
+    <ul>
+        @foreach (var warehause in warehauses)
+        {
+            <tr>
+            <li>Nazwa magazynu: <strong>@warehause.Name</strong>nr. pomieszczenia - @warehause.WarehauseNumber</li>
+                        <td>
+                <a class="btn btn-primary" href='/warehauses/@warehause.Id'>View</a>| 
+                <a class="btn btn-primary" href='/warehauses/@warehause.Id'>Edit</a>
+            </td>
+            </tr>
+        }
+
+    </ul>
         }
     </div>
 </div>
@@ -33,7 +33,8 @@
 
     private bool loading;
     private IEnumerable<Models.Warehause> warehauses;
-    
+
+
     protected override async Task OnInitializedAsync()
     {
         loading = true;

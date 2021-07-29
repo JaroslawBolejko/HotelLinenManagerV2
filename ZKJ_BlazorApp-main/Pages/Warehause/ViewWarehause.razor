@@ -1,0 +1,49 @@
+﻿@page "/warehauses/{Id}"
+@inject IWarehauseService WarehauseService
+
+<div class="card mt-4">
+    <h4 class="card-header">Zawartość magazynu</h4>
+    <div class="card-body">
+        @if (loading)
+        {
+            <div class="spinner-border spinner-border-sm"></div>
+        }
+        @if (warehauses != null)
+        {
+    <ul>
+        @foreach (var warehause in warehauses)
+        {
+            @foreach (var hotelLinen in warehause.HotelLinen)
+            {
+                if (hotelLinen.WarehauseId == int.Parse(Id))
+                {
+                    <li>@hotelLinen.NameWithShortDescription</li>
+                    <li>@hotelLinen.Color</li>
+                    <li>@hotelLinen.Amount</li>
+                    <br />
+                }
+            }
+        }
+
+    </ul>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    //Warehause warehause = new Warehause();
+    private bool loading;
+    private IEnumerable<Models.Warehause> warehauses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        warehauses = await WarehauseService.GetAll();
+       // warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        loading = false;
+    }
+
+
+}
