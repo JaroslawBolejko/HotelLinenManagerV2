@@ -2,31 +2,46 @@
 @attribute [Authorize]
 @inject IWarehauseService WarehauseService
 
-<div class="card mt-4">
-    <h4 class="card-header">Warehauses</h4>
-    <div class="card-body">
-        <h6>List of company warehauses</h6>
-        @if (loading)
-        {
-            <div class="spinner-border spinner-border-sm"></div>
-        }
-        @if (warehauses != null)
-        {
-    <ul>
-        @foreach (var warehause in warehauses)
-        {
-            <tr>
-            <li>Nazwa magazynu: <strong>@warehause.Name</strong>nr. pomieszczenia - @warehause.WarehauseNumber</li>
-                        <td>
-                <a class="btn btn-primary" href='/warehauses/@warehause.Id'>View</a>| 
-                <a class="btn btn-primary" href='/warehauses/@warehause.Id'>Edit</a>
-            </td>
-            </tr>
-        }
+<div>
+    <a class="btn btn-primary" href='/addWarhause'>Add</a>
+</div>
 
-    </ul>
-        }
-    </div>
+
+<div class="center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Warehause Number
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (loading)
+            {
+                <div class="spinner-border spinner-border-sm"></div>
+            }
+            @if (warehauses != null)
+            {
+
+                @foreach (var warehause in warehauses)
+                {
+                    <tr>
+                        <th scope="row">@warehause.Name</th>
+                        <td>@warehause.WarehauseNumber</td>
+                        <td>
+                            <a class="btn btn-primary" href='/warehauses/@warehause.Id'>View</a>  
+                            @*<a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
 </div>
 
 @code {

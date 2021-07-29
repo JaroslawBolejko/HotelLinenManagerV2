@@ -1,47 +1,66 @@
 ﻿@page "/warehauses/{Id}"
+@attribute [Authorize]
 @inject IWarehauseService WarehauseService
+@inject IHotelLinenService HotelLinenService
 
-<div class="card mt-4">
-    <h4 class="card-header">Zawartość magazynu</h4>
-    <div class="card-body">
-        @if (loading)
-        {
-            <div class="spinner-border spinner-border-sm"></div>
-        }
-        @if (warehauses != null)
-        {
-    <ul>
-        @foreach (var warehause in warehauses)
-        {
-            @foreach (var hotelLinen in warehause.HotelLinen)
+<div class="center"><h4>@warehause.Name</h4></div>
+
+<div class="center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Color
+                </th>
+                <th scope="col">
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (loading)
             {
-                if (hotelLinen.WarehauseId == int.Parse(Id))
-                {
-                    <li>@hotelLinen.NameWithShortDescription</li>
-                    <li>@hotelLinen.Color</li>
-                    <li>@hotelLinen.Amount</li>
-                    <br />
-                }
+                <div class="spinner-border spinner-border-sm"></div>
             }
-        }
+            @if (hotelLinens != null)
+            {
 
-    </ul>
-        }
-    </div>
+                @foreach (var hotelLinen in hotelLinens)
+                {
+                    if (hotelLinen.WarehauseId == int.Parse(Id))
+                    {
+                        <tr>
+                            <th scope="row">@hotelLinen.NameWithShortDescription</th>
+                            <td>@hotelLinen.Color</td>
+                            <td>@hotelLinen.Amount</td>
+                            <td>
+                                <a class="btn btn-primary" href='/hotellinens/@hotelLinen.Id'>Edit</a>  | Delete
+                                @*<a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                            </td>
+                        </tr>
+                    }
+                }
+
+            }
+        </tbody>
+    </table>
 </div>
 
 @code {
     [Parameter]
     public string Id { get; set; }
-    //Warehause warehause = new Warehause();
+    Warehause warehause = new Warehause();
     private bool loading;
-    private IEnumerable<Models.Warehause> warehauses;
+    private IEnumerable<Models.HotelLinen> hotelLinens;
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
-        warehauses = await WarehauseService.GetAll();
-       // warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        hotelLinens = await HotelLinenService.GetAll();
         loading = false;
     }
 

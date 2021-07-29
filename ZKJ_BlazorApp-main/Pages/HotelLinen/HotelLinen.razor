@@ -1,33 +1,56 @@
-﻿@page "/HotelLinens"
+﻿@page "/hotellinens"
 @attribute [Authorize]
 @inject IHotelLinenService HotelLinenService
 <div>
     <a class="btn btn-primary" href='/addHotelLinen'>Add</a>
 </div>
 
-<div class="card mt-4">
-    <h4 class="card-header">HotelLinen</h4>
-    <div class="card-body">
-        <h6>List of hotelLinen</h6>
-        @if (loading)
-        {<div class="spinner-border spinner-border-sm"></div>}
-        @if (hotelLinens != null)
-        {<ul>
+<div class="center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Id
+                </th>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Color
+                </th>
+                <th scope="col">
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (loading)
+            {
+                <div class="spinner-border spinner-border-sm"></div>
+            }
+            @if (hotelLinens != null)
+            {
+
                 @foreach (var hotelLinen in hotelLinens)
                 {
                     <tr>
-                      
+                        <th scope="row">@hotelLinen.Id</th>
                         <td>@hotelLinen.NameWithShortDescription</td>
-                        
+                        <td>@hotelLinen.Color</td>
+                        <td>@hotelLinen.Amount</td>
+
                         <td>
                             <a class="btn btn-primary" href='/hotellinens/@hotelLinen.Id'>Edit</a>  |
                             <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>
                         </td>
                     </tr>
-}
-            </ul>}
-    </div>
+                }
+
+            }
+        </tbody>
+    </table>
 </div>
+
 
 @code { private bool loading;
     private IEnumerable<Models.HotelLinen> hotelLinens;
