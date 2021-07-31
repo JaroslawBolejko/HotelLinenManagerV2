@@ -31,18 +31,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
             {
                 return await context.Users.FirstOrDefaultAsync(x => x.Id == this.Id);
             }
-           //Tu też pozostałe iff nie mają znaczenia bo usernam przychdzi w hederze obligatoryjnie
+           
             if (!string.IsNullOrEmpty(this.Username))
             {
-                //var result = await context.Users
-                //  .Join(context.Companies, user => user.CompanyId,
-                //  company => company.Id, (user, company) => new
-                //  {
-                //      CompanyName = company.Name
-                //  }).ToListAsync();
-                //// zrobić podobny myk jak w hotellinen - utworzyć liste typu entity i przypisac do Company company result.CompanyName 
-                //var fromDB = await context.Users.FirstOrDefaultAsync(x => x.Username == this.Username);
-
+                
                 return await context.Users.Include(x=>x.Company).FirstOrDefaultAsync(x => x.Username == this.Username);
 
             }

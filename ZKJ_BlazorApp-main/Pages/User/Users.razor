@@ -14,11 +14,11 @@
         @if (user != null)
          {
             <ul>
-                <li>First name and last name: @user.FirstName @user.LastName</li>
-                <li>Username : @user.Username</li>
-                <li>Email : @user.Email</li>
-                <li>Role : @user.Permission</li>
-                <li>Company : @company.Name</li>
+                <li><strong>First name and last name: </strong> @user.FirstName @user.LastName</li>
+                <li><strong>Username:</strong>@user.Username</li>
+                <li><strong>Email:   </strong>@user.Email</li>
+                <li><strong>Role:    </strong>@user.Permission</li>
+                <li><strong>Company: </strong>@company.Name</li>
             </ul>
          }
     </div>
@@ -27,6 +27,7 @@
 @code { private bool loading;
     private User user;
     private Company company;
+ 
 
     protected override async Task OnInitializedAsync()
     {

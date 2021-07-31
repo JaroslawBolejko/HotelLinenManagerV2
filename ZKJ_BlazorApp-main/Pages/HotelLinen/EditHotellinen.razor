@@ -1,0 +1,58 @@
+﻿@page "/edithotellinen/{Id}"
+@inject IHotelLinenService HotelLinenService
+@inject IWarehauseService WarehauseService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form>
+                <div class="form-group">
+                    <label for="Name" class="control-label">Name</label>
+                    <input for="Name" class="form-control" @bind-value="@hotelLinen.NameWithShortDescription" />
+
+                    <label for="Color" class="control-label">Color</label>
+                    <input for="Color" class="form-control" @bind-value="@hotelLinen.Color" />
+
+                    <label for="Amount" class="control-label">Amount</label>
+                    <input for="Amount" class="form-control" @bind-value="@hotelLinen.Amount" />
+
+                    <label for="Warehause" class="control-label">Warehause</label>
+                    <input for="Warehause" class="form-control" @bind-value="@hotelLinen.WarehauseId" />
+                    @*@foreach (var warehause in warehauses)
+                    {
+                       <option value= "@warehause.Id">@warehause.Name</option>
+                    }
+                    </input>*@
+                    <input type="hidden" @bind-value="@hotelLinen.Id" />
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" @onclick="() => UpdateHotelLinen()">Save</button>
+                    <button type="button" class="btn btn-danger" @onclick="() => cancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    private Models.HotelLinen hotelLinen = new Models.HotelLinen();
+    private IEnumerable<Warehause> warehauses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hotelLinen = await HotelLinenService.GetById(int.Parse(Id));
+      //  warehauses = await WarehauseService.GetAll();
+    }
+    protected async Task UpdateHotelLinen()
+    {
+        await HotelLinenService.Update(hotelLinen);
+        navigationManager.NavigateTo("/hotellinens");
+    }
+
+    void cancel()
+    {
+        navigationManager.NavigateTo("/hotellinens");
+    }
+}

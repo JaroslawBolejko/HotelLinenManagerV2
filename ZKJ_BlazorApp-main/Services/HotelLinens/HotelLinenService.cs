@@ -33,7 +33,7 @@ namespace BlazorApp.Services.HotelLinens
         }
         public async Task<HotelLinen> Update(HotelLinen hotelLinen)
         {
-            return await this.httpService.Put<HotelLinen>("/HotelLinens", hotelLinen);
+            return await this.httpService.Put<HotelLinen>($"/HotelLinens/{hotelLinen.Id}", hotelLinen);
         }
       
         public async Task<int> Delete(int id)
