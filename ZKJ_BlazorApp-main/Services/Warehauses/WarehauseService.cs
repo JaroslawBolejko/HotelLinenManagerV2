@@ -9,9 +9,16 @@ namespace BlazorApp.Services.Warehauses
     {
         private readonly IHttpService httpService;
 
-        public WarehauseService(IHttpService httpService)
+        public WarehauseService(IHttpService httpService) 
         {
             this.httpService = httpService;
+        }
+
+        public async Task<int> CreateWarehause(Warehause warehause)
+        {
+            var result =  await this.httpService.Post<Warehause>("/Warehauses", warehause);
+            return result.Id;
+
         }
 
         public async Task<IEnumerable<Warehause>> GetAll()
@@ -24,10 +31,10 @@ namespace BlazorApp.Services.Warehauses
             return await this.httpService.Get<Warehause>($"/Warehauses/{id}");
 
         }
-        public async Task<int> Update(Warehause warehause)
+        public async Task<int> Update(int id, Warehause warehause)
         {
-            var result = await this.httpService.Put<Warehause>($"/Warehauses/{warehause.Id}", warehause);
-            return result.Id;
+            var result = await this.httpService.Put<Warehause>($"/Warehauses/{id}", warehause);
+            return id;
         }
     }
 }

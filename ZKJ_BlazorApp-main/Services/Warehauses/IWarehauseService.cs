@@ -8,6 +8,7 @@ namespace BlazorApp.Services.Warehauses
     {
         Task<IEnumerable<Warehause>> GetAll();
         Task<Warehause> GetWarehauseById(int id);
-        Task<int> Update(Warehause warehause);
+        Task<int> CreateWarehause(Warehause warehause);
+        Task<int> Update(int id, Warehause warehause);
     }
 }
