@@ -1,0 +1,120 @@
+﻿@page "/partialmove/{Id}"
+@inject IHotelLinenService HotelLinenService
+@inject IWarehauseService WarehauseService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<h1>Choose warehause and amount to move hotel linen .</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="hotelLinen">
+                <div class="form-group">
+
+                    <input type="hidden" @bind-value="@hotelLinen.Id" />
+
+                    <input type="hidden" class="form-control" @bind-value="@hotelLinen.NameWithShortDescription" />
+
+                    <input type="hidden" class="form-control" @bind-value="@hotelLinen.Color" />
+
+                    <input type="hidden" class="form-control" @bind-value="@hotelLinen.HotelLinenTypeId" />
+
+                    <label for="Amount" class="control-label">Amount</label>
+                    <input for="Amount" class="form-control" @bind-value="@hotelLinen.Amount" />
+
+                    <label for="WarehauseType" class="control-label">WarehauseType</label>
+                    <CustomInputSelect id="WarehauseType" @bind-Value="@hotelLinen.WarehauseId" class="form-control">
+                        @if (warehauses != null)
+                        {
+                            @foreach (var warehause in warehauses)
+                            {
+                                <option value="@warehause.Id">@warehause.Name</option>
+                            }
+                        }
+                    </CustomInputSelect>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" @onclick="() => Move()">Save</button>
+                    <button type="button" class="btn btn-danger" @onclick="() => cancel()">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    private HotelLinen hotelLinen = new HotelLinen();
+    private List<HotelLinen> linenToUpdate;
+    private HotelLinen item;
+    private IEnumerable<Warehause> warehauses;
+    private Warehause warhauseToCompare;
+    private Warehause warehauseToCheck;
+    private List<bool> boolList = new List<bool>() { };
+    private int indexOfUpdatedLinen;
+    public  int warehauseIdToCheck;
+
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        hotelLinen = await HotelLinenService.GetById(int.Parse(Id));
+        warehauses = await WarehauseService.GetAll();
+        warhauseToCompare = await WarehauseService.GetWarehauseById(hotelLinen.WarehauseId);
+
+    }
+
+    protected async Task UpdateHotelLinen()
+    {
+        await HotelLinenService.Update(hotelLinen);
+        navigationManager.NavigateTo($"/viewwarhause/{hotelLinen.WarehauseId}");
+    }
+    protected async Task CreateHotelLinen()
+    {
+        await HotelLinenService.Create(hotelLinen);
+        navigationManager.NavigateTo("/warehauses");
+    }
+
+    void cancel()
+    {
+        navigationManager.NavigateTo("/hotellinens");
+    }
+    protected async Task Move()
+    {
+        //warehauseToCheck = await WarehauseService.GetWarehauseById(hotelLinen.WarehauseId);
+        linenToUpdate = (await HotelLinenService.GetWarehauseLinen(hotelLinen.WarehauseId)).ToList();
+        if (linenToUpdate != null)
+        {
+            foreach (var linen in linenToUpdate)
+            {
+                if (linen.NameWithShortDescription == hotelLinen.NameWithShortDescription && linen.Color == hotelLinen.Color)
+                {
+                    //var result = linen.Any(x => x.NameWithShortDescription==);
+                    boolList.Add(true);
+                    // indexOfUpdatedLinen = warhauseToCompare.HotelLinen.IndexOf(linen);
+                    item = linen;
+                }
+                else
+                {
+                    boolList.Add(false);
+                }
+            }
+            if (boolList.Contains(true))
+            {
+                // warhauseToCompare.HotelLinen[indexOfUpdatedLinen].Amount = hotelLinen.Amount;
+                //  await HotelLinenService.Update(warhauseToCompare.HotelLinen[indexOfUpdatedLinen]);
+                await HotelLinenService.Update(item);
+                navigationManager.NavigateTo($"/warehauses");
+            }
+            else
+            {
+                await HotelLinenService.Create(hotelLinen);
+                navigationManager.NavigateTo("/warehauses");
+            }
+        }
+
+    }
+}
+

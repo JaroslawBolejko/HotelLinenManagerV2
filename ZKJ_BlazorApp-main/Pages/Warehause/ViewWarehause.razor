@@ -18,6 +18,9 @@
                 <th scope="col">
                     Amount
                 </th>
+                <th scope="col">
+                    Id
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -36,11 +39,14 @@
                             <th scope="row">@hotelLinen.NameWithShortDescription</th>
                             <td>@hotelLinen.Color</td>
                             <td>@hotelLinen.Amount</td>
-                            <td>
-                                <a class="btn btn-primary" href='/movehotellinen/@hotelLinen.Id'>Move To</a>  
-                                <a class="btn btn-primary" href='/warehauses'>Back</a>  | Delete
-                                @*<a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
-                            </td>
+                            <td>@hotelLinen.Id</td>
+                                <td>
+                                    <a class="btn btn-primary" href='/movehotellinen/@hotelLinen.Id'>Move All</a>
+                                    <a class="btn btn-primary" href='/partialmove/@hotelLinen.Id'>Move Partial</a>
+                                    <a class="btn btn-primary" href='/warehauses'>Back</a>  | Delete
+                                    <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete
+                                    @*<a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                                </td>
                         </tr>
                     }
                 }
@@ -64,6 +70,5 @@
         hotelLinens = await HotelLinenService.GetAll();
         loading = false;
     }
-
 
 }

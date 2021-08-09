@@ -16,9 +16,6 @@
     right: 0.75rem;
     top: 0.5rem;
 }
-.HideFooter {
-    display: none;
-}
 
 /* 
     below styles were copied from bootstrap 4.5.2 and renamed to be compatible with blazor
