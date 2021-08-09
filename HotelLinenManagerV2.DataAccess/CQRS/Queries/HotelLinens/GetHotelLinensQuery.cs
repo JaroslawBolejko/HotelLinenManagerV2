@@ -88,7 +88,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                     }).ToListAsync();
 
                 List<HotelLinen> returnList = new();
-                var result2 = result.Where(x => x.CompanyId == this.CompanyId).Select(x => x.LinenId).ToList();
+                var result2 = result.Where(x => x.CompanyId == this.CompanyId).Select(x => x.LinenId).Distinct().ToList();
                 for (int i = 0; i < result2.Count; i++)
                 {
                     var item = await context.HotelLinens.Where(x => x.Id == result2[i]).ToListAsync();
