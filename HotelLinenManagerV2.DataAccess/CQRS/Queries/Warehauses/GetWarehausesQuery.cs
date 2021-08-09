@@ -18,7 +18,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 {
                    
                     return await context.Warehauses.Where(x => x.WarehauseNumber == this.WarehauseNumber && x.CompanyId == this.CompanyId)
-                        .Include(x=>x.HotelLinens)
+                        .Include(x=>x.WarehauseDetails)
                         .ToListAsync();
                 }
                 return null;
@@ -30,7 +30,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 {
 
                     return await context.Warehauses.Where(x => x.WarehauseNumber == this.WarehauseNumber)
-                        .Include(x => x.HotelLinens)
+                        .Include(x => x.WarehauseDetails)
                         .ToListAsync();
                 }
                 return null;
@@ -42,13 +42,13 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 {
 
                     return await context.Warehauses.Where(x => x.CompanyId == this.CompanyId)
-                        .Include(x => x.HotelLinens)
+                        .Include(x => x.WarehauseDetails)
                         .ToListAsync();
                 }
                 return null;
             }
             var result = await context.Warehauses
-                .Include(x=>x.HotelLinens)               
+                .Include(x=>x.WarehauseDetails)               
                 .ToListAsync();
 
             //var result2 =  await context.Warehauses

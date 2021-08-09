@@ -7,7 +7,5 @@
         public string Color { get; set; }
         public int HotelLinenTypeId { get; set; }
         public ushort Amount { get; set; }
-        public int WarehauseId { get; set; }
-        public Warehause Warehause { get; set; }
     }
 }

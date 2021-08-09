@@ -140,6 +140,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("HotelLinenTypeId")
                         .HasColumnType("int");
 
@@ -154,9 +157,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("WarehauseId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HotelLinenTypeId");
@@ -164,8 +164,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.HasIndex("InvoiceId");
 
                     b.HasIndex("LaundryServiceId");
-
-                    b.HasIndex("WarehauseId");
 
                     b.ToTable("HotelLinens");
                 });
@@ -328,6 +326,31 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.ToTable("Warehauses");
                 });
 
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.WarehauseDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HotelLinenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehauseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelLinenId");
+
+                    b.HasIndex("WarehauseId");
+
+                    b.ToTable("WarehauseDetails");
+                });
+
             modelBuilder.Entity("CompanyInvoice", b =>
                 {
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", null)
@@ -385,15 +408,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .WithMany("HotelLinens")
                         .HasForeignKey("LaundryServiceId");
 
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Warehause", "Warhause")
-                        .WithMany("HotelLinens")
-                        .HasForeignKey("WarehauseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("HotelLinenType");
-
-                    b.Navigation("Warhause");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.User", b =>
@@ -418,9 +433,33 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.WarehauseDetail", b =>
+                {
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", "HotelLinen")
+                        .WithMany("WarehauseDetails")
+                        .HasForeignKey("HotelLinenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Warehause", "Warehause")
+                        .WithMany("WarehauseDetails")
+                        .HasForeignKey("WarehauseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HotelLinen");
+
+                    b.Navigation("Warehause");
+                });
+
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Company", b =>
                 {
                     b.Navigation("Warehauses");
+                });
+
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", b =>
+                {
+                    b.Navigation("WarehauseDetails");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinenType", b =>
@@ -440,7 +479,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Warehause", b =>
                 {
-                    b.Navigation("HotelLinens");
+                    b.Navigation("WarehauseDetails");
                 });
 #pragma warning restore 612, 618
         }

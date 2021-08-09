@@ -27,7 +27,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<UpdateCompanyByIdResponse> Handle(UpdateCompanyByIdRequest request, CancellationToken cancellationToken)
         {
-            if(request.AuthenticationCompanyId != request.id)
+            if(request.AuthenticationCompanyId != request.Id)
             {
                 return new UpdateCompanyByIdResponse()
                 {
@@ -37,7 +37,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
             var query = new GetCompanyQuery() 
             {
-                Id = request.id
+                Id = request.Id
             };
             var getCompany = await this.queryExecutor.Execute(query);
             if(getCompany==null)

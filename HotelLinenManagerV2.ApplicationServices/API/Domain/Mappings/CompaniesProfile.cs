@@ -34,7 +34,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
 
             this.CreateMap<UpdateCompanyByIdRequest, DataAccess.Entities.Company>()
-                .ForMember(x=>x.Id,y=>y.MapFrom(z=>z.id))
+                .ForMember(x=>x.Id,y=>y.MapFrom(z=>z.Id))
                 .ForMember(x => x.Type, y => y.MapFrom(z => z.Type))
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.City, y => y.MapFrom(z => z.City))

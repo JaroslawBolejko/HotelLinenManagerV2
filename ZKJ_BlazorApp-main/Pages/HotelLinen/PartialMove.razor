@@ -22,7 +22,7 @@
                     <label for="Amount" class="control-label">Amount</label>
                     <input for="Amount" class="form-control" @bind-value="@hotelLinen.Amount" />
 
-                    <label for="WarehauseType" class="control-label">WarehauseType</label>
+                    @*<label for="WarehauseType" class="control-label">WarehauseType</label>
                     <CustomInputSelect id="WarehauseType" @bind-Value="@hotelLinen.WarehauseId" class="form-control">
                         @if (warehauses != null)
                         {
@@ -31,7 +31,7 @@
                                 <option value="@warehause.Id">@warehause.Name</option>
                             }
                         }
-                    </CustomInputSelect>
+                    </CustomInputSelect>*@
                 </div>
                 <div class="form-group">
                     <button type="button" class="btn btn-primary" @onclick="() => Move()">Save</button>
@@ -62,14 +62,14 @@
     {
         hotelLinen = await HotelLinenService.GetById(int.Parse(Id));
         warehauses = await WarehauseService.GetAll();
-        warhauseToCompare = await WarehauseService.GetWarehauseById(hotelLinen.WarehauseId);
+        //warhauseToCompare = await WarehauseService.GetWarehauseById(hotelLinen.WarehauseId);
 
     }
 
     protected async Task UpdateHotelLinen()
     {
         await HotelLinenService.Update(hotelLinen);
-        navigationManager.NavigateTo($"/viewwarhause/{hotelLinen.WarehauseId}");
+      //  navigationManager.NavigateTo($"/viewwarhause/{hotelLinen.WarehauseId}");
     }
     protected async Task CreateHotelLinen()
     {
@@ -84,7 +84,7 @@
     protected async Task Move()
     {
         //warehauseToCheck = await WarehauseService.GetWarehauseById(hotelLinen.WarehauseId);
-        linenToUpdate = (await HotelLinenService.GetWarehauseLinen(hotelLinen.WarehauseId)).ToList();
+      //  linenToUpdate = (await HotelLinenService.GetWarehauseLinen(hotelLinen.WarehauseId)).ToList();
         if (linenToUpdate != null)
         {
             foreach (var linen in linenToUpdate)

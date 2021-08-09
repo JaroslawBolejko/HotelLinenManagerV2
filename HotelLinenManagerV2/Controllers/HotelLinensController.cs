@@ -60,7 +60,7 @@ namespace HotelLinenManagerV2.Controllers
         [Route("{hotelLinenId}")]
         public async Task<IActionResult> UpdateHotelLinenById([FromRoute] int hotelLinenId,[FromBody] UpdateHotelLinenByIdRequest request)
         {
-            request.id = hotelLinenId;
+            request.Id = hotelLinenId;
             return await this.HandleRequest<UpdateHotelLinenByIdRequest, UpdateHotelLinenByIdResponse>(request);
         }
 

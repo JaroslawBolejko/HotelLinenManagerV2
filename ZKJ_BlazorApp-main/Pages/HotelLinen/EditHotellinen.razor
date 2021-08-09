@@ -21,7 +21,7 @@
                     <label for="Amount" class="control-label">Amount</label>
                     <input for="Amount" class="form-control" @bind-value="@hotelLinen.Amount" />
 
-                    <label for="WarehauseType" class="control-label">WarehauseType</label>
+                    @*<label for="WarehauseType" class="control-label">WarehauseType</label>
                     <CustomInputSelect id="WarehauseType" @bind-Value="@hotelLinen.WarehauseId" class="form-control">
                         @if (warehauses != null)
                         {
@@ -30,7 +30,7 @@
                                 <option value="@warehause.Id">@warehause.Name</option>
                             }
                         }
-                    </CustomInputSelect>
+                    </CustomInputSelect>*@
                     <input type="hidden" @bind-value="@hotelLinen.Id" />
 
                 </div>

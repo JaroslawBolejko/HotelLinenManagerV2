@@ -41,7 +41,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
             var query = new GetWarehauseQuery()
             {
-                Id=request.id
+                Id=request.Id
             };
             var getWarehause = await this.queryExeceutor.Execute(query);
 

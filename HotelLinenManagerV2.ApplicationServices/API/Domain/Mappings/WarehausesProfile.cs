@@ -15,7 +15,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.WarehauseType, y => y.MapFrom(z => z.WarehauseType))
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.WarehauseNumber, y => y.MapFrom(z => z.WarehauseNumber))
-                .ForMember(x => x.HotelLinen, y => y.MapFrom(z => z.HotelLinens));
+                .ForMember(x => x.WarehauseDetails, y => y.MapFrom(z => z.WarehauseDetails));
 
             this.CreateMap<CreateWarehauseRequest, DataAccess.Entities.Warehause>()
                 .ForMember(x => x.WarehauseType, y => y.MapFrom(z => z.WarehauseType))
@@ -24,7 +24,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId));
 
             this.CreateMap<UpdateWarehauseByIdRequest, DataAccess.Entities.Warehause>()
-                 .ForMember(x => x.Id, y => y.MapFrom(z => z.id))
+                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                  .ForMember(x => x.WarehauseType, y => y.MapFrom(z => z.WarehauseType))
                  .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                  .ForMember(x => x.WarehauseNumber, y => y.MapFrom(z => z.WarehauseNumber))

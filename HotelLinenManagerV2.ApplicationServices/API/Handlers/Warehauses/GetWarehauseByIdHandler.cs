@@ -33,7 +33,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
             if (getWarehause == null)
             {
-                return new GetWarehauseByIdResponse
+                return new GetWarehauseByIdResponse()
                 {
                     Error = new ErrorModel(ErrorType.NotFound)
                 };

@@ -52,9 +52,9 @@ namespace HotelLinenManagerV2.Controllers
 
         [HttpPut]
         [Route("{warehauseId}")]
-        public async Task<IActionResult> UpdateWarehauseById([FromBody] UpdateWarehauseByIdRequest request, int warehauseId)
+        public async Task<IActionResult> UpdateWarehauseById([FromRoute] int warehauseId, [FromBody] UpdateWarehauseByIdRequest request)
         {
-            request.id = warehauseId;
+            request.Id = warehauseId;
             return await this.HandleRequest<UpdateWarehauseByIdRequest, UpdateWarehauseByIdResponse>(request);
         }
 

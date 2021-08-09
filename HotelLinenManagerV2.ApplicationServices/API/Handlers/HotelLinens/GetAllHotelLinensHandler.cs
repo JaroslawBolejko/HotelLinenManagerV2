@@ -27,7 +27,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
         {
             if (request.AuthenticationRole == "UserLaundry")
             {
-                return new GetAllHotelLinenResponse
+                return new GetAllHotelLinenResponse()
                 {
                     Error = new ErrorModel(ErrorType.Unauthorized)
                 };

@@ -5,7 +5,7 @@
 
 <div class="center"><h4>@warehause.Name</h4></div>
 
-<div class="center">
+@*<div class="center">
     <table class="table">
         <thead>
             <tr>
@@ -45,7 +45,7 @@
                                     <a class="btn btn-primary" href='/partialmove/@hotelLinen.Id'>Move Partial</a>
                                     <a class="btn btn-primary" href='/warehauses'>Back</a>  | Delete
                                     <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete
-                                    @*<a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                                    <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>
                                 </td>
                         </tr>
                     }
@@ -54,7 +54,7 @@
             }
         </tbody>
     </table>
-</div>
+</div>*@
 
 @code {
     [Parameter]

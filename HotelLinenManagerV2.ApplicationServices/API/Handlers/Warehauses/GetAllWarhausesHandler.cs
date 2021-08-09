@@ -34,7 +34,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
             if(getWarehauses==null)
             {
-                return new GetAllWarehausesResponse
+                return new GetAllWarehausesResponse()
                 {
                     Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
                 };

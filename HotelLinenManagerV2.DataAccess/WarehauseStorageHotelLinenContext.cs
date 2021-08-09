@@ -16,6 +16,7 @@ namespace HotelLinenManagerV2.DataAccess
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<HLBaseQuantity> HLBaseQuantities { get; set; }
         public DbSet<LaundryService> LaundryServices { get; set; }
+        public DbSet<WarehauseDetail> WarehauseDetails { get; set; }
 
 
 
