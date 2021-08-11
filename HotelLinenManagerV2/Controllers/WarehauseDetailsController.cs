@@ -4,9 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
@@ -16,7 +13,7 @@ namespace HotelLinenManagerV2.Controllers
     [Route("[controller]")]
     public class WarehauseDetailsController : ApiControllerBase
     {
-        public WarehauseDetailsController(IMediator mediator, ILogger logger) : base(mediator, logger)
+        public WarehauseDetailsController(IMediator mediator, ILogger<WarehauseDetailsController> logger) : base(mediator, logger)
         {
             logger.LogInformation("We are in Warehause details");
 
@@ -30,12 +27,12 @@ namespace HotelLinenManagerV2.Controllers
         }
 
         [HttpGet]
-        [Route("id")]
-        public async Task<IActionResult> GetDetailsById([FromRoute] int Id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetDetailsById([FromRoute] int id)
         {
             var request = new GetDetailsByIdRequest()
             {
-                Id = Id
+                Id = id
             };
             return await this.HandleRequest<GetDetailsByIdRequest, GetDetailsByIdResponse>(request);
         }
@@ -48,7 +45,7 @@ namespace HotelLinenManagerV2.Controllers
         }
 
         [HttpPut]
-        [Route("id")]
+        [Route("{id}")]
         public async Task<IActionResult> UpdateDetailsById([FromRoute] int Id, [FromBody] UpdateDetailsRequest request)
         {
             request.Id = Id;
@@ -56,7 +53,7 @@ namespace HotelLinenManagerV2.Controllers
         }
 
         [HttpDelete]
-        [Route("id")]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteDetailsById([FromRoute] int Id)
         {
             var request = new DeleteDetailsByIdRequest()

@@ -7,5 +7,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinen
     {
         public string NameWithShortDescription  { get; set; }
         public int? HotelLinenTypeId { get; set; }
+        public int? WarehauseId { get; set; }
     }
 }

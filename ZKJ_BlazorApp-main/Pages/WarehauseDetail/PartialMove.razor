@@ -1,0 +1,67 @@
+﻿@page "/partialmove/{Id}"
+@inject IWarehauseDetailsService WarehauseDetailsService
+@inject IWarehauseService WarehauseService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<h1>Choose warehause and amount to move hotel linen .</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="warehauseDetails">
+                <div class="form-group">
+                    
+                    <input type="hidden" @bind-value="@warehauseDetails.Id" />
+                    <label for="Amount" class="control-label">Amount</label>
+                    <input for="Amount" class="form-control" @bind-value="@warehauseDetails.Amount" />
+                    <label for="WarehauseId" class="control-label">Warehause</label>
+                    <CustomInputSelect id="WarehauseType" @bind-Value="@warehauseDetails.WarehauseToMove" class="form-control">
+                        @if (warehauses != null)
+                        {
+                            @foreach (var warehause in warehauses)
+                            {
+                                <option value="@warehause.Id">@warehause.Name</option>
+                            }
+                        }
+                    </CustomInputSelect>
+
+                </div>
+                <div class="form-group">
+                    <h4>@warehauseToMove</h4>
+                    <button type="button" class="btn btn-primary" @onclick="() => Move()">Save</button>
+                    <button type="button" class="btn btn-danger" @onclick="() => cancel()">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    private WarehauseDetail warehauseDetails = new WarehauseDetail();
+    private WarehauseDetail warehauseToMove;
+    private IEnumerable<Warehause> warehauses;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        warehauseDetails = await WarehauseDetailsService.GetWarehauseDetailById(int.Parse(Id));
+        warehauses = await WarehauseService.GetAll();
+    }
+
+    void cancel()
+    {
+        navigationManager.NavigateTo("/warehauses");
+    }
+    protected async Task Move()
+    {
+        warehauseToMove =(await WarehauseDetailsService.GetDetailsWithQuery(warehauseDetails.WarehauseToMove,warehauseDetails.HotelLinenId)).FirstOrDefault();
+        warehauseToMove.Amount = warehauseDetails.Amount;
+        await WarehauseDetailsService.UpdateDetails(warehauseToMove);
+        navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseToMove.WarehauseId}");
+
+
+    }
+
+}
+

@@ -16,7 +16,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
         private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public GetHotelLinenByIdHandler(IQueryExecutor queryExecutor, IMapper mapper)
+        public GetHotelLinenByIdHandler(IQueryExecutor queryExecutor, IMapper mapper) 
         {
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;

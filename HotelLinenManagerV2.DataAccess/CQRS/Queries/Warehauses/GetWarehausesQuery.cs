@@ -12,13 +12,13 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
         public int? CompanyId { get; set; }
         public override async Task<List<Warehause>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            if(this.WarehauseNumber!=null && this.CompanyId!=null)
+            if (this.WarehauseNumber != null && this.CompanyId != null)
             {
-                if (context.Warehauses.Any(x => x.WarehauseNumber == this.WarehauseNumber && x.CompanyId==this.CompanyId))
+                if (context.Warehauses.Any(x => x.WarehauseNumber == this.WarehauseNumber && x.CompanyId == this.CompanyId))
                 {
-                   
+
                     return await context.Warehauses.Where(x => x.WarehauseNumber == this.WarehauseNumber && x.CompanyId == this.CompanyId)
-                        .Include(x=>x.WarehauseDetails)
+                        .Include(x => x.WarehauseDetails)
                         .ToListAsync();
                 }
                 return null;
@@ -48,18 +48,8 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 return null;
             }
             var result = await context.Warehauses
-                .Include(x=>x.WarehauseDetails)               
+                .Include(x => x.WarehauseDetails)
                 .ToListAsync();
-
-            //var result2 =  await context.Warehauses
-            //    .Join(context.HotelLinens, warehause => warehause.Id, hotelLinen => hotelLinen.WarehauseId, (warehause, hotelLinen) => new
-            //    {
-            //        id = warehause.Id,
-            //        name = warehause.Name,
-            //        number = warehause.WarehauseNumber,
-            //        linenName = hotelLinen.NameWithShortDescription,
-            //        quantity = hotelLinen.Amount
-            //    }).ToListAsync();
 
             return result;
         }

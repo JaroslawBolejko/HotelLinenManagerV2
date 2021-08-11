@@ -28,7 +28,12 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
 
         public async Task<GetAllDetailsResponse> Handle(GetAllDetailsRequest request, CancellationToken cancellationToken)
         {
-            var query = new GetAllWarehauseDetailsQuery() { };
+            var query = new GetAllWarehauseDetailsQuery()
+            {
+               HotelLinenId = request.HotelLinenId,
+               WarehauseId = request.WarehauseId,
+               CompanyId = request.AuthenticationCompanyId
+            };
             var details = await this.queryExecutor.Execute(query);
             var mappedDetails = this.mapper.Map<List<WarehauseDetail>>(details);
 

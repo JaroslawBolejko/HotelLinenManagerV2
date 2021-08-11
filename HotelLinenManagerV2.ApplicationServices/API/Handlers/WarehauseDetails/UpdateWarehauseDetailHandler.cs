@@ -4,7 +4,6 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.WarehauseDetai
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.WarehauseDetails;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.WarehauseDetails;
-using HotelLinenManagerV2.DataAccess.CQRS.Commands.Warehauses;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails;
 using MediatR;
 using System.Threading;
@@ -35,19 +34,18 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
                 };
             }
 
-            var query = new GetAllWarehauseDetailsQuery()
+            var query = new GetWarehauseDetailQuery()
             {
-                WarehauseId = request.WarehauseId,
-                HotelLinenId = request.HotelLinenId
+               Id=request.Id
             };
 
             var details = await this.queryExecutor.Execute(query);
 
-            if (details != null)
+            if (details == null)
             {
                 return new UpdateDetailsResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict)
+                    Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
 

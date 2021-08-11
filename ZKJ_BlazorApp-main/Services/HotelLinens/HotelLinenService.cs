@@ -16,11 +16,7 @@ namespace BlazorApp.Services.HotelLinens
 
         public async Task<IEnumerable<HotelLinen>> GetAll()
         {
-            return  await this.httpService.Get<IEnumerable<HotelLinen>>("/HotelLinens");
-        }
-        public async Task<IEnumerable<HotelLinen>>GetWarehauseLinen(int warehauseId)
-        {
-            return await this.httpService.Get<IEnumerable<HotelLinen>>($"/HotelLinens?WarehauseId={warehauseId}");
+            return await this.httpService.Get<IEnumerable<HotelLinen>>("/HotelLinens");
         }
         public async Task<HotelLinen> GetById(int id)
         {
@@ -28,20 +24,20 @@ namespace BlazorApp.Services.HotelLinens
         }
         public async Task<HotelLinen> Create(HotelLinen hotelLinen)
         {
-           return await this.httpService.Post<HotelLinen>("/HotelLinens", hotelLinen);
+            return await this.httpService.Post<HotelLinen>("/HotelLinens", hotelLinen);
 
         }
         public async Task<HotelLinen> Update(HotelLinen hotelLinen)
         {
             return await this.httpService.Put<HotelLinen>($"/HotelLinens/{hotelLinen.Id}", hotelLinen);
         }
-      
+
         public async Task<int> Delete(int id)
         {
             await this.httpService.Delete($"/HotelLinens/{id}");
             return id;
         }
-        
+
 
     }
 }

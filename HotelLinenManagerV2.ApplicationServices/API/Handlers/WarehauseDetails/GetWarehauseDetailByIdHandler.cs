@@ -6,10 +6,6 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.WarehauseDeta
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +37,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
                 };
             }
 
-            var mappedDetail = this.mapper.Map<WarehauseDetail>(query);
+            var mappedDetail = this.mapper.Map<WarehauseDetail>(detail);
             return new GetDetailsByIdResponse()
             {
                 Data = mappedDetail

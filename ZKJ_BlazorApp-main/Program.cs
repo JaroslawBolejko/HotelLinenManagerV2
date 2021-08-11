@@ -5,6 +5,7 @@ using BlazorApp.Services.HotelLinens;
 using BlazorApp.Services.HttpServices;
 using BlazorApp.Services.LocalStorages;
 using BlazorApp.Services.Users;
+using BlazorApp.Services.WarehauseDetails;
 using BlazorApp.Services.Warehauses;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ namespace BlazorApp
                 .AddScoped<ICompanyService, CompanyService>()
                 .AddScoped<IWarehauseService, WarehauseService>()
                 .AddScoped<IHotelLinenService, HotelLinenService>()
+                .AddScoped<IWarehauseDetailsService, WarehauseDetailsService>()
                 .AddScoped<IHttpService, HttpService>()
                 .AddScoped<ILocalStorageService, LocalStorageService>();
 

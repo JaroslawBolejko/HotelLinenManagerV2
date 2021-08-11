@@ -15,6 +15,8 @@ namespace BlazorApp.Models
         public string Name { get; set; }
         public int? WarehauseNumber { get; set; }
         public int? CompanyId { get; set; }
+        public IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
+        
         
     }
 }

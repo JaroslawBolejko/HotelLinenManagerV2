@@ -1,0 +1,64 @@
+﻿@page "/viewWarehauseDetails/{Id}"
+@attribute [Authorize]
+@inject IWarehauseDetailsService WarehauseDetailsService
+
+<div class="center"><h4>Magazyn</h4></div>
+
+<div class="center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Color
+                </th>
+                <th scope="col">
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (loading)
+            {
+                <div class="spinner-border spinner-border-sm"></div>
+            }
+            @if (warehauseDetails != null)
+            {
+                @foreach (var detail in warehauseDetails)
+                {
+                    <tr>
+                        <th scope="row">@detail.HotelLinenName</th>
+                        <td>@detail.Color</td>
+                        <td>@detail.Amount</td>
+                        <td>
+                            <a class="btn btn-primary" href='/partialMove/@detail.Id'>Move</a>
+                            @*<a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete
+                                <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <a class="btn btn-primary" href='/warehauses'>Back</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private bool loading;
+    private IEnumerable<Models.WarehauseDetail> warehauseDetails;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        warehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
+        loading = false;
+    }
+
+}

@@ -37,7 +37,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
             {
              NameWithShortDescription = request.NameWithShortDescription,   
              HotelLinenTypeId = request.HotelLinenTypeId,
-             CompanyId = request.AuthenticationCompanyId
+             CompanyId = request.AuthenticationCompanyId,
+             WarehauseId = request.WarehauseId
             };
             var getHotelLinen = await this.queryExecutor.Execute(query);
 
