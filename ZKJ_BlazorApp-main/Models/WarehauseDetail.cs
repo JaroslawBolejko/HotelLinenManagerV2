@@ -8,6 +8,5 @@
         public ushort Amount { get; set; }
         public string HotelLinenName { get; set; }
         public string Color { get; set; }
-        public int WarehauseToMove { get; set; }
     }
 }

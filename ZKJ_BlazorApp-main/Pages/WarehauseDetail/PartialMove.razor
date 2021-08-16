@@ -3,7 +3,7 @@
 @inject IWarehauseService WarehauseService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
-<h1>Choose warehause and amount to move hotel linen .</h1>
+<h1>Select warehause and amount.</h1>
 
 <div class="container">
     <div class="row">
@@ -20,7 +20,7 @@
                         {
                             @foreach (var warehause in warehauses)
                             {
-                                <option value="@warehause.Id">@warehause.Name</option>
+                                <option value="@warehause.Id">@warehause.Name nr.@warehause.WarehauseNumber</option>
                             }
                         }
                     </CustomInputSelect>
@@ -57,14 +57,14 @@
     }
     protected async Task Move()
     {
-        //warehauseToMove is a wearehause to update new amount of linen, warehauseDetails.WarehauseToMove is a WarehauseId to move to chosen linen.
-        // warehauseToMove = (await WarehauseDetailsService.GetDetailsWithQuery(warehauseDetails.WarehauseToMove, warehauseDetails.HotelLinenId)).FirstOrDefault();
+        //warehauseToMove is a wearehause to update new amount of linen, newDet.WarehauseToMove is a WarehauseId to move to chosen linen.
         warehauseToMove = (await WarehauseDetailsService.GetDetailsWithQuery(newDet.WarehauseToMove, warehauseDetails.HotelLinenId)).FirstOrDefault();
         if (warehauseToMove != null)
         {
-            //  warehauseToMove.Amount = warehauseDetails.AmountToMove;
-            warehauseToMove.Amount = newDet.AmountToMove;
+            warehauseToMove.Amount =(ushort)(warehauseToMove.Amount+newDet.AmountToMove);
             await WarehauseDetailsService.UpdateDetails(warehauseToMove);
+            warehauseDetails.Amount =(ushort)(warehauseDetails.Amount - newDet.AmountToMove);
+            await WarehauseDetailsService.UpdateDetails(warehauseDetails);
             navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseToMove.WarehauseId}");
         }
         else
