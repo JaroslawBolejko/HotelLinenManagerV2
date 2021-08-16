@@ -15,25 +15,31 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
         {
             if (this.WarehauseId != null && this.HotelLinenId != null)
             {
-                return await context.WarehauseDetails
+                var result = await context.WarehauseDetails
                     .Where(x => x.HotelLinenId == this.HotelLinenId && x.WarehauseId == this.WarehauseId)
                     .Include(x=>x.HotelLinen)
                     .ToListAsync();
+                if (result.Count == 0) return null;
+                return result;
             }
             else if (this.WarehauseId != null && this.HotelLinenId == null)
             {
-                return await context.WarehauseDetails
+                var result = await context.WarehauseDetails
                     .Where(x => x.WarehauseId == this.WarehauseId)
                     .Include(x => x.HotelLinen)
                     .ToListAsync();
+                if (result.Count == 0) return null;
+                return result;
 
             }
             else if (this.WarehauseId == null && this.HotelLinenId != null)
             {
-                return await context.WarehauseDetails
+                var result = await context.WarehauseDetails
                     .Where(x => x.HotelLinenId == this.HotelLinenId)
                     .Include(x => x.HotelLinen)
                     .ToListAsync();
+                if (result.Count == 0) return null;
+                return result;
 
             }
             else if (this.CompanyId != null)

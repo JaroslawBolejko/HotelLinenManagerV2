@@ -13,9 +13,9 @@
                     
                     <input type="hidden" @bind-value="@warehauseDetails.Id" />
                     <label for="Amount" class="control-label">Amount</label>
-                    <input for="Amount" class="form-control" @bind-value="@warehauseDetails.Amount" />
+                    <input for="Amount" class="form-control" @bind-value="@newDet.AmountToMove" />
                     <label for="WarehauseId" class="control-label">Warehause</label>
-                    <CustomInputSelect id="WarehauseType" @bind-Value="@warehauseDetails.WarehauseToMove" class="form-control">
+                    <CustomInputSelect id="WarehauseType" @bind-Value="@newDet.WarehauseToMove" class="form-control">
                         @if (warehauses != null)
                         {
                             @foreach (var warehause in warehauses)
@@ -40,6 +40,8 @@
     public string Id { get; set; }
     private WarehauseDetail warehauseDetails = new WarehauseDetail();
     private WarehauseDetail warehauseToMove;
+    private WarehauseDetail newDetail = new WarehauseDetail();
+    private Move newDet = new Move();
     private IEnumerable<Warehause> warehauses;
 
 
@@ -55,11 +57,25 @@
     }
     protected async Task Move()
     {
-        warehauseToMove =(await WarehauseDetailsService.GetDetailsWithQuery(warehauseDetails.WarehauseToMove,warehauseDetails.HotelLinenId)).FirstOrDefault();
-        warehauseToMove.Amount = warehauseDetails.Amount;
-        await WarehauseDetailsService.UpdateDetails(warehauseToMove);
-        navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseToMove.WarehauseId}");
+        //warehauseToMove is a wearehause to update new amount of linen, warehauseDetails.WarehauseToMove is a WarehauseId to move to chosen linen.
+        // warehauseToMove = (await WarehauseDetailsService.GetDetailsWithQuery(warehauseDetails.WarehauseToMove, warehauseDetails.HotelLinenId)).FirstOrDefault();
+        warehauseToMove = (await WarehauseDetailsService.GetDetailsWithQuery(newDet.WarehauseToMove, warehauseDetails.HotelLinenId)).FirstOrDefault();
+        if (warehauseToMove != null)
+        {
+            //  warehauseToMove.Amount = warehauseDetails.AmountToMove;
+            warehauseToMove.Amount = newDet.AmountToMove;
+            await WarehauseDetailsService.UpdateDetails(warehauseToMove);
+            navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseToMove.WarehauseId}");
+        }
+        else
+        {
+            newDetail.HotelLinenId = warehauseDetails.HotelLinenId;
+            newDetail.Amount = newDet.AmountToMove;
+            newDetail.WarehauseId = newDet.WarehauseToMove;
 
+            await WarehauseDetailsService.CreateDetails(newDetail);
+            navigationManager.NavigateTo($"/viewWarehauseDetails/{newDetail.WarehauseId}");
+        }
 
     }
 

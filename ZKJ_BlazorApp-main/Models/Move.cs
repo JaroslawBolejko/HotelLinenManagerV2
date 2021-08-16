@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BlazorApp.Models
+﻿namespace BlazorApp.Models
 {
     public class Move
     {
+        public int WarehauseToMove { get; set; }
+        public ushort AmountToMove { get; set; }
+
     }
 }
