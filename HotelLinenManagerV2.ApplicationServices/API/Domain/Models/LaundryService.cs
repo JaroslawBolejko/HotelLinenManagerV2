@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HotelLinenManagerV2.DataAccess.Entities
+namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
 {
-    public class LaundryService : EntityBase
+    public class LaundryService
     {
+        public int Id { get; set; }
         public int CompanyId { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }

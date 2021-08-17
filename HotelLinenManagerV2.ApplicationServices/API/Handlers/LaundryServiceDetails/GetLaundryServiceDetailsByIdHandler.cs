@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.WarehauseDetails;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.WarehauseDetails;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundryServiceDetails;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.LaundryServiceDetails;
 using HotelLinenManagerV2.DataAccess.CQRS;
-using HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails;
+using HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
+namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDetails
 {
-    public class GetLaundryServiceDetailsByIdHandler : IRequestHandler<GetDetailsByIdRequest, GetDetailsByIdResponse>
+    public class GetLaundryServiceDetailsByIdHandler : IRequestHandler<GetLaundryDetailsByIdRequest, GetLaundryDetailsByIdResponse>
     {
         private readonly IMapper mapper;
         private readonly IQueryExecutor queryexecutor;
@@ -22,7 +22,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
             this.queryexecutor = queryexecutor;
         }
 
-        public async Task<GetDetailsByIdResponse> Handle(GetDetailsByIdRequest request, CancellationToken cancellationToken)
+        public async Task<GetLaundryDetailsByIdResponse> Handle(GetLaundryDetailsByIdRequest request, CancellationToken cancellationToken)
         {
             var query = new GetLaundryDetailsQuery()
             {
@@ -31,14 +31,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
             var detail = await this.queryexecutor.Execute(query);
             if (detail == null)
             {
-                return new GetDetailsByIdResponse()
+                return new GetLaundryDetailsByIdResponse()
                 {
                     Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
 
-            var mappedDetail = this.mapper.Map<WarehauseDetail>(detail);
-            return new GetDetailsByIdResponse()
+            var mappedDetail = this.mapper.Map<LaundryServiceDetail>(detail);
+            return new GetLaundryDetailsByIdResponse()
             {
                 Data = mappedDetail
             };

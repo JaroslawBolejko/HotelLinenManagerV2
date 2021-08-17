@@ -1,21 +1,18 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.WarehauseDetails;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.WarehauseDetails;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundryServiceDetails;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.LaundryServiceDetails;
 using HotelLinenManagerV2.DataAccess.CQRS;
-using HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails;
+using HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails;
 using MediatR;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
+namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDetails
 {
-    public class GetAllLaundryServiceDetailsHandler : IRequestHandler<GetAllDetailsRequest, GetAllDetailsResponse>
+    public class GetAllLaundryServiceDetailsHandler : IRequestHandler<GetAllLaundryDetailsRequest, GetAllLaundryDetailsResponse>
     {
         private readonly IMapper mapper;
         private readonly IQueryExecutor queryExecutor;
@@ -26,25 +23,23 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
             this.queryExecutor = queryExecutor;
         }
 
-        public async Task<GetAllDetailsResponse> Handle(GetAllDetailsRequest request, CancellationToken cancellationToken)
+        public async Task<GetAllLaundryDetailsResponse> Handle(GetAllLaundryDetailsRequest request, CancellationToken cancellationToken)
         {
             var query = new GetAllLaundryDetailsQuery()
             {
-               HotelLinenId = request.HotelLinenId,
-               WarehauseId = request.WarehauseId,
-               CompanyId = request.AuthenticationCompanyId
+               
             };
             var details = await this.queryExecutor.Execute(query);
-            var mappedDetails = this.mapper.Map<List<WarehauseDetail>>(details);
+            var mappedDetails = this.mapper.Map<List<LaundryServiceDetail>>(details);
 
             if (mappedDetails == null)
             {
-                return new GetAllDetailsResponse()
+                return new GetAllLaundryDetailsResponse()
                 {
                     Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
                 };
             }
-            return new GetAllDetailsResponse()
+            return new GetAllLaundryDetailsResponse()
             {
                 Data = mappedDetails
             };

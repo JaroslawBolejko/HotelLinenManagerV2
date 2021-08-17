@@ -28,11 +28,9 @@
     <Folder Include="CQRS\Commands\HLBaseQuantities\" />
     <Folder Include="CQRS\Commands\HotelLinenTypes\" />
     <Folder Include="CQRS\Commands\Invoices\" />
-    <Folder Include="CQRS\Commands\LaundryService\" />
     <Folder Include="CQRS\Queries\Invoices\" />
     <Folder Include="CQRS\Queries\HotelLinenTypes\" />
     <Folder Include="CQRS\Queries\HLBaseQuantities\" />
-    <Folder Include="CQRS\Queries\LaundryService\" />
   </ItemGroup>
 
 </Project>
