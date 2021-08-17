@@ -18,9 +18,6 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public string Color { get; set; }
         [Required]
         public ushort Amount { get; set; }
-        public int CompanyId { get; set; }
-        
-       
-
+      
     }
 }

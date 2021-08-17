@@ -36,9 +36,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [MaxLength(20)]
         public string TelefonNumber { get; set;}
         public List<Warehause> Warehauses { get; set; }
-        public List<Invoice> Invoices { get; set; }
+        public List<User> Users { get; set; }
         public List<LaundryService> LaundryServices { get; set; }
-
 
     }
 }

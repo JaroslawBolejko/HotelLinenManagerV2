@@ -45,6 +45,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [Column(TypeName = "varchar(5)")]
         public decimal Tax { get; set; }
+      //  public int HotelLinenId { get; set; }
+        //public HotelLinen HotelLinen { get; set; }
         public List<HotelLinen> HotelLinens { get; set; }
     }
 }
