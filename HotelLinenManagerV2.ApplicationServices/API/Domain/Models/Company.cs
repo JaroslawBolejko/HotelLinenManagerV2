@@ -16,8 +16,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string City { get; set; }
         public string Email { get; set; }
         public string TelefonNumber { get; set; }
-        //    public List<Warehause> Warehauses { get; set; }
-        //    public List<Invoice> Invoices { get; set; }
-        //    public List<LaundryService> LaundryServices { get; set; }
+      
     }
 }

@@ -12,6 +12,5 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public DateTime RecievedDate { get; set; }
         public DateTime IssuedDate { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
-        public Company Company { get; set; }
     }
 }

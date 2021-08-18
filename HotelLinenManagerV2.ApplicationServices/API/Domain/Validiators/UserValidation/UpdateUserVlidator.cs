@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users;
-using static HotelLinenManagerV2.DataAccess.Entities.User;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.UserValidation
 {
@@ -9,6 +8,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.UserVal
         public UpdateUserVlidator()
         {
             this.RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+            this.RuleFor(x => x.Id).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!")
+                .GreaterThanOrEqualTo(0).WithMessage("ID nie może być ujemne!");
             this.RuleFor(x => x.FirstName).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!")
                 .MinimumLength(2).MaximumLength(100);
             this.RuleFor(x => x.LastName).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!")

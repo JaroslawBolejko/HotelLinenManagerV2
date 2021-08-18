@@ -65,8 +65,8 @@ namespace HotelLinenManagerV2
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>
                 opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
-            // services.AddControllers();
-            services.AddControllers().AddNewtonsoftJson();
+           
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen(c =>
             {

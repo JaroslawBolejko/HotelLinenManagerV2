@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users;
-using HotelLinenManagerV2.DataAccess.Entities;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.UserValidation
 {

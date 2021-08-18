@@ -34,7 +34,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
                 };
             }
 
-            var query = new GetLaundryDetailsQuery()
+            var query = new GetWarehauseDetailQuery()
             {
                Id=request.Id
             };
@@ -50,7 +50,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             }
 
             var mappedDetails = this.mapper.Map<DataAccess.Entities.WarehauseDetail>(request);
-            var command = new UpdateLaundryDetailCommand()
+            var command = new UpdateWarehauseDetailCommand()
             {
                 Parameter = mappedDetails
             };

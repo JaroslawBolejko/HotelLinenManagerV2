@@ -22,7 +22,6 @@
     <Folder Include="API\Handlers\HLBaseQuantities\" />
     <Folder Include="API\Handlers\HotelLinenTypes\" />
     <Folder Include="API\Handlers\Invoices\" />
-    <Folder Include="API\Handlers\LaundryServices\" />
   </ItemGroup>
 
   <ItemGroup>

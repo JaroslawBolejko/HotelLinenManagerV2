@@ -11,7 +11,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
 
         public override async Task<List<LaundryService>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            return await context.LaundryServices.ToListAsync();
+            return await context.LaundryServices
+                .Include(x=>x.LaundryServiceDetails)
+                .ToListAsync();
         }
     }
 }

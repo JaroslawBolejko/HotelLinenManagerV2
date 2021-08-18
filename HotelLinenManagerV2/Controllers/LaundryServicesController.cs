@@ -15,7 +15,7 @@ namespace HotelLinenManagerV2.Controllers
     {
         public LaundryServicesController(IMediator mediator, ILogger<LaundryServicesController> logger) : base(mediator, logger)
         {
-            logger.LogInformation("We are in Warehause details");
+            logger.LogInformation("We are in LaundryService");
 
         }
 

@@ -6,6 +6,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
 {
     public class UpdateUserByIdRequest : RequestBase, IRequest<UpdateUserByIdResponse>
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public PlaceOfWork Workplace { get; set; }
