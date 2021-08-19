@@ -1,0 +1,62 @@
+﻿@page "/laundryservices"
+@attribute [Authorize]
+@inject ILaundryServiceService LaundryServiceService
+
+<h3>LaundryService</h3>
+<div class="center">
+    @if (loading)
+    {
+        <div class="spinner-border spinner-border-sm"></div>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Name
+                </th>
+                <th scope="col">
+                    Service Number
+                </th>
+                <th scope="col">
+                    Recieved Date
+                </th>
+                <th scope="col">
+                    Issued Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (laundries != null)
+            {
+                @foreach (var laundry in laundries)
+                {
+                    <tr>
+                        <th scope="row">@laundry.Name</th>
+                        <td>@laundry.Number</td>
+                        <td>@laundry.RecievedDate.ToShortDateString()</td>
+                        <td>@laundry.IssuedDate.ToShortDateString()</td>
+                        <td>
+                            <a class="btn btn-primary" href='/viewLaudryServiceDetails/@laundry.Id'>View</a>|
+                            @*<a class="btn btn-primary" href='/warhause/@warehause.Id'>Edit</a>Delete
+                            <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@code
+ {
+    bool loading;
+    private IEnumerable<Models.LaundryService> laundries;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        laundries = await LaundryServiceService.GetAllLaundry();
+        loading = false;
+    }
+
+}

@@ -17,7 +17,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
             {
                 var result = await context.WarehauseDetails
                     .Where(x => x.HotelLinenId == this.HotelLinenId && x.WarehauseId == this.WarehauseId)
-                    .Include(x=>x.HotelLinen)
+                    .Include(x => x.HotelLinen)
                     .ToListAsync();
                 if (result.Count == 0) return null;
                 return result;
@@ -42,7 +42,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                 return result;
 
             }
-            else if (this.CompanyId != null)
+            else if (this.CompanyId != null /*&& this.HotelLinenId == null && this.WarehauseId == null*/)
             {
                 var result = await context.WarehauseDetails
                     .Join(context.Warehauses, warerhauseDet => warerhauseDet.WarehauseId, warehause => warehause.Id, (warehauseDet, warehause)

@@ -6,6 +6,10 @@
 </div>
 
 <div class="center">
+    @if (loading)
+    {
+        <div class="spinner-border spinner-border-sm"></div>
+    }
     <table class="table">
         <thead>
             <tr>
@@ -24,10 +28,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (loading)
-            {
-                <div class="spinner-border spinner-border-sm"></div>
-            }
+
             @if (hotelLinens != null)
             {
 

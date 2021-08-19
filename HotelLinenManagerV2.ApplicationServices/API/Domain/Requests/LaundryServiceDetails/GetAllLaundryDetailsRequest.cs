@@ -5,5 +5,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundrySer
 {
     public class GetAllLaundryDetailsRequest : RequestBase,IRequest<GetAllLaundryDetailsResponse>
     {
+        public int? LaundryServiceId { get; set; }
     }
 }
