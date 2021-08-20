@@ -12,7 +12,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.LaundryServiceId, y => y.MapFrom(z => z.LaundryServiceId))
                 .ForMember(x => x.HotelLinenId, y => y.MapFrom(z => z.HotelLinenId))
-                .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount));
+                .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount))
+                .ForMember(x => x.HotelLinenName, y => y.MapFrom(z => z.HotelLinen.NameWithShortDescription))
+                .ForMember(x => x.Color, y => y.MapFrom(z => z.HotelLinen.Color));
+
 
             this.CreateMap<CreateLaundryDetailsRequest, DataAccess.Entities.LaundryServiceDetail>()
                 .ForMember(x => x.LaundryServiceId, y => y.MapFrom(z => z.LaundryServiceId))

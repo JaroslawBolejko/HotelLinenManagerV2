@@ -14,7 +14,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails
         {
             if (this.LaundryServiceId != null )
             {
-                return await context.LaundryServiceDetails.Where(x => x.LaundryServiceId == this.LaundryServiceId).ToListAsync();
+                return await context.LaundryServiceDetails
+                    .Where(x => x.LaundryServiceId == this.LaundryServiceId)
+                    .Include(x=>x.HotelLinen)
+                    .ToListAsync();
 
             }
             //To jest nie potrzebne

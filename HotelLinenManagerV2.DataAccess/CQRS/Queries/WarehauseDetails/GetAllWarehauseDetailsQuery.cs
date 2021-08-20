@@ -42,7 +42,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                 return result;
 
             }
-            else if (this.CompanyId != null /*&& this.HotelLinenId == null && this.WarehauseId == null*/)
+            else if (this.CompanyId != null)
             {
                 var result = await context.WarehauseDetails
                     .Join(context.Warehauses, warerhauseDet => warerhauseDet.WarehauseId, warehause => warehause.Id, (warehauseDet, warehause)

@@ -9,7 +9,9 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public string Name { get; set; }
         public int Number { get; set; }
         public DateTime RecievedDate { get; set; }
-        public DateTime IssuedDate { get; set; }
+        public DateTime? IssuedDate { get; set; }
+
+        public bool IsFinished { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
         public Company Company { get; set; }
     }

@@ -11,5 +11,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundrySer
         public int Number { get; set; }
         public DateTime RecievedDate { get; set; }
         public DateTime IssuedDate { get; set; }
+        public bool IsFinished { get; set; }
     }
 }

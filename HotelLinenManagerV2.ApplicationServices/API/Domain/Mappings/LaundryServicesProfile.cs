@@ -15,14 +15,17 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                .ForMember(x => x.RecievedDate, y => y.MapFrom(z => z.RecievedDate))
                .ForMember(x => x.IssuedDate, y => y.MapFrom(z => z.IssuedDate))
-               .ForMember(x => x.LaundryServiceDetails, y => y.MapFrom(z => z.LaundryServiceDetails));
+               .ForMember(x => x.IssuedDate, y => y.MapFrom(z => z.IssuedDate))
+               .ForMember(x => x.IsFinished, y => y.MapFrom(z => z.IsFinished));
 
             this.CreateMap<CreateLaundryRequest, DataAccess.Entities.LaundryService>()
                .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number))
                .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                .ForMember(x => x.RecievedDate, y => y.MapFrom(z => z.RecievedDate))
-               .ForMember(x => x.IssuedDate, y => y.MapFrom(z => z.IssuedDate));
+               .ForMember(x => x.IssuedDate, y => y.MapFrom(z => z.IssuedDate))
+               .ForMember(x => x.IsFinished, y => y.MapFrom(z => z.IsFinished));
+
 
             this.CreateMap<UpdateLaundryRequest, DataAccess.Entities.LaundryService>()
                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
@@ -30,7 +33,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number))
                .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                .ForMember(x => x.RecievedDate, y => y.MapFrom(z => z.RecievedDate))
-               .ForMember(x => x.IssuedDate, y => y.MapFrom(z => z.IssuedDate));
+               .ForMember(x => x.IssuedDate, y => y.MapFrom(z => z.IssuedDate))
+               .ForMember(x => x.IsFinished, y => y.MapFrom(z => z.IsFinished));
+
 
             this.CreateMap<DeleteLaundryByIdRequest, DataAccess.Entities.LaundryService>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));

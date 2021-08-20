@@ -23,6 +23,9 @@
                 <th scope="col">
                     Issued Date
                 </th>
+                <th scope="col">
+                    IsFinished
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -34,11 +37,21 @@
                         <th scope="row">@laundry.Name</th>
                         <td>@laundry.Number</td>
                         <td>@laundry.RecievedDate.ToShortDateString()</td>
-                        <td>@laundry.IssuedDate.ToShortDateString()</td>
+                        @if (laundry.IssuedDate == default)
+                        {
+                            <td>Laundry in progress...</td>
+                        }
+                        else
+                        {
+                            <td>@laundry.IssuedDate.ToShortDateString()</td>
+                        }
+
+                        <td>@laundry.IsFinished</td>
                         <td>
-                            <a class="btn btn-primary" href='/viewLaudryServiceDetails/@laundry.Id'>View</a>|
-                            @*<a class="btn btn-primary" href='/warhause/@warehause.Id'>Edit</a>Delete
-                            <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                            <a class="btn btn-primary" href='/viewLaudryServiceDetails/@laundry.Id'>View</a>
+                            @*<button type="button" class="btn btn-primary" @onclick="() => Move()">Save</button>*@
+                         @*<a class="btn btn-primary" href='/warhause/@warehause.Id'>Edit</a>Delete
+                           <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
                         </td>
                     </tr>
                 }
@@ -58,5 +71,9 @@
         laundries = await LaundryServiceService.GetAllLaundry();
         loading = false;
     }
+    //protected async Task Move()
+    //    {
+
+    //    }
 
 }
