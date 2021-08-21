@@ -8,18 +8,22 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
 {
     public class GetAllLaundryQuery : QueryBase<List<LaundryService>>
     {
-        public int? LaundryServiceId { get; set; }
+        public int? Number { get; set; }
         public int? CompanyId { get; set; }
         public override async Task<List<LaundryService>> Execute(WarehauseStorageHotelLinenContext context)
         {
-           
-            if (this.CompanyId != null)
+            if (this.Number != null && this.CompanyId!=null)
+            {
+                return await context.LaundryServices
+                    .Where(x => x.Number == this.Number).ToListAsync();
+            }
+            else if (this.CompanyId != null)
             {
                 return await context.LaundryServices
                     .Where(x => x.CompanyId == this.CompanyId).ToListAsync();
             }
             else return null;
-            
+
         }
     }
 }

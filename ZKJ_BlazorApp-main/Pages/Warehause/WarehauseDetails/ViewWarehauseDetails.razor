@@ -3,6 +3,9 @@
 @inject IWarehauseDetailsService WarehauseDetailsService
 @inject IWarehauseService WarehauseService
 @inject ILaundryServiceService LaundryServiceService
+@inject ILaundryServiceDetailsService LaundryServiceDetailsService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
 
 @if (loading)
 {
@@ -39,6 +42,7 @@
                         <th scope="row">@detail.HotelLinenName</th>
                         <td>@detail.Color</td>
                         <td>@detail.Amount</td>
+
                         @if (warehause.WarehauseType.ToString() != "DirtyLinenWarehause")
                         {
                             <td>
@@ -54,16 +58,13 @@
         </tbody>
     </table>
     <div class="form-group">
-        <a class="btn btn-primary" href='/warehauses'>Back</a>
         @if (warehause != null && warehause.WarehauseType.ToString() == "CleanLinenWarehause")
         {
             <a class="btn btn-primary" href='/addLinenToWarehause/@Id'>Add Linen To Warehause</a>
-        }
-        @*@if (warehause.WarehauseType.ToString() != "DirtyLinenWarehause")
-            {
-                <a class="btn btn-danger" @onclick="() => MoveToLoundry()">Move To Loundry</a>
-            }*@
 
+        }
+        <a class="btn btn-primary" @onclick="() => MoveToLoundry()">Move To Loundry</a>
+        <a class="btn btn-primary" href='/warehauses'>Back</a>
     </div>
 </div>
 
@@ -73,23 +74,58 @@
     private bool loading;
     private IEnumerable<Models.WarehauseDetail> warehauseDetails;
     private Warehause warehause;
-  
+    private LaundryService lastLaundry;
+    private LaundryService laundry;
+    private LaundryServiceDetail laundryServiceDetail;
+    private LaundryService createdLaundryService;
+    int numberToFilter;
+
+
     protected override async Task OnInitializedAsync()
     {
         loading = true;
         warehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
         warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        lastLaundry = (await LaundryServiceService.GetAllLaundry()).OrderBy(x => x.Number).Last();
         loading = false;
     }
-    //protected async Task MoveToLoundry()
-    //{
-    //    laundry = new LaundryService
-    //    {
-    //        Name = "Usługa Prania",
-    //        Number = 1
-    //    };
-    //}
-    // await LaundryServiceService.CreateLaundry(laundry);
-    // }
+    protected async Task MoveToLoundry()
+    {
+        laundry = new LaundryService
+        {
+            Name = "Usługa Prania",
+            Number = lastLaundry.Number+1,
+            CompanyId = lastLaundry.CompanyId,
+            IsFinished = false,
+            RecievedDate = DateTime.Now,
+            IssuedDate = default
+
+        };
+        numberToFilter = laundry.Number;
+
+        await LaundryServiceService.CreateLaundry(laundry);
+        createdLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
+
+
+        foreach (var detail in warehauseDetails)
+        {
+            laundryServiceDetail = new LaundryServiceDetail
+            {
+                LaundryServiceId = createdLaundryService.Id,
+                HotelLinenId = detail.HotelLinenId,
+                Amount = detail.Amount
+
+            };
+
+            await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
+        }
+
+        navigationManager.NavigateTo($"/laundryservices");
+
+    }
 
 }
+
+
+
+

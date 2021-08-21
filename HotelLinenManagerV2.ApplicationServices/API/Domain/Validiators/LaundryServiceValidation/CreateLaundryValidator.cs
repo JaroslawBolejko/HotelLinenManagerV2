@@ -17,8 +17,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Laundry
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x=>x.RecievedDate)
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
-            this.RuleFor(x=>x.IssuedDate)
-                .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+     
         }
     }
 }

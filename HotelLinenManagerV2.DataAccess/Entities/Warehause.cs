@@ -24,6 +24,5 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public string Name { get; set; }
         public int? WarehauseNumber { get; set; }
 
-
     }
 }

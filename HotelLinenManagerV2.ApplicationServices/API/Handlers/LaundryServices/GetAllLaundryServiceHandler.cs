@@ -17,7 +17,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
         private readonly IMapper mapper;
         private readonly IQueryExecutor queryExecutor;
 
-        public GetAllLaundryServiceHandler(IMapper mapper,IQueryExecutor queryExecutor)
+        public GetAllLaundryServiceHandler(IMapper mapper, IQueryExecutor queryExecutor)
         {
             this.mapper = mapper;
             this.queryExecutor = queryExecutor;
@@ -27,7 +27,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
         {
             var query = new GetAllLaundryQuery()
             {
-             CompanyId=request.AuthenticationCompanyId
+                Number = request.Number,
+                CompanyId = request.AuthenticationCompanyId
             };
             var details = await this.queryExecutor.Execute(query);
             var mappedDetails = this.mapper.Map<List<LaundryService>>(details);
@@ -43,7 +44,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
             {
                 Data = mappedDetails
             };
-            
+
 
         }
     }
