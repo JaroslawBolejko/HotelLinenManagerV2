@@ -55,7 +55,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             var deletedCompany = await this.commandExecutor.Execute(command);
             var response = new DeleteCompanyByIdResponse()
             {
-                Data = this.mapper.Map<API.Domain.Models.Company>(deletedCompany)
+                Data = deletedCompany
             };
             return response;
         }

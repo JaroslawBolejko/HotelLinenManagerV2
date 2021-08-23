@@ -7,7 +7,6 @@ using HotelLinenManagerV2.DataAccess.CQRS.Commands.HotelLinens;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens;
 using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,7 +56,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
             var deletedHotelLinen = await this.commandExecutor.Execute(command);
             var response = new DeleteHotelLinenByIdResponse()
             {
-                Data = this.mapper.Map<API.Domain.Models.HotelLinen>(deletedHotelLinen)
+                Data = deletedHotelLinen
             };
             return response;
         }

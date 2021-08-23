@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundryServiceDetails;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundryServices;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.LaundryServiceDetails;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.LaundryServices;
 using HotelLinenManagerV2.DataAccess.CQRS;
-using HotelLinenManagerV2.DataAccess.CQRS.Commands.LaundryServiceDetails;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.LaundryServices;
-using HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices;
 using MediatR;
 using System.Threading;
@@ -37,11 +33,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
 
             var details = await this.queryExecutor.Execute(query);
 
-            if (details != null)
+            if (details == null)
             {
                 return new DeleteLaundryResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict)
+                    Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
 
@@ -54,7 +50,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
             var detailsFromDB = await this.commandExecutor.Execute(command);
             return new DeleteLaundryResponse()
             {
-                Data = this.mapper.Map<Domain.Models.LaundryService>(detailsFromDB)
+                Data = detailsFromDB
             };
         }
     }

@@ -8,7 +8,7 @@ namespace BlazorApp.Services.HotelLinens
     {
         Task<IEnumerable<HotelLinen>> GetAll();
         Task<HotelLinen> Create(HotelLinen hotelLinen);
-        Task<int> Delete(int Id);
+        Task<bool> Delete(int Id);
         Task<HotelLinen> Update(HotelLinen hotelLinen);
         Task<HotelLinen> GetById(int Id);
     }

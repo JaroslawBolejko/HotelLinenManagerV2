@@ -35,11 +35,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
 
             var details = await this.queryExecutor.Execute(query);
 
-            if (details != null)
+            if (details == null)
             {
                 return new DeleteLaundryDetailsByIdResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict)
+                    Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
 
@@ -52,7 +52,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
             var detailsFromDB = await this.commandExecutor.Execute(command);
             return new DeleteLaundryDetailsByIdResponse()
             {
-                Data = this.mapper.Map<Domain.Models.LaundryServiceDetail>(detailsFromDB)
+                Data = detailsFromDB
             };
         }
     }

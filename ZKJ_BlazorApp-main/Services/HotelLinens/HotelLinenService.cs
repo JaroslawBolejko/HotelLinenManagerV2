@@ -32,10 +32,10 @@ namespace BlazorApp.Services.HotelLinens
             return await this.httpService.Put<HotelLinen>($"/HotelLinens/{hotelLinen.Id}", hotelLinen);
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             await this.httpService.Delete($"/HotelLinens/{id}");
-            return id;
+            return true;
         }
 
 

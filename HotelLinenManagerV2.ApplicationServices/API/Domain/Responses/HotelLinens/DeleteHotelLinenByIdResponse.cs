@@ -2,7 +2,7 @@
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens
 {
-    public class DeleteHotelLinenByIdResponse : ResponseBase<HotelLinen>
+    public class DeleteHotelLinenByIdResponse : ResponseBase<bool>
     {
     }
 }

@@ -12,6 +12,6 @@ namespace BlazorApp.Services.WarehauseDetails
         Task<IEnumerable<WarehauseDetail>> GetDetailsWithQuery(int warehauseId, int hotelLinenId);
         Task<int> CreateDetails(WarehauseDetail warehauseDetail);
         Task<int> UpdateDetails(WarehauseDetail warehausedetail);
-        Task<int> Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

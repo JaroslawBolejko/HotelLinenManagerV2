@@ -10,7 +10,7 @@ namespace BlazorApp.Services.Warehauses
         Task<Warehause> GetWarehauseById(int id);
         Task<int> CreateWarehause(Warehause warehause);
         Task<int> Update(int id, Warehause warehause);
-        Task<int> Delete(int id);
+        Task<bool> Delete(int id);
 
     }
 }

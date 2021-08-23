@@ -20,10 +20,10 @@ namespace BlazorApp.Services.LaundryServices
             return result.Id;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             await this.httpService.Delete($"/laundryServices/{id}");
-            return id;
+            return true;
         }
 
         public async Task<IEnumerable<LaundryService>> GetAllLaundry()

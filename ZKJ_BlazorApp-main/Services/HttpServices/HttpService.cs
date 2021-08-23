@@ -52,7 +52,7 @@ namespace BlazorApp.Services.HttpServices
         public Task Delete(string uri)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, uri);
-            return SendRequest<int>(request);
+            return SendRequest<bool>(request);
         }
 
         private async Task<T> SendRequest<T>(HttpRequestMessage request)

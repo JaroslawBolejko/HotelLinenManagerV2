@@ -55,7 +55,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             var deletedWarhause = await this.commandExecutor.Execute(command);
             var resopnse = new DeleteWarehauseByIdResponse()
             {
-                Data = this.mapper.Map<Domain.Models.Warehause>(deletedWarhause)
+                Data = deletedWarhause
             };
             return resopnse;
 

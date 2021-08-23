@@ -3,15 +3,14 @@ using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.DataAccess.CQRS.Commands.Warehauses
 {
-    public class DeleteWarhauseCommand : CommandBase<Warehause, Warehause>
+    public class DeleteWarhauseCommand : CommandBase<Warehause, bool>
     {
-        public override async Task<Warehause> Execute(WarehauseStorageHotelLinenContext context)
+        public override async Task<bool> Execute(WarehauseStorageHotelLinenContext context)
         {
             context.ChangeTracker.Clear();
             context.Warehauses.Remove(this.Parameter);
             await context.SaveChangesAsync();
-            return this.Parameter;
-
+            return true;
 
         }
     }

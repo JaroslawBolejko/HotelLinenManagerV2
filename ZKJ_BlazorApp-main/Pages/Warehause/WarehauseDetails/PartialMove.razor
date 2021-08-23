@@ -66,7 +66,7 @@
             await WarehauseDetailsService.UpdateDetails(warehauseToMove);
             warehauseDetails.Amount =(ushort)(warehauseDetails.Amount - newDet.AmountToMove);
             await WarehauseDetailsService.UpdateDetails(warehauseDetails);
-            navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseToMove.WarehauseId}");
+            navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseDetails.WarehauseId}");
         }
         else
         {
@@ -75,7 +75,11 @@
             newDetail.WarehauseId = newDet.WarehauseToMove;
 
             await WarehauseDetailsService.CreateDetails(newDetail);
-            navigationManager.NavigateTo($"/viewWarehauseDetails/{newDetail.WarehauseId}");
+
+            warehauseDetails.Amount = (ushort)(warehauseDetails.Amount - newDet.AmountToMove);
+            await WarehauseDetailsService.UpdateDetails(warehauseDetails);
+
+            navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseDetails.WarehauseId}");
         }
 
     }

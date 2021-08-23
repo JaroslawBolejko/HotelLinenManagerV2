@@ -11,6 +11,6 @@ namespace BlazorApp.Services.LaundryServices
         Task<LaundryService> GetLaundryById(int id);
         Task<int> CreateLaundry(LaundryService laundry);
         Task<int> UpdateLaundry(LaundryService laundry);
-        Task<int> Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

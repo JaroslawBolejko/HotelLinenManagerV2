@@ -3,7 +3,7 @@
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.LaundryServiceDetails
 
 {
-    public class DeleteLaundryDetailsByIdResponse : ResponseBase<LaundryServiceDetail>
+    public class DeleteLaundryDetailsByIdResponse : ResponseBase<bool>
     {
     }
 }

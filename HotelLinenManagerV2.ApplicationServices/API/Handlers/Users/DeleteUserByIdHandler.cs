@@ -7,10 +7,6 @@ using HotelLinenManagerV2.DataAccess.CQRS.Commands.Users;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Users;
 using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -54,7 +50,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
 
             return new DeleteUserByIdResponse()
             {
-                Data = this.mapper.Map<API.Domain.Models.User>(userFromDB)
+                Data = userFromDB
             };
         }
     }

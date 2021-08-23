@@ -26,13 +26,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
         public async Task<DeleteDetailsByIdResponse> Handle(DeleteDetailsByIdRequest request, CancellationToken cancellationToken)
         {
-            if (request.AuthenticationRole == "UserLaundry")
-            {
-                return new DeleteDetailsByIdResponse()
-                {
-                    Error = new ErrorModel(ErrorType.Unauthorized)
-                };
-            }
+            //if (request.AuthenticationRole == "UserLaundry")
+            //{
+            //    return new DeleteDetailsByIdResponse()
+            //    {
+            //        Error = new ErrorModel(ErrorType.Unauthorized)
+            //    };
+            //}
 
             var query = new GetWarehauseDetailQuery()
             {
@@ -41,11 +41,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
             var details = await this.queryExecutor.Execute(query);
 
-            if (details != null)
+            if (details == null)
             {
                 return new DeleteDetailsByIdResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict)
+                    Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
 
@@ -58,7 +58,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             var detailsFromDB = await this.commandExecutor.Execute(command);
             return new DeleteDetailsByIdResponse()
             {
-                Data = this.mapper.Map<Domain.Models.WarehauseDetail>(detailsFromDB)
+                //Data = this.mapper.Map<Domain.Models.WarehauseDetail>(detailsFromDB)
+                Data = detailsFromDB
             };
         }
     }

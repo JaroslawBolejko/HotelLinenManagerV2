@@ -46,7 +46,7 @@ namespace HotelLinenManagerV2.Controllers
         }
 
         [HttpDelete]
-        [Route("id")]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             var request = new DeleteUserByIdRequest()

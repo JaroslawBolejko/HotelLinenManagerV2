@@ -36,10 +36,10 @@ namespace BlazorApp.Services.Warehauses
             await this.httpService.Put<Warehause>($"/Warehauses/{id}", warehause);
             return id;
         }
-        public async Task<int> Delete(int id) 
+        public async Task<bool> Delete(int id) 
         {
             await this.httpService.Delete($"/Warehauses/{id}");
-            return id;
+            return true;
         }
     }
 }
