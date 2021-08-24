@@ -1,5 +1,6 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,9 +11,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
     {
         public int? WarehauseNumber { get; set; }
         public int? CompanyId { get; set; }
+        public byte? WarehauseType { get; set; }
         public override async Task<List<Warehause>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            if (this.WarehauseNumber != null && this.CompanyId != null)
+            if (this.WarehauseNumber != null && this.CompanyId != null && this.WarehauseType == null)
             {
                 if (context.Warehauses.Any(x => x.WarehauseNumber == this.WarehauseNumber && x.CompanyId == this.CompanyId))
                 {
@@ -24,7 +26,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 return null;
             }
 
-            if (this.WarehauseNumber != null && this.CompanyId == null)
+            if (this.WarehauseNumber != null && this.CompanyId == null && this.WarehauseType == null)
             {
                 if (context.Warehauses.Any(x => x.WarehauseNumber == this.WarehauseNumber))
                 {
@@ -36,7 +38,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
                 return null;
             }
 
-            if (this.WarehauseNumber == null && this.CompanyId != null)
+            if (this.WarehauseNumber == null && this.CompanyId != null && this.WarehauseType == null)
             {
                 if (context.Warehauses.Any(x => x.CompanyId == this.CompanyId))
                 {
@@ -50,6 +52,12 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
             var result = await context.Warehauses
                 .Include(x => x.WarehauseDetails)
                 .ToListAsync();
+
+            if (this.WarehauseType != null && this.CompanyId != null && this.WarehauseNumber == null)
+            {
+                //Enum.GetValues(typeof(WarehauseType));
+                return await context.Warehauses.Where(x => (byte)x.WarehauseType == this.WarehauseType && x.CompanyId == this.CompanyId).ToListAsync();
+            }
 
             return result;
         }

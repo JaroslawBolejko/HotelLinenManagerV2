@@ -1,6 +1,11 @@
 ﻿@page "/viewLaudryServiceDetails/{Id}"
 @attribute [Authorize]
 @inject ILaundryServiceDetailsService LaundryServiceDetailsService
+@inject IWarehauseDetailsService WarehauseDetailsService
+@inject IWarehauseService WarehauseService
+@inject ILaundryServiceService LaundryServiceService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
 
 <div class="center">
     @if (loading)
@@ -32,8 +37,7 @@
                         <td>@detail.Color</td>
                         <td>@detail.Amount</td>
                         <td>
-                            @*<a class="btn btn-primary" href='/partialMove/@detail.Id'>Move</a>
-                            <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete
+                            @* <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete
                                 <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
                         </td>
                     </tr>
@@ -43,6 +47,7 @@
     </table>
     <div class="form-group">
         <a class="btn btn-primary" href='/laundryservices'>Back</a>
+        <a class="btn btn-primary" @onclick="()=>CloseTheService()">Close the service</a>
     </div>
 </div>
 
@@ -51,13 +56,85 @@
     [Parameter]
     public string Id { get; set; }
     private IEnumerable<LaundryServiceDetail> laundryDetails;
-    bool loading;
+    private bool loading;
+    private WarehauseDetail cleanLaundry;
+    private Warehause warehause;
+    private LaundryService laundryService;
+    //private ushort cleanLinenAmount;
+    private ushort warehauseItemAmount;
+    private int warehauseDetailID;
+
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
         laundryDetails = await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id));
+        laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         loading = false;
     }
 
+    protected async Task CloseTheService()
+    {
+        warehause = (await WarehauseService.GetWarehausesByType(0)).First();
+        foreach (var item in laundryDetails)
+        {
+            cleanLaundry = new WarehauseDetail
+            {
+                HotelLinenId = item.HotelLinenId,
+                WarehauseId = warehause.Id,
+                Amount = item.Amount
+            };
+            if (warehause.WarehauseDetails.Any(x => x.HotelLinenId == cleanLaundry.HotelLinenId))
+            {
+
+                warehauseItemAmount = warehause.WarehauseDetails
+                .Where(x => x.HotelLinenId == cleanLaundry.HotelLinenId)
+                .Select(x => x.Amount).First();
+
+                warehauseDetailID = warehause.WarehauseDetails
+                .Where(x => x.HotelLinenId == cleanLaundry.HotelLinenId)
+                .Select(x => x.Id).First();
+
+                cleanLaundry.Id = warehauseDetailID;
+                cleanLaundry.Amount = (ushort)(warehauseItemAmount + cleanLaundry.Amount);
+
+                await WarehauseDetailsService.UpdateDetails(cleanLaundry);
+            }
+            else
+            {
+                await WarehauseDetailsService.CreateDetails(cleanLaundry);
+
+            }
+        }
+        laundryService.IsFinished = true;
+        await LaundryServiceService.UpdateLaundry(laundryService);
+        navigationManager.NavigateTo("/warehauses");
+
+        // await WarehauseDetailsService.GetDetailsWithQuery(warehause.Id,)
+        //numberToFilter = laundry.Number;
+
+        //await LaundryServiceService.CreateLaundry(laundry);
+        //createdLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
+
+
+        //foreach (var detail in warehauseDetails)
+        //{
+        //    laundryServiceDetail = new LaundryServiceDetail
+        //    {
+        //        LaundryServiceId = createdLaundryService.Id,
+        //        HotelLinenId = detail.HotelLinenId,
+        //        Amount = detail.Amount
+
+        //    };
+
+        //    await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
+        //}
+        //foreach (var detail in warehauseDetails)
+        //{
+        //    await WarehauseDetailsService.Delete(detail.Id);
+        //}
+
+        //navigationManager.NavigateTo($"/laundryservices");
+
     }
+}

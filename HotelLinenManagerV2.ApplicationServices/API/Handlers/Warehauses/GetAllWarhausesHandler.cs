@@ -28,7 +28,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             var query = new GetWarehausesQuery() 
             {
                 WarehauseNumber=request.WarehauseNumber,
-                CompanyId = request.AuthenticationCompanyId
+                CompanyId = request.AuthenticationCompanyId,
+                WarehauseType=  request.WarehauseType
             };
             var getWarehauses = await this.queryExecutor.Execute(query);
 

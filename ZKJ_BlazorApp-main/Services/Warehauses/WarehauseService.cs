@@ -9,14 +9,14 @@ namespace BlazorApp.Services.Warehauses
     {
         private readonly IHttpService httpService;
 
-        public WarehauseService(IHttpService httpService) 
+        public WarehauseService(IHttpService httpService)
         {
             this.httpService = httpService;
         }
 
         public async Task<int> CreateWarehause(Warehause warehause)
         {
-            var result =  await this.httpService.Post<Warehause>("/Warehauses", warehause);
+            var result = await this.httpService.Post<Warehause>("/Warehauses", warehause);
             return result.Id;
 
         }
@@ -25,7 +25,10 @@ namespace BlazorApp.Services.Warehauses
         {
             return await this.httpService.Get<IEnumerable<Warehause>>("/Warehauses");
         }
-
+        public async Task<IEnumerable<Warehause>> GetWarehausesByType(int type)
+        {
+            return await this.httpService.Get<IEnumerable<Warehause>>($"/Warehauses?WarehauseType={type}");
+        }
         public async Task<Warehause> GetWarehauseById(int id)
         {
             return await this.httpService.Get<Warehause>($"/Warehauses/{id}");
@@ -36,7 +39,7 @@ namespace BlazorApp.Services.Warehauses
             await this.httpService.Put<Warehause>($"/Warehauses/{id}", warehause);
             return id;
         }
-        public async Task<bool> Delete(int id) 
+        public async Task<bool> Delete(int id)
         {
             await this.httpService.Delete($"/Warehauses/{id}");
             return true;

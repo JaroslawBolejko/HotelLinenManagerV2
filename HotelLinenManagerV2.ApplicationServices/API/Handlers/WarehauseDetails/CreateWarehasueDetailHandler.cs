@@ -26,6 +26,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
         public async Task<CreateDetailsResponse> Handle(CreateDetailsRequest request, CancellationToken cancellationToken)
         {
+           
             if (request.AuthenticationRole == "UserLaundry")
             {
                 return new CreateDetailsResponse()
