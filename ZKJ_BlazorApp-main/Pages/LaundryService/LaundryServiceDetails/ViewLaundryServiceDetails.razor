@@ -47,7 +47,10 @@
     </table>
     <div class="form-group">
         <a class="btn btn-primary" href='/laundryservices'>Back</a>
-        <a class="btn btn-primary" @onclick="()=>CloseTheService()">Close the service</a>
+        @if (laundryService!=null && laundryService.IsFinished != true)
+        {
+            <a class="btn btn-primary" @onclick="()=>CloseTheService()">Close the service</a>
+        }
     </div>
 </div>
 
@@ -60,7 +63,6 @@
     private WarehauseDetail cleanLaundry;
     private Warehause warehause;
     private LaundryService laundryService;
-    //private ushort cleanLinenAmount;
     private ushort warehauseItemAmount;
     private int warehauseDetailID;
 
@@ -107,34 +109,9 @@
             }
         }
         laundryService.IsFinished = true;
+        laundryService.IssuedDate = DateTime.Now;
         await LaundryServiceService.UpdateLaundry(laundryService);
         navigationManager.NavigateTo("/warehauses");
-
-        // await WarehauseDetailsService.GetDetailsWithQuery(warehause.Id,)
-        //numberToFilter = laundry.Number;
-
-        //await LaundryServiceService.CreateLaundry(laundry);
-        //createdLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
-
-
-        //foreach (var detail in warehauseDetails)
-        //{
-        //    laundryServiceDetail = new LaundryServiceDetail
-        //    {
-        //        LaundryServiceId = createdLaundryService.Id,
-        //        HotelLinenId = detail.HotelLinenId,
-        //        Amount = detail.Amount
-
-        //    };
-
-        //    await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
-        //}
-        //foreach (var detail in warehauseDetails)
-        //{
-        //    await WarehauseDetailsService.Delete(detail.Id);
-        //}
-
-        //navigationManager.NavigateTo($"/laundryservices");
 
     }
 }
