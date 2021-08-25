@@ -34,6 +34,10 @@ namespace BlazorApp.Services.LaundryServices
         {
             return await this.httpService.Get<IEnumerable<LaundryService>>($"/laundryServices?Number={number}");
         }
+        public async Task<IEnumerable<LaundryService>> GetAllLaundryPageing(int pageNumber, int pageSize)
+        {
+            return await this.httpService.Get<IEnumerable<LaundryService>>($"/laundryServices?PageNumber={pageNumber}&PageSize={pageSize}");
+        }
         public async Task<LaundryService> GetLaundryById(int id)
         {
             return await this.httpService.Get<LaundryService>($"/laundryServices/{id}");

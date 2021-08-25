@@ -6,5 +6,22 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundrySer
     public class GetAllLaundryRequest : RequestBase,IRequest<GetAllLaundryResponse>
     {
         public int? Number { get; set; }
+
+        const int maxPageSize = 10;
+       public int PageNumber { get; set; } = 1;
+        private int pageSize = 5;
+        public int PageSize
+        {
+            get
+            {
+                return this.pageSize;
+            }
+            set
+            {
+                this.pageSize = (value > maxPageSize) ? maxPageSize : value;
+            }
+        }
+
+
     }
 }

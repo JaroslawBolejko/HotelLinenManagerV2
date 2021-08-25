@@ -1,4 +1,5 @@
 ﻿@page "/laundryservices"
+@page "/laundryservices/{PageNumber:int}"
 @attribute [Authorize]
 @inject ILaundryServiceService LaundryServiceService
 
@@ -50,8 +51,8 @@
                         <td>
                             <a class="btn btn-primary" href='/viewLaudryServiceDetails/@laundry.Id'>View</a>
                             @*<button type="button" class="btn btn-primary" @onclick="() => Move()">Save</button>*@
-                         @*<a class="btn btn-primary" href='/warhause/@warehause.Id'>Edit</a>Delete
-                           <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
+                            @*<a class="btn btn-primary" href='/warhause/@warehause.Id'>Edit</a>Delete
+                                <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
                         </td>
                     </tr>
                 }
@@ -59,21 +60,31 @@
         </tbody>
     </table>
 </div>
+<div>
+    @for (int i = 1; i <= pages; i++)
+    {
+        <span><a href="laundryservices/@i"> @i </a>|</span>
+    }
+</div>
 
 @code
  {
+    [Parameter]
+    public int PageNumber { get; set; }
     bool loading;
     private IEnumerable<Models.LaundryService> laundries;
+    private int pages;
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
-        laundries = await LaundryServiceService.GetAllLaundry();
+        pages = (await LaundryServiceService.GetAllLaundry()).Count();
         loading = false;
     }
-    //protected async Task Move()
-    //    {
-
-    //    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (PageNumber < 1) PageNumber = 1;
+        laundries = await LaundryServiceService.GetAllLaundryPageing(PageNumber,5);
+    }
 
 }
