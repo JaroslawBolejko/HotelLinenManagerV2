@@ -34,7 +34,6 @@ namespace HotelLinenManagerV2.Controllers
                          .Select(x => new { property = x.Key, errors = x.Value.Errors }));
 
             }
-            var username = this.User.FindFirstValue(ClaimTypes.Name);
             if (User.Claims.FirstOrDefault() != null)
             {
                 (request as RequestBase).AuthenticationName = this.User.FindFirstValue(ClaimTypes.Name);
