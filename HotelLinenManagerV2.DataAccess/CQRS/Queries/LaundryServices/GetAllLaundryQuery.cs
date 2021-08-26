@@ -10,8 +10,8 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
     {
         public int? Number { get; set; }
         public int? CompanyId { get; set; }
-        public int PageSize { get; set; }
-        public int PageNumber { get; set; }
+        //public int PageSize { get; set; }
+        //public int PageNumber { get; set; }
         public override async Task<List<LaundryService>> Execute(WarehauseStorageHotelLinenContext context)
         {
             if (this.Number != null && this.CompanyId!=null)
@@ -23,9 +23,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
             {
                 return await context.LaundryServices
                     .Where(x => x.CompanyId == this.CompanyId)
-                    .OrderByDescending(x=>x.RecievedDate)
-                    .Skip((PageNumber -1)*PageSize)
-                    .Take(PageSize)
+                    //.OrderByDescending(x=>x.RecievedDate)
+                    //.Skip((PageNumber -1)*PageSize)
+                    //.Take(PageSize)
                     .ToListAsync();
             }
             else return null;

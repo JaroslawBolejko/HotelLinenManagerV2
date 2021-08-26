@@ -11,6 +11,7 @@ using BlazorApp.Services.WarehauseDetails;
 using BlazorApp.Services.Warehauses;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Syncfusion.Blazor;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,9 +22,11 @@ namespace BlazorApp
     {
         public static async Task Main(string[] args)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDkzMzM2QDMxMzkyZTMyMmUzME8yVVQwVDh3MkJiaHRyRlA3Wjc2TElpRWhaZ0xaQk1aWVRXTHNQOHNjaHc9");
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
 
+            builder.RootComponents.Add<App>("app");
+            builder.Services.AddSyncfusionBlazor();
             builder.Services
                 .AddScoped<IAuthenticationService, AuthenticationService>()
                 .AddScoped<IUserService, UserService>()
@@ -37,7 +40,8 @@ namespace BlazorApp
                 .AddScoped<ILocalStorageService, LocalStorageService>();
 
             // configure http client
-            builder.Services.AddScoped(x => {
+            builder.Services.AddScoped(x =>
+            {
                 var apiUrl = new Uri(builder.Configuration["apiUrl"]);
                 return new HttpClient() { BaseAddress = apiUrl };
             });
