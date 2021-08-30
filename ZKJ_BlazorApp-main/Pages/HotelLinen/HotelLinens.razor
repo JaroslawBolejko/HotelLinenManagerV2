@@ -1,70 +1,87 @@
 ﻿@page "/hotellinens"
 @attribute [Authorize]
 @inject IHotelLinenService HotelLinenService
+@using Syncfusion.Blazor.Grids
+
 <div>
     <a class="btn btn-primary" href='/addHotelLinen'>Add</a>
 </div>
 
-<div class="center">
-    @if (loading)
-    {
-        <div class="spinner-border spinner-border-sm"></div>
-    }
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    Id
-                </th>
-                <th scope="col">
-                    Name
-                </th>
-                <th scope="col">
-                    Color
-                </th>
-                <th scope="col">
-                    Amount
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+@if (loading)
+{
+    <div class="spinner-border spinner-border-sm"></div>
+}
+@if (hotelLinens != null)
+{
+    <SfGrid DataSource="@hotelLinens" AllowPaging="true">
+        <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
 
-            @if (hotelLinens != null)
-            {
+        <GridColumns>
+            <GridColumn Field=@nameof(HotelLinen.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.NameWithShortDescription) HeaderText="Name with short description"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.Color) HeaderText="Color"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Amount"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
 
-                @foreach (var hotelLinen in hotelLinens)
+@*<table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Id
+                    </th>
+                    <th scope="col">
+                        Name
+                    </th>
+                    <th scope="col">
+                        Color
+                    </th>
+                    <th scope="col">
+                        Amount
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (hotelLinens != null)
                 {
-                    <tr>
-                        <th scope="row">@hotelLinen.Id</th>
-                        <td>@hotelLinen.NameWithShortDescription</td>
-                        <td>@hotelLinen.Color</td>
-                        <td>@hotelLinen.Amount</td>
 
-                        <td>
-                            <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  |
-                            <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>
-                        </td>
-                    </tr>
+                    @foreach (var hotelLinen in hotelLinens)
+                    {
+                        <tr>
+                            <th scope="row">@hotelLinen.Id</th>
+                            <td>@hotelLinen.NameWithShortDescription</td>
+                            <td>@hotelLinen.Color</td>
+                            <td>@hotelLinen.Amount</td>
+
+                            <td>
+                                <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  |
+                                <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
                 }
+            </tbody>
+        </table>
+    </div>*@
 
-            }
-        </tbody>
-    </table>
-</div>
 
 
 @code { private bool loading;
-    private IEnumerable<Models.HotelLinen> hotelLinens;
+    private List<Models.HotelLinen> hotelLinens;
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
-        hotelLinens = await HotelLinenService.GetAll();
+        hotelLinens = (await HotelLinenService.GetAll()).ToList();
         loading = false;
     }
 
     protected async Task DeleteHotelLinen(int id)
     {
         await HotelLinenService.Delete(id);
-        hotelLinens = await HotelLinenService.GetAll();
+        hotelLinens = (await HotelLinenService.GetAll()).ToList();
     } }

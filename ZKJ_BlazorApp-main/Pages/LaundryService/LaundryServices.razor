@@ -2,7 +2,7 @@
 @attribute [Authorize]
 @inject ILaundryServiceService LaundryServiceService
 @using Syncfusion.Blazor.Grids
-@using BlazorApp.Shared
+@using Syncfusion.Blazor.Buttons
 
 <h3>Lanudry Service</h3>
 
@@ -12,31 +12,40 @@
 }
 @if (Laundries != null)
 {
-<SfGrid DataSource="@Laundries" AllowPaging="true">
-    <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
-    <GridEvents RowDataBound="OnRowDataBound" QueryCellInfo="CustomizeCell" TValue="LaundryService"></GridEvents>
+    <SfGrid DataSource="@Laundries" AllowPaging="true" AllowSorting="true">
+        <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
+        <GridEvents QueryCellInfo="CustomizeCell" TValue="LaundryService"></GridEvents>
+        <GridColumns>
+            <GridColumn Field=@nameof(LaundryService.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.Name) HeaderText="Service Name"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date">
+                <Template>
+                    @{
+                        var con = context as LaundryService;
+                        if (con.IssuedDate == null)
+                        {
+                            <span>Laundry in progress...</span>
 
-    <GridColumns>
+                        }
+                        else
+                        {
+                            <span>@(String.Format("{0:d}", con.IssuedDate))</span>
 
-        <GridColumn Field=@nameof(LaundryService.Id) HeaderText="ID"></GridColumn>
-        <GridColumn Field=@nameof(LaundryService.Name) HeaderText="Service Name"></GridColumn>
-        <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
-        <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date"></GridColumn>
-        <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date*"></GridColumn>
-        <GridColumn Field=@nameof(LaundryService.IsFinished) HeaderText="Is Finished"></GridColumn>
-    </GridColumns>
-</SfGrid>
+                        }
+                    }
+                </Template>
+            </GridColumn>
+            <GridColumn Field=@nameof(LaundryService.IsFinished) HeaderText="Is Finished"></GridColumn>
+        </GridColumns>
+    </SfGrid>
 }
-<h6>*Issued Date, when the value in column 'Is Finished' is false, means that on that day the laundry is predicated to be done.</h6>
 
 @code{
     bool Loading;
     public List<Models.LaundryService> Laundries;
-
-    private SfGrid<LaundryService> DefaultGrid;
-    public List<double> SelectedNodeIndex = new List<double>();
-
-
+    SfButton EditBtnResolved;
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
@@ -46,32 +55,8 @@
         Laundries = (await LaundryServiceService.GetAllLaundry()).OrderByDescending(x => x.RecievedDate).ToList();
         Loading = false;
     }
+    public void onToggleClick_Resolved() { }
 
-
-    //public async Task OnDataBound(object args)
-    //{
-    //    // The filtered index values are selected
-    //    await this.DefaultGrid.SelectRows(SelectedNodeIndex.ToArray());
-    //}
-
-    public void OnRowDataBound(RowDataBoundEventArgs<LaundryService> args)
-    {
-        // Freight values greater than 10 are filtered by comparing the primary column values
-        if (args.Data.IssuedDate == default)
-        {
-            args.Data.IssuedDate = args.Data.RecievedDate.AddDays(3);
-            //var dataSource = this.DefaultGrid.DataSource;
-            //var index = 0;
-            //foreach (var data in dataSource)
-            //{
-            //    if (data.OrderID == args.Data.OrderID)
-            //    {
-            //        SelectedNodeIndex.Add(index);
-            //        break;
-            //    }
-            //    index++;
-        }
-    }
     public void CustomizeCell(QueryCellInfoEventArgs<LaundryService> args)
     {
         if (args.Column.Field == "IsFinished")
@@ -80,12 +65,13 @@
             {
                 args.Cell.AddClass(new string[] { "true" });
             }
-            else 
+            else
             {
                 args.Cell.AddClass(new string[] { "false" });
-            }
 
+            }
         }
+
     }
 }
 
@@ -97,8 +83,6 @@
     .false {
         background-color: orangered;
     }
-
-   
 </style>
 
 
