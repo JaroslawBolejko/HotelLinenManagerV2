@@ -29,8 +29,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
             {
                 Number = request.Number,
                 CompanyId = request.AuthenticationCompanyId
-                //PageSize = request.PageSize,
-                //PageNumber = request.PageNumber
+                //Skip = request.Skip,
+                //Take = request.Take
             }; 
             var details = await this.queryExecutor.Execute(query);
             var mappedDetails = this.mapper.Map<List<LaundryService>>(details);

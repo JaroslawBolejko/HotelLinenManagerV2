@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelLinenManagerV2.DataAccess.Entities
 {
@@ -15,9 +16,9 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [MaxLength(150)]
         public string Number { get; set; }
         [Required]
-        [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         public DateTime RecievedDate { get; set; }
-        [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         public DateTime? IssuedDate { get; set; }
         public bool IsFinished { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }

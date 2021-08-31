@@ -7,7 +7,6 @@ namespace BlazorApp.Services.LaundryServices
     interface ILaundryServiceService
     {
         Task<IEnumerable<LaundryService>> GetAllLaundry();
-        Task<IEnumerable<LaundryService>> GetAllLaundryPageing(int pageNumber, int pageSize);
         Task<IEnumerable<LaundryService>> GetServiceByNumber(int number);
         Task<LaundryService> GetLaundryById(int id);
         Task<int> CreateLaundry(LaundryService laundry);
