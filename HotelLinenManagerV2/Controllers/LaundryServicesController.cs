@@ -46,10 +46,10 @@ namespace HotelLinenManagerV2.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateLaundryById([FromRoute] int Id, [FromBody] UpdateLaundryRequest request)
+        public async Task<IActionResult> UpdateLaundryById([FromRoute] int Id, [FromBody] UpdateLaundryByIdRequest request)
         {
             request.Id = Id;
-            return await this.HandleRequest<UpdateLaundryRequest, UpdateLaundryResponse>(request);
+            return await this.HandleRequest<UpdateLaundryByIdRequest, UpdateLaundryResponse>(request);
         }
 
         [HttpDelete]

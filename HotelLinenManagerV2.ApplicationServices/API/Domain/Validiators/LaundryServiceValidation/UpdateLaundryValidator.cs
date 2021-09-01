@@ -3,16 +3,13 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundryService
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.LaundryServiceValidation
 {
-    class UpdateLaundryValidator : AbstractValidator<UpdateLaundryRequest>
+    class UpdateLaundryValidator : AbstractValidator<UpdateLaundryByIdRequest>
     {
         public UpdateLaundryValidator()
         {
-            this.RuleFor(x => x.Id)
-                 .GreaterThanOrEqualTo(0).WithMessage("Id nie może być ujuemne!")
-                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.CompanyId)
-                 .GreaterThanOrEqualTo(0).WithMessage("Id nie może być ujuemne!")
-                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+                .GreaterThanOrEqualTo(0).WithMessage("Id nie może być ujuemne!")
+                .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Number)

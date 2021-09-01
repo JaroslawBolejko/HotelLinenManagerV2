@@ -7,9 +7,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Laundry
     {
         public UpdateLaundryDetailsValidator()
         {
-            this.RuleFor(x => x.Id)
-                .GreaterThanOrEqualTo(0).WithMessage("ID bielizny nie może być ujemne!")
-                .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.HotelLinenId)
                 .GreaterThanOrEqualTo(0).WithMessage("ID bielizny nie może być ujemne!")
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");

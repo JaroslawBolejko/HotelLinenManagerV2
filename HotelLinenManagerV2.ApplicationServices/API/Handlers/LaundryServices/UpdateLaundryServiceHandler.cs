@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDetails
 {
-    public class UpdateLaundryServiceHandler : IRequestHandler<UpdateLaundryRequest, UpdateLaundryResponse>
+    public class UpdateLaundryServiceHandler : IRequestHandler<UpdateLaundryByIdRequest, UpdateLaundryResponse>
     {
         private readonly ICommandExecutor commandExecutor;
         private readonly IQueryExecutor queryExecutor;
@@ -24,7 +24,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
             this.mapper = mapper;
         }
 
-        public async Task<UpdateLaundryResponse> Handle(UpdateLaundryRequest request, CancellationToken cancellationToken)
+        public async Task<UpdateLaundryResponse> Handle(UpdateLaundryByIdRequest request, CancellationToken cancellationToken)
         {
           
             var query = new GetLaundryQuery()

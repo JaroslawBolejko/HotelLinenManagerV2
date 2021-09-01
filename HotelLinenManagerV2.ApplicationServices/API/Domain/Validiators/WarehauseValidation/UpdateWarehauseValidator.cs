@@ -12,8 +12,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Warehau
             this.RuleFor(x => x.WarehauseNumber).GreaterThan(0).WithMessage("Numer magazynu nie może być ujemny lub zerowy")
                 .LessThan(10000).WithMessage("Podany numer jest zbyt duży");
             this.RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
-            this.RuleFor(x => x.Id).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!")
-                .GreaterThanOrEqualTo(0).WithMessage("ID nie może być ujemne!");
+            
         }
     }
 }

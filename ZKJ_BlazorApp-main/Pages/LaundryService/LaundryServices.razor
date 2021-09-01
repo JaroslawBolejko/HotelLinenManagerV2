@@ -19,14 +19,14 @@
                     OnActionBegin="ActionBeginHandler" TValue="LaundryService"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="FilterBarMode.Immediate" Type="FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
 
         <GridColumns>
-            <GridColumn AllowAdding="false" IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
-            <GridColumn AllowAdding="false" Field=@nameof(LaundryService.Name) HeaderText="Service Name"></GridColumn>
-            <GridColumn AllowAdding="false" Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
-            <GridColumn AllowAdding="false" Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
-            <GridColumn AllowAdding="false" Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date">
+            <GridColumn IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.Name) HeaderText="Service Name"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
+            <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date">
                 <Template>
                     @{
                         var con = context as LaundryService;
@@ -43,7 +43,7 @@
                     }
                 </Template>
             </GridColumn>
-            <GridColumn AllowAdding="false"Field="@nameof(LaundryService.IsFinished)" HeaderText="Is Finished">
+            <GridColumn Field="@nameof(LaundryService.IsFinished)" EditType="EditType.BooleanEdit" HeaderText="Is Finished">
             </GridColumn>
         </GridColumns>
     </SfGrid>
@@ -58,7 +58,7 @@
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
 
     public int Id { get; set; }
     protected override async Task OnInitializedAsync()
@@ -85,26 +85,26 @@
     {
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
-            if (args.Action == "Add")
-            {
-                var lastNum = Laundries.OrderByDescending(x => x.Id).Select(x => x.Number).First();
-                var companyId = Laundries.Select(x => x.CompanyId).First();
+            //    if (args.Action == "Add")
+            //    {
+            //        var lastNum = Laundries.OrderByDescending(x => x.Id).Select(x => x.Number).First();
+            //        var companyId = Laundries.Select(x => x.CompanyId).First();
 
-                var newService = new LaundryService()
-                {
-                    Id = 0,
-                    CompanyId = companyId,
-                    Name = "Usługa Prania",
-                    Number = args.Data.Number = DocumentNumerCreator(lastNum),
-                    RecievedDate = DateTime.Now,
-                    IssuedDate = null,
-                    IsFinished = false
-                };
+            //        var newService = new LaundryService()
+            //        {
+            //            Id = 0,
+            //            CompanyId = companyId,
+            //            Name = "Usługa Prania",
+            //            Number = args.Data.Number = DocumentNumerCreator(lastNum),
+            //            RecievedDate = DateTime.Now,
+            //            IssuedDate = null,
+            //            IsFinished = false
+            //        };
 
 
-                await LaundryServiceService.CreateLaundry(newService);
-            }
-            else
+            //        await LaundryServiceService.CreateLaundry(newService);
+            //    }
+            if (args.Action == "Edit")
             {
                 await LaundryServiceService.UpdateLaundry(args.Data);
             }

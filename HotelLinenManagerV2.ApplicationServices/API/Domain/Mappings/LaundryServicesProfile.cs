@@ -27,7 +27,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                .ForMember(x => x.IsFinished, y => y.MapFrom(z => z.IsFinished));
 
 
-            this.CreateMap<UpdateLaundryRequest, DataAccess.Entities.LaundryService>()
+            this.CreateMap<UpdateLaundryByIdRequest, DataAccess.Entities.LaundryService>()
                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number))

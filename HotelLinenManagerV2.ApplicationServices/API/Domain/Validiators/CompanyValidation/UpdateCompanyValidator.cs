@@ -14,8 +14,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Company
             this.startsWithDigit = startsWithDigit;
             this.zipCode = zipCode;
 
-            this.RuleFor(x => x.Id).GreaterThanOrEqualTo(0).WithMessage("ID nie może być ujemne!")
-              .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Type).IsInEnum().WithMessage("Wybierz Pralnia lub Hotel");
             this.RuleFor(x => x.Name).MaximumLength(250).WithMessage("Wprowadzona liczba znaków w polu {PropertyName} jest za duża");
             this.RuleFor(x => x.TaxNumber).NotEmpty().WithMessage("Podaj NIP!")

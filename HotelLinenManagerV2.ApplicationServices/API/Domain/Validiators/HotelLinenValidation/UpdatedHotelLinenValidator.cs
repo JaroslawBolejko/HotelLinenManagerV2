@@ -7,8 +7,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.HotelLi
     {
         public UpdatedHotelLinenValidator()
         {
-            this.RuleFor(x => x.Id).NotEmpty().WithMessage("Pole nie może być puste")
-                 .GreaterThan(0).WithMessage("Id nie może być równe zero");
+         
             this.RuleFor(x => x.HotelLinenTypeId).NotEmpty().WithMessage("Bielizna musi posiadać typ!")
                  .GreaterThan(0).WithMessage("Id nie może być równe zero");
             this.RuleFor(x => x.NameWithShortDescription).NotEmpty().WithMessage("Podaj nazwę z krótkim opisem.")
