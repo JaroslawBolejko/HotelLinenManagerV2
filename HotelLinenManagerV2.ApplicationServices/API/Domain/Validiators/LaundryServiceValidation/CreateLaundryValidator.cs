@@ -8,16 +8,15 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Laundry
         public CreateLaundryValidator()
         {
             this.RuleFor(x => x.CompanyId)
-                .GreaterThanOrEqualTo(0).WithMessage("Ilość bielizny nie może być ujemna!")
+                .GreaterThanOrEqualTo(0).WithMessage("Id nie może być ujuemne")
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Number)
-                .GreaterThanOrEqualTo(0).WithMessage("Ilość bielizny nie może być ujemna!")
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
-            this.RuleFor(x=>x.RecievedDate)
+            this.RuleFor(x => x.RecievedDate)
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
-     
+
         }
     }
 }

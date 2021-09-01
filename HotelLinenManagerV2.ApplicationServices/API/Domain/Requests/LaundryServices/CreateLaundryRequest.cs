@@ -8,7 +8,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundrySer
     {
         public int CompanyId { get; set; }
         public string Name { get; set; }
-        public int Number { get; set; }
+        public string Number { get; set; }
         public DateTime RecievedDate { get; set; }
         public DateTime? IssuedDate { get; set; }
         public bool IsFinished { get; set; }

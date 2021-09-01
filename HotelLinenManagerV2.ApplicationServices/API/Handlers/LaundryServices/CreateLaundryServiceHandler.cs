@@ -28,7 +28,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
         {
             var query = new GetAllLaundryQuery()
             {
-
+                //Number=request.Number
             };
 
             var details = await this.queryExecutor.Execute(query);

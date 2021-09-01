@@ -30,7 +30,7 @@ namespace BlazorApp.Services.LaundryServices
         {
             return await this.httpService.Get<IEnumerable<LaundryService>>("/laundryServices");
         }
-        public async Task<IEnumerable<LaundryService>> GetServiceByNumber(int number)
+        public async Task<IEnumerable<LaundryService>> GetServiceByNumber(string number)
         {
             return await this.httpService.Get<IEnumerable<LaundryService>>($"/laundryServices?Number={number}");
         }

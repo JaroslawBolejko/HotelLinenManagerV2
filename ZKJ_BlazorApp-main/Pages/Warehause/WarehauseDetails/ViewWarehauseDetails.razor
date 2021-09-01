@@ -78,7 +78,7 @@
     private LaundryService laundry;
     private LaundryServiceDetail laundryServiceDetail;
     private LaundryService createdLaundryService;
-    int numberToFilter;
+    private string numberToFilter;
 
 
     protected override async Task OnInitializedAsync()
@@ -95,12 +95,34 @@
         await WarehauseDetailsService.Delete(id);
     }
 
+
+    protected string DocumentNumerCreator(string str)
+    {
+        StringBuilder sb = new StringBuilder();
+        string docNumber;
+        int number = 0;
+        if (str == null)
+        {
+            docNumber = "1";
+        }
+        else
+        {
+            var tab = str.Split("/", StringSplitOptions.RemoveEmptyEntries);
+            number = int.Parse(tab[0]) + 1;
+            docNumber = number.ToString();
+
+        }
+        string date = DateTime.Now.ToString("MM/yyyy").Replace(".", "/");
+
+        return sb.Append(docNumber).Append('/').Append(date).ToString();
+
+    }
     protected async Task MoveToLoundry()
     {
         laundry = new LaundryService
         {
             Name = "Usługa Prania",
-            Number = lastLaundry.Number+1,
+            Number = DocumentNumerCreator(lastLaundry.Number),
             CompanyId = lastLaundry.CompanyId,
             IsFinished = false,
             RecievedDate = DateTime.Now,
