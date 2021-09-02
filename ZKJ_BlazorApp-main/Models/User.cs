@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BlazorApp.Models
 {
     public class User
@@ -12,5 +10,8 @@ namespace BlazorApp.Models
         public int CompanyId { get; set; }
         public string Permission { get; set; }
         public string Email { get; set; }
+        public string PhotoPath { get; set; }
+
+        public Company Company { get; set; }
     }
 }

@@ -19,8 +19,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Permission, y => y.MapFrom(z => z.Permission))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.Username))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email))
+                .ForMember(x => x.PhotoPath, y => y.MapFrom(z => z.PhotoPath))
                 .ForMember(x => x.Company, y => y.MapFrom(z => z.Company));
-             
+
 
             this.CreateMap<CreateUserRequest, DataAccess.Entities.User>()
                 .ForMember(x => x.FirstName, y => y.MapFrom(z => z.FirstName))

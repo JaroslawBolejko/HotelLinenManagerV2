@@ -22,7 +22,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
                 && this.CompanyId !=null)
             {
 
-                return await context.Users.FirstOrDefaultAsync(x => x.FirstName == this.FirstName
+                return await context.Users.Include(x=>x.Company).FirstOrDefaultAsync(x => x.FirstName == this.FirstName
                  && x.LastName == this.LastName && x.Email == this.Email && x.CompanyId == this.CompanyId);
                       
             }

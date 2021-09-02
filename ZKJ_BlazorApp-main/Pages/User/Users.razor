@@ -2,38 +2,55 @@
 @attribute [Authorize]
 @inject IUserService UserService
 @inject ICompanyService CompanyService
-@*@inject ILocalStorageService LocalStorageService*@
 
-<div class="card mt-4">
-    <h4 class="card-header">Users</h4>
-    <div class="card-body">
-        <h6>Your personal data</h6>
-        @if (loading)
-        {
-<div class="spinner-border spinner-border-sm"></div>}
-        @if (user != null)
-         {
-            <ul>
-                <li><b>First name and last name: </b> @user.FirstName @user.LastName</li>
-                <li><b>Username:</b>@user.Username</li>
-                <li><b>Email:   </b>@user.Email</li>
-                <li><b>Role:    </b>@user.Permission</li>
-                <li><b>Company: </b>@company.Name</li>
-            </ul>
-         }
+
+@if (UserMe == null || UserMe.Company.Name == null)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    <div class="row justify-content-center m-3">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>@UserMe.FirstName @UserMe.LastName</h4>
+                </div>
+
+                <div class="card-body text-left">
+                    <img class="card-img-top mx-auto d-block" style="height:200px; width:150px;" src="@UserMe.PhotoPath" />
+                    <ul>
+                        <li><b>Username</b> : @UserMe.Username</li>
+                        <li><b>Role</b> : @UserMe.Permission</li>
+                        <li><b>Emial</b> : @UserMe.Email</li>
+                        <li><b>Company</b> : @UserMe.Company.Name</li>
+                    </ul>
+
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/" class="btn btn-primary">Back</a>
+                    <a href="/edituserme" class="btn btn-primary">Edit</a>
+                    @if (UserMe.Permission == "AdminHotel")
+                    {
+                        <a class="btn btn-danger" @onclick="() => Delete(UserMe.Id)">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+}
 
-@code { private bool loading;
-    private User user;
-    private Company company;
- 
+@code {
+    private User UserMe { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        loading = true;
-        user = await UserService.GetMe();
-        //user = await LocalStorageService.GetItem<User>("user");
-        company = await CompanyService.GetCompanyById(user.CompanyId);
-        loading = false;
-    } }
+        UserMe = await UserService.GetMe();
+    }
+
+    protected async Task Delete(int id)
+    {
+        //await UserService.Delete(id);
+    }
+
+}

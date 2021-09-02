@@ -7,13 +7,10 @@
     <a class="btn btn-primary" href='/addHotelLinen'>Add</a>
 </div>
 
-@if (loading)
+
+@if (Linens != null)
 {
-    <div class="spinner-border spinner-border-sm"></div>
-}
-@if (hotelLinens != null)
-{
-    <SfGrid DataSource="@hotelLinens" AllowPaging="true">
+    <SfGrid DataSource="@Linens" AllowPaging="true">
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
 
         <GridColumns>
@@ -69,19 +66,19 @@
 
 
 
-@code { private bool loading;
-    private List<Models.HotelLinen> hotelLinens;
+@code { 
+    private List<HotelLinen> Linens { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     protected override async Task OnInitializedAsync()
     {
-        loading = true;
-        hotelLinens = (await HotelLinenService.GetAll()).ToList();
-        loading = false;
+
+        Linens = (await HotelLinenService.GetAll()).ToList();
+
     }
 
     protected async Task DeleteHotelLinen(int id)
     {
         await HotelLinenService.Delete(id);
-        hotelLinens = (await HotelLinenService.GetAll()).ToList();
+        Linens = (await HotelLinenService.GetAll()).ToList();
     } }

@@ -39,5 +39,6 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [MaxLength(50)]
         public string Email { get; set; }
         public string Salt { get; set; }
+        public string PhotoPath { get; set; }
     }
 }
