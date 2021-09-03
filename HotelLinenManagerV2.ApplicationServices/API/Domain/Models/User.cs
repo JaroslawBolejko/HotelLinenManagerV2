@@ -13,6 +13,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string PhotoPath { get; set; }
+        public string Password { get; set; }
         public Company Company { get; set; }
     }
 }

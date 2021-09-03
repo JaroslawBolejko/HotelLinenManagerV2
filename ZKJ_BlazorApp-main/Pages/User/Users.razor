@@ -4,6 +4,7 @@
 @inject ICompanyService CompanyService
 
 
+
 @if (UserMe == null || UserMe.Company.Name == null)
 {
     <div class="spinner"></div>
@@ -42,6 +43,7 @@ else
 
 @code {
     private User UserMe { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
