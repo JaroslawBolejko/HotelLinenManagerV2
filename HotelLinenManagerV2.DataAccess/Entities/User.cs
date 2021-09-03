@@ -6,15 +6,15 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     {
         public enum Role
         {
-            AdminHotel=1,
-            UserHotel=2,
-            UserLaundry=3 
+            AdminHotel=0,
+            UserHotel=1,
+            UserLaundry=2 
 
         }
         public enum PlaceOfWork
         {
-            Hotel=1,
-            Loundry=2
+            Hotel=0,
+            Loundry=1
         }
         
         public int CompanyId { get; set; }

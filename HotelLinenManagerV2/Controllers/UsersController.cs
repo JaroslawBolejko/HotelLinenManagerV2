@@ -28,7 +28,7 @@ namespace HotelLinenManagerV2.Controllers
 
         [HttpGet]
         [Route("{me}")]
-        public async Task<IActionResult> GetUsers([FromRoute] string me)
+        public async Task<IActionResult> GetUserMe([FromRoute] string me)
         {
             var request = new GetUserMeRequest()
             {
@@ -43,6 +43,13 @@ namespace HotelLinenManagerV2.Controllers
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
             return await this.HandleRequest<CreateUserRequest, CreateUserResponse>(request);
+        }
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateUserById([FromRoute] int id, [FromBody] UpdateUserByIdRequest request)
+        {
+            request.Id = id;
+            return await this.HandleRequest<UpdateUserByIdRequest, UpdateUserByIdResponse>(request);
         }
 
         [HttpDelete]

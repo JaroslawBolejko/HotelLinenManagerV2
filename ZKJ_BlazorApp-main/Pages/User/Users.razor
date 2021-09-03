@@ -30,7 +30,7 @@ else
                 <div class="card-footer text-center">
                     <a href="/" class="btn btn-primary">Back</a>
                     <a href="/edituserme" class="btn btn-primary">Edit</a>
-                    @if (UserMe.Permission == "AdminHotel")
+                    @if (UserMe.Permission.ToString() == "AdminHotel")
                     {
                         <a class="btn btn-danger" @onclick="() => Delete(UserMe.Id)">Delete</a>
                     }
@@ -50,7 +50,7 @@ else
 
     protected async Task Delete(int id)
     {
-        //await UserService.Delete(id);
+        await UserService.Delete(id);
     }
 
 }

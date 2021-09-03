@@ -1,0 +1,52 @@
+﻿@page "/edituserme"
+@attribute [Authorize]
+@inject IUserService UserService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="UserMe">
+                <div class="form-group">
+                    <label for="FirstName" class="control-label">First Name</label>
+                    <input for="FirstName" class="form-control" @bind-value="@UserMe.FirstName" />
+
+                    <label for="LastName" class="control-label">Last Name</label>
+                    <input for="LastName" class="form-control" @bind-value="@UserMe.LastName" />
+
+                    <label for="Username" class="control-label">Username</label>
+                    <input for="Username" class="form-control" @bind-value="@UserMe.Username" />
+
+                    <label for="Email" class="control-label">Email</label>
+                    <input for="Email" class="form-control" @bind-value="@UserMe.Email" />
+
+
+                    <input type="hidden" @bind-value="@UserMe.Id" />
+
+                </div>
+                <div class="form-group">
+                    @*<button type="button" class="btn btn-primary" @onclick="() => UpdateUserMe()">Save</button>*@
+                    <button type="button" class="btn btn-danger" @onclick="() => cancel()">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+@code{
+    private User UserMe = new User();
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserMe = await UserService.GetMe();
+    }
+    protected async Task UpdateUserMe()
+    {
+        await UserService.UpdateUserById(UserMe);
+        navigationManager.NavigateTo("/Users");
+    }
+
+    void cancel()
+    {
+        navigationManager.NavigateTo("/Users");
+    }
+}

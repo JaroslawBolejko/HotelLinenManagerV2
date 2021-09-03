@@ -8,5 +8,10 @@
     {
         Task<IEnumerable<User>> GetAll();
         Task<User> GetMe();
+        Task<User> GetUserById(int id);
+        Task<int> CreateUser(User user);
+        Task<int> UpdateUserById(User user);
+        Task<bool> Delete(int id);
+
     }
 }
