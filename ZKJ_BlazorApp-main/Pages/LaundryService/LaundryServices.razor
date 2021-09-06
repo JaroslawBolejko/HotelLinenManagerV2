@@ -1,17 +1,15 @@
 ﻿@page "/laundryservices"
 @attribute [Authorize]
 @inject ILaundryServiceService LaundryServiceService
-@using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Navigations
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
-
 
 <h3>Lanudry Service</h3>
 
-@if (Loading)
+@if (SpinnerVisible == true)
 {
-    <div class="spinner-border spinner-border-sm"></div>
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
 }
+
 @if (Laundries != null)
 {
     <SfGrid DataSource="@Laundries" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
@@ -58,14 +56,16 @@
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
-    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
 
     public int Id { get; set; }
+
+    private bool SpinnerVisible { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        Loading = true;
-        Laundries = (await LaundryServiceService.GetAllLaundry()).ToList();
-        Loading = false;
+        SpinnerVisible = true;
+        Laundries = (await LaundryServiceService.GetAllLaundry()).OrderByDescending(x=>x.RecievedDate).ToList();
+        SpinnerVisible = false;
     }
     public void RowSelectHandler(RowSelectEventArgs<LaundryService> args)
     {

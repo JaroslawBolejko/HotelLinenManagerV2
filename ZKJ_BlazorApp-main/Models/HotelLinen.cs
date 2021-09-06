@@ -1,4 +1,6 @@
-﻿namespace BlazorApp.Models
+﻿using System.Collections.Generic;
+
+namespace BlazorApp.Models
 {
     public class HotelLinen
     {
@@ -7,5 +9,7 @@
         public string Color { get; set; }
         public int HotelLinenTypeId { get; set; }
         public ushort Amount { get; set; }
+        public IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
+
     }
 }

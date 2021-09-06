@@ -9,9 +9,12 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
+        <PackageReference Include="Syncfusion.Blazor.Buttons" Version="19.2.0.59" />
         <PackageReference Include="Syncfusion.Blazor.Cards" Version="19.2.0.59" />
         <PackageReference Include="Syncfusion.Blazor.Grid" Version="19.2.0.59" />
+        <PackageReference Include="Syncfusion.Blazor.Navigations" Version="19.2.0.59" />
         <PackageReference Include="Syncfusion.Blazor.Spinner" Version="19.2.0.59" />
+        <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="19.2.0.59" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
         <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
     </ItemGroup>

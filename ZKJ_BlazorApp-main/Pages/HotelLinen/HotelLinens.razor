@@ -1,79 +1,45 @@
 ﻿@page "/hotellinens"
 @attribute [Authorize]
 @inject IHotelLinenService HotelLinenService
-@using Syncfusion.Blazor.Grids
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
-<div>
-    <a class="btn btn-primary" href='/addHotelLinen'>Add</a>
-</div>
 
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
 
 @if (Linens != null)
 {
-    <SfGrid DataSource="@Linens" AllowPaging="true">
+    <SfGrid @ref="hotelLinenGrid" DataSource="@Linens" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="HotelLinen"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
+        <GridFilterSettings Mode="FilterBarMode.Immediate" Type="FilterType.Menu"></GridFilterSettings>
+        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
 
         <GridColumns>
-            <GridColumn Field=@nameof(HotelLinen.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Visible="false" Field=@nameof(HotelLinen.Id) HeaderText="ID"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.NameWithShortDescription) HeaderText="Name with short description"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Color) HeaderText="Color"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Amount"></GridColumn>
+
         </GridColumns>
     </SfGrid>
 }
 
-@*<table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Id
-                    </th>
-                    <th scope="col">
-                        Name
-                    </th>
-                    <th scope="col">
-                        Color
-                    </th>
-                    <th scope="col">
-                        Amount
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
 
-                @if (hotelLinens != null)
-                {
-
-                    @foreach (var hotelLinen in hotelLinens)
-                    {
-                        <tr>
-                            <th scope="row">@hotelLinen.Id</th>
-                            <td>@hotelLinen.NameWithShortDescription</td>
-                            <td>@hotelLinen.Color</td>
-                            <td>@hotelLinen.Amount</td>
-
-                            <td>
-                                <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  |
-                                <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>
-                            </td>
-                        </tr>
-                    }
-
-                }
-            </tbody>
-        </table>
-    </div>*@
-
-
-
-@code { 
+@code {
     private List<HotelLinen> Linens { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    public bool SpinnerVisible { get; set; }
+    public SfGrid<HotelLinen> hotelLinenGrid { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-
+        SpinnerVisible = true;
         Linens = (await HotelLinenService.GetAll()).ToList();
+        SpinnerVisible = false;
 
     }
 
@@ -81,4 +47,43 @@
     {
         await HotelLinenService.Delete(id);
         Linens = (await HotelLinenService.GetAll()).ToList();
-    } }
+    }
+    // RowSelectetHandler potrzebny mi jest do przycisku ViewDetails, na razie nie działa potrzeba Normalizacji klasy HotelLinen i hotelLinenType
+    public void RowSelectHandler(RowSelectEventArgs<HotelLinen> args)
+    {
+        //Id = args.Data.Id;
+    }
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+
+        if (args.Item.Id == "View")
+        {
+
+            // navigationManager.NavigateTo($"/viewHotelLinenDetails/{Id}");
+        }
+    }
+
+    public async void ActionBeginHandler(ActionEventArgs<HotelLinen> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            if (args.Action == "Add")
+            {
+                await HotelLinenService.Create(args.Data);
+                Linens = (await HotelLinenService.GetAll()).ToList();
+                hotelLinenGrid.Refresh();
+            }
+            if (args.Action == "Edit")
+            {
+                await HotelLinenService.Update(args.Data);
+            }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await HotelLinenService.Delete(args.Data.Id);
+        }
+    }
+
+
+}
