@@ -3,6 +3,8 @@
 @inject ILaundryServiceService LaundryServiceService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
+
+
 <h3>Lanudry Service</h3>
 
 @if (SpinnerVisible == true)
@@ -16,7 +18,7 @@
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell"
                     OnActionBegin="ActionBeginHandler" TValue="LaundryService"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
-        <GridFilterSettings Mode="FilterBarMode.Immediate" Type="FilterType.Menu"></GridFilterSettings>
+        <GridFilterSettings Mode="FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
 
         <GridColumns>
@@ -56,7 +58,7 @@
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
 
     public int Id { get; set; }
 

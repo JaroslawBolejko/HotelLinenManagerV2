@@ -14,12 +14,13 @@
     <SfGrid @ref="hotelLinenGrid" DataSource="@Linens" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="HotelLinen"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
-        <GridFilterSettings Mode="FilterBarMode.Immediate" Type="FilterType.Menu"></GridFilterSettings>
+        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
 
         <GridColumns>
-            <GridColumn Visible="false" Field=@nameof(HotelLinen.Id) HeaderText="ID"></GridColumn>
-            <GridColumn Field=@nameof(HotelLinen.NameWithShortDescription) HeaderText="Name with short description"></GridColumn>
+            <GridColumn Visible="false" IsPrimaryKey="true" Field=@nameof(HotelLinen.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Field="@nameof(HotelLinen.HotelLinenTypeId)" HeaderText="Type name"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.NameWithShortDescription) HeaderText="Description"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Color) HeaderText="Color"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Amount"></GridColumn>
 
@@ -31,7 +32,7 @@
 @code {
     private List<HotelLinen> Linens { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Add","Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
     public bool SpinnerVisible { get; set; }
     public SfGrid<HotelLinen> hotelLinenGrid { get; set; }
 
@@ -39,6 +40,7 @@
     {
         SpinnerVisible = true;
         Linens = (await HotelLinenService.GetAll()).ToList();
+        //Types = 
         SpinnerVisible = false;
 
     }
@@ -47,6 +49,7 @@
     {
         await HotelLinenService.Delete(id);
         Linens = (await HotelLinenService.GetAll()).ToList();
+
     }
     // RowSelectetHandler potrzebny mi jest do przycisku ViewDetails, na razie nie działa potrzeba Normalizacji klasy HotelLinen i hotelLinenType
     public void RowSelectHandler(RowSelectEventArgs<HotelLinen> args)

@@ -6,25 +6,25 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public enum Type : byte
     {
-        //Zmień na angielski
-        Poszwa = 1,
-        Prześcieradło = 2,
-        Poszewka = 3,
-        Podkład = 4,
-        RęcznikDuży = 5,
-        RęcznikMały = 6,
-        Stopka = 7,
-        Kołdra = 8,
-        Poduszka = 9,
-        Jasiek = 10,
-        Kapa = 11,
-        Koc = 12,
-        Zasłona = 13,
-        Firanka = 14,
-        ObrusDuży = 15,
-        ObrusŚredni = 16,
-        ObrusMały = 17,
-        Serwetki = 18
+        // Aby wyświetlić odzielnie zastosuj https://stackoverflow.com/questions/1101872/how-to-set-space-on-enum/31988435
+        DuvelCover = 1,
+        Sheet = 2,
+        PillowCase = 3,
+        Underlay = 4,
+        LargeTowel = 5,
+        Smalltowel = 6,
+        FootTowel = 7,
+        Duvel = 8,
+        Pillow = 9,
+        SmallPillow = 10,
+        Coverlet = 11,
+        Blanket = 12,
+        Drape = 13,
+        Curtain = 14,
+        LargeTableCloth = 15,
+        MediumTableCloth = 16,
+        SamllTableCloth = 17,
+        Napkin = 18
 
     }
     public class HotelLinenType : EntityBase
@@ -45,8 +45,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [Column(TypeName = "varchar(5)")]
         public decimal Tax { get; set; }
-      //  public int HotelLinenId { get; set; }
-        //public HotelLinen HotelLinen { get; set; }
+     
         public List<HotelLinen> HotelLinens { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                     return await context.HotelLinens
                         .Where(x => x.HotelLinenTypeId == this.HotelLinenTypeId
                     && x.HotelLinenTypeId == this.HotelLinenTypeId)
+                        .Include(x=>x.HotelLinenType)
                         .AsNoTracking()
                         .ToListAsync();
                 }
@@ -35,6 +36,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 {
                     return await context.HotelLinens
                         .Where(x => x.NameWithShortDescription == this.NameWithShortDescription)
+                        .Include(x => x.HotelLinenType)
                         .AsNoTracking()
                         .ToListAsync();
                 }
@@ -47,6 +49,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 {
                     return await context.HotelLinens
                         .Where(x => x.HotelLinenTypeId == this.HotelLinenTypeId)
+                        .Include(x => x.HotelLinenType)
                         .AsNoTracking()
                         .ToListAsync();
                 }
@@ -55,30 +58,11 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
 
             if (this.CompanyId != null && this.WarehauseId == null)
             {
-                var result = await context.WarehauseDetails.Join(context.HotelLinens, warehausedetail => warehausedetail.HotelLinenId, hotellinen => hotellinen.Id,
-                    (warehausedetail, hotellinen) => new
-                    {
-                        Id = hotellinen.Id,
-                        WarehauseId = warehausedetail.WarehauseId
-                    }).Join(context.Warehauses, warerhauseDet => warerhauseDet.WarehauseId, warehause => warehause.Id, (warehauseDet, warehause) => new
-                    {
-                        LinenId = warehauseDet.Id,
-                        CompanyId = warehause.CompanyId
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
-
-                List<HotelLinen> returnList = new();
-                var result2 = result.Where(x => x.CompanyId == this.CompanyId).Select(x => x.LinenId).Distinct().ToList();
-                for (int i = 0; i < result2.Count; i++)
-                {
-                    var item = await context.HotelLinens
-                        .Where(x => x.Id == result2[i])
-                        .AsNoTracking()
-                        .ToListAsync();
-                    if (item != null) returnList.AddRange(item);
-                }
-                return returnList;
+                return await context.HotelLinens
+                         .Where(x => x.Company.Id == this.CompanyId)
+                         .Include(x => x.HotelLinenType)
+                         .AsNoTracking()
+                         .ToListAsync();
             }
             if (this.CompanyId != null && this.WarehauseId != null)
             {
@@ -96,6 +80,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 {
                     var item = await context.HotelLinens
                         .Where(x => x.Id == result2[i])
+                        .Include(x => x.HotelLinenType)
                         .AsNoTracking()
                         .ToListAsync();
                     if (item != null) returnList.AddRange(item);
@@ -105,6 +90,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
             else
             {
                 return await context.HotelLinens
+                    .Include(x => x.HotelLinenType)
                     .AsNoTracking()
                     .ToListAsync();
             }

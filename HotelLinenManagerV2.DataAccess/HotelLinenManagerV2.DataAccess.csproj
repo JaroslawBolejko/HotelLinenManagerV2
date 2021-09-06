@@ -26,10 +26,8 @@
   <ItemGroup>
     <Folder Include="CQRS\Commands\GoodsIssuedRecivedNotes\" />
     <Folder Include="CQRS\Commands\HLBaseQuantities\" />
-    <Folder Include="CQRS\Commands\HotelLinenTypes\" />
     <Folder Include="CQRS\Commands\Invoices\" />
     <Folder Include="CQRS\Queries\Invoices\" />
-    <Folder Include="CQRS\Queries\HotelLinenTypes\" />
     <Folder Include="CQRS\Queries\HLBaseQuantities\" />
   </ItemGroup>
 

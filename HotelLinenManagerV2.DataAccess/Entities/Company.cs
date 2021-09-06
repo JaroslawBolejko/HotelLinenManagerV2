@@ -38,6 +38,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public List<Warehause> Warehauses { get; set; }
         public List<User> Users { get; set; }
         public List<LaundryService> LaundryServices { get; set; }
+        public List<HotelLinen> HotelLinens { get; set; }
 
     }
 }
