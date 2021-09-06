@@ -10,7 +10,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
 
         public override async Task<HotelLinen> Execute(WarehauseStorageHotelLinenContext context)
         {
-            var result = await context.HotelLinens.FirstOrDefaultAsync(x => x.Id == this.Id);
+            var result = await context.HotelLinens
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == this.Id);
             return result;
         }
     }

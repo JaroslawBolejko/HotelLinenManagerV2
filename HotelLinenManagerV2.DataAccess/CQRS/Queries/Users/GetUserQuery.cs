@@ -20,8 +20,13 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
                 && this.CompanyId !=null)
             {
 
-                return await context.Users.Include(x=>x.Company).FirstOrDefaultAsync(x => x.FirstName == this.FirstName
-                 && x.LastName == this.LastName && x.Email == this.Email && x.CompanyId == this.CompanyId);
+                return await context.Users
+                    .Include(x=>x.Company)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.FirstName == this.FirstName
+                 && x.LastName == this.LastName 
+                 && x.Email == this.Email 
+                 && x.CompanyId == this.CompanyId);
                       
             }
 
@@ -33,7 +38,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
             if (!string.IsNullOrEmpty(this.Username))
             {
                 
-                return await context.Users.Include(x=>x.Company).FirstOrDefaultAsync(x => x.Username == this.Username);
+                return await context.Users
+                    .Include(x=>x.Company)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Username == this.Username);
 
             }
             return  null;

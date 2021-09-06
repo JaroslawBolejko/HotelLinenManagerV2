@@ -18,6 +18,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails
                 return await context.LaundryServiceDetails
                     .Where(x => x.LaundryServiceId == this.LaundryServiceId)
                     .Include(x=>x.HotelLinen)
+                    .AsNoTracking()
                     .ToListAsync();
 
             }
@@ -30,13 +31,19 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails
                         LaundrServiceDetailId = laundryDetails.Id,
                         LaundryServiceId = laundryService.Id,
                         CompanyId = laundryService.CompanyId
-                    }).ToListAsync();
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
 
                 List<LaundryServiceDetail> returnList = new();
                 var result2 = result.Where(x => x.CompanyId == this.CompanyId).Select(x => x.LaundrServiceDetailId).Distinct().ToList();
                 for (int i = 0; i < result2.Count; i++)
                 {
-                    var item = await context.LaundryServiceDetails.Where(x => x.Id == result2[i]).ToListAsync();
+                    var item = await context.LaundryServiceDetails
+                        .Where(x => x.Id == result2[i])
+                        .AsNoTracking()
+                        .ToListAsync();
+
                     if (item != null) returnList.AddRange(item);
                 }
                 return returnList;

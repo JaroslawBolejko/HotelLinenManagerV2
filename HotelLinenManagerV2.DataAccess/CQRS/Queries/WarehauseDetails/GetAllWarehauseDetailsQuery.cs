@@ -18,6 +18,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                 var result = await context.WarehauseDetails
                     .Where(x => x.HotelLinenId == this.HotelLinenId && x.WarehauseId == this.WarehauseId)
                     .Include(x => x.HotelLinen)
+                    .AsNoTracking()
                     .ToListAsync();
                 if (result.Count == 0) return null;
                 return result;
@@ -27,6 +28,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                 var result = await context.WarehauseDetails
                     .Where(x => x.WarehauseId == this.WarehauseId)
                     .Include(x => x.HotelLinen)
+                    .AsNoTracking()
                     .ToListAsync();
                 if (result.Count == 0) return null;
                 return result;
@@ -37,6 +39,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                 var result = await context.WarehauseDetails
                     .Where(x => x.HotelLinenId == this.HotelLinenId)
                     .Include(x => x.HotelLinen)
+                    .AsNoTracking()
                     .ToListAsync();
                 if (result.Count == 0) return null;
                 return result;
@@ -50,13 +53,18 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                     {
                         DetailId = warehauseDet.Id,
                         CompanyId = warehause.CompanyId
-                    }).ToListAsync();
+                    })
+                    .AsNoTracking()
+                    .ToListAsync();
 
                 List<WarehauseDetail> returnList = new();
                 var result2 = result.Where(x => x.CompanyId == this.CompanyId).Select(x => x.DetailId).Distinct().ToList();
                 for (int i = 0; i < result2.Count; i++)
                 {
-                    var item = await context.WarehauseDetails.Where(x => x.Id == result2[i]).ToListAsync();
+                    var item = await context.WarehauseDetails
+                                               .Where(x => x.Id == result2[i])
+                                               .AsNoTracking()
+                                               .ToListAsync();
                     if (item != null) returnList.AddRange(item);
                 }
                 return returnList;

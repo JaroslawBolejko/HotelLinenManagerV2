@@ -9,7 +9,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
     {
         public override async Task<List<User>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            var result = await context.Users.ToListAsync();
+            var result = await context.Users
+                .AsNoTracking()
+                .ToListAsync();
 
             return result;
         }

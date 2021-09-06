@@ -13,6 +13,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
 
             return await context.Warehauses.Where(x => x.Id == this.Id)
                 .Include(x => x.WarehauseDetails)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
     }

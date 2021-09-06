@@ -17,7 +17,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
             if (!string.IsNullOrEmpty(this.Number) && this.CompanyId!=null)
             {
                 return await context.LaundryServices
-                    .Where(x => x.Number == this.Number).ToListAsync();
+                    .Where(x => x.Number == this.Number)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             else if (this.CompanyId != null)
             {
@@ -25,6 +27,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .Where(x => x.CompanyId == this.CompanyId)
                     //.Skip(this.Skip)
                     //.Take(this.Take)
+                    .AsNoTracking()
                     .ToListAsync();
             }
             else return null;

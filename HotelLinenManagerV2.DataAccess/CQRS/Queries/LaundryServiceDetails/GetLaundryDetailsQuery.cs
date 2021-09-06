@@ -10,7 +10,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServiceDetails
         public int Id { get; set; }
         public override async Task<LaundryServiceDetail> Execute(WarehauseStorageHotelLinenContext context)
         {
-            return await context.LaundryServiceDetails.Where(x => x.Id == this.Id).FirstOrDefaultAsync();
+            return await context.LaundryServiceDetails
+                .Where(x => x.Id == this.Id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }

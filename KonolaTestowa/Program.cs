@@ -7,7 +7,8 @@ namespace KonolaTestowa
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(PasswordDeConventer("ug+Eo+FZV9jii8KN4dVvkj6PwguXSAEOAcdOZh2Vxr8="));
+            DateTime date = new(7/11/2016);
+            Console.WriteLine(date.DayOfWeek);
         }
 
         protected static string PasswordDeConventer(string str)
