@@ -5,7 +5,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.WarehauseD
 {
     public class UpdateDetailsRequest : RequestBase,IRequest<UpdateDetailsResponse>
     {
-        public int Id;
+        public int Id { get; set; }
         public int HotelLinenId { get; set; }
         public int WarehauseId { get; set; }
         public int Amount { get; set; }

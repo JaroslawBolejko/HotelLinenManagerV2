@@ -1,6 +1,6 @@
 ﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinenTypes;
+using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
-using System;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinenTypes
 {

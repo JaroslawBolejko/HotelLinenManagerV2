@@ -18,17 +18,10 @@ namespace HotelLinenManagerV2.Controllers
     [Route("[controller]")]
     public class HotelLinensController : ApiControllerBase
     {
-        private readonly IMediator mediator;
-        private readonly WarehauseStorageHotelLinenContext context;
-        private readonly IMapper mapper;
-
-        public HotelLinensController(IMediator mediator,ILogger<HotelLinensController> logger,
-            WarehauseStorageHotelLinenContext context, IMapper mapper) : base(mediator,logger)
+        public HotelLinensController(IMediator mediator, ILogger<HotelLinensController> logger) : base(mediator, logger)
         {
             logger.LogInformation("We are in HotelLinen");
-            this.mediator = mediator;
-            this.context = context;
-            this.mapper = mapper;
+
         }
 
         [HttpGet]
@@ -58,13 +51,13 @@ namespace HotelLinenManagerV2.Controllers
 
         [HttpPut]
         [Route("{hotelLinenId}")]
-        public async Task<IActionResult> UpdateHotelLinenById([FromRoute] int hotelLinenId,[FromBody] UpdateHotelLinenByIdRequest request)
+        public async Task<IActionResult> UpdateHotelLinenById([FromRoute] int hotelLinenId, [FromBody] UpdateHotelLinenByIdRequest request)
         {
             request.Id = hotelLinenId;
             return await this.HandleRequest<UpdateHotelLinenByIdRequest, UpdateHotelLinenByIdResponse>(request);
         }
 
-        
+
         [HttpPatch]
         [Route("{hotellinenId}")]
         public async Task<IActionResult> PatchHotelLinen(int hotellinenId,
@@ -72,7 +65,7 @@ namespace HotelLinenManagerV2.Controllers
         {
             //var entity =  this.context.HotelLinens.FirstOrDefault(x => x.Id == hotellinenId);
             //var mappedHotelLinen = this.mapper.Map<HotelLinen>(entity);
-            
+
             //linenUpdate.ApplyTo(mappedHotelLinen);
 
             //var mappedHotelLinen2 = this.mapper.Map<DataAccess.Entities.HotelLinen>(mappedHotelLinen);
@@ -86,7 +79,7 @@ namespace HotelLinenManagerV2.Controllers
             var request = new PatchHotelLinenByIdRequest()
             {
                 Id = hotellinenId,
-               LinenUpdate = linenUpdate
+                LinenUpdate = linenUpdate
 
             };
 

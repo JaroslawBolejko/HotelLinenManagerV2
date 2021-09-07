@@ -7,7 +7,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Warehauses
     public class UpdateWarehauseByIdRequest : RequestBase, IRequest<UpdateWarehauseByIdResponse>
     {
 
-        public int Id;
+        public int Id { get; set; }
         public WarehauseType WarehauseType { get; set; }
 
         public string Name { get; set; }

@@ -6,7 +6,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
 {
     public class UpdateCompanyByIdRequest : RequestBase, IRequest<UpdateCompanyByIdResponse>
     {
-        public int Id;
+        public int Id { get; set; }
         public CompanyType Type { get; set; }
         public string Name { get; set; }
 

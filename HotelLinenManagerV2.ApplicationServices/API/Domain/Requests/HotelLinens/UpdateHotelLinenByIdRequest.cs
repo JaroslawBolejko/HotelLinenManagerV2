@@ -5,7 +5,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinen
 {
     public  class UpdateHotelLinenByIdRequest : RequestBase, IRequest<UpdateHotelLinenByIdResponse>
     {
-        public int Id;
+        public int Id { get; set; }
         public string NameWithShortDescription { get; set; }
         public string Color { get; set; }
         public int HotelLinenTypeId { get; set; }

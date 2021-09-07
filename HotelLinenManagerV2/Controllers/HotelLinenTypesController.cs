@@ -45,7 +45,7 @@ namespace HotelLinenManagerV2.Controllers
 
         [HttpPut]
         [Route("{typeId}")]
-        public async Task<IActionResult> UpdateTypeById([FromRoute] int typeId, [FromBody] UpdateLinenTypeByIdRequest request)
+        public async Task<IActionResult> UpdateTypeById([FromRoute]int typeId, [FromBody] UpdateLinenTypeByIdRequest request)
         {
             request.Id = typeId;
             return await this.HandleRequest<UpdateLinenTypeByIdRequest, UpdateLinenTypeByIdResponse>(request);

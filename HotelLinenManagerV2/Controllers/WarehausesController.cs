@@ -15,11 +15,9 @@ namespace HotelLinenManagerV2.Controllers
 
     public class WarehausesController : ApiControllerBase
     {
-
-
         public WarehausesController(IMediator mediator, ILogger<WarehausesController> logger) : base(mediator, logger)
         {
-             logger.LogInformation("We are in Warehauses");
+            logger.LogInformation("We are in Warehauses");
         }
 
         [HttpGet]

@@ -15,7 +15,7 @@ namespace HotelLinenManagerV2.Controllers
     {
         public UsersController(IMediator mediator, ILogger<UsersController> logger) : base(mediator, logger)
         {
-
+            logger.LogInformation("We are in Users");
         }
 
         [HttpGet]
