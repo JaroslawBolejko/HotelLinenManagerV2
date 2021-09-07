@@ -12,6 +12,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.HotelLi
             this.RuleFor(x => x.NameWithShortDescription).NotEmpty().WithMessage("Podaj nazwę z krótkim opisem.")
                 .MaximumLength(100);
             this.RuleFor(x => x.Amount).NotNull().WithMessage("Podaj ilość bieliny.");
+            this.RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+
 
         }
     }

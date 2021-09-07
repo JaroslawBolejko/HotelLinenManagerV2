@@ -7,10 +7,13 @@
   <ItemGroup>
     <Compile Remove="API\Domain\Requests\HLBaseQuantities\**" />
     <Compile Remove="API\Domain\Responses\HLBaseQuantities\**" />
+    <Compile Remove="API\Handlers\HLBaseQuantities\**" />
     <EmbeddedResource Remove="API\Domain\Requests\HLBaseQuantities\**" />
     <EmbeddedResource Remove="API\Domain\Responses\HLBaseQuantities\**" />
+    <EmbeddedResource Remove="API\Handlers\HLBaseQuantities\**" />
     <None Remove="API\Domain\Requests\HLBaseQuantities\**" />
     <None Remove="API\Domain\Responses\HLBaseQuantities\**" />
+    <None Remove="API\Handlers\HLBaseQuantities\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +22,6 @@
     <Folder Include="API\Domain\Responses\GoodsIssuedRecivedNotes\" />
     <Folder Include="API\Domain\Responses\Invoices\" />
     <Folder Include="API\Handlers\GoodsIssuedRecivedNotes\" />
-    <Folder Include="API\Handlers\HLBaseQuantities\" />
     <Folder Include="API\Handlers\Invoices\" />
   </ItemGroup>
 

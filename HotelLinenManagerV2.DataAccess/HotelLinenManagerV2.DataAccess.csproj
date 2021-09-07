@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CQRS\Commands\HLBaseQuantities\**" />
+    <EmbeddedResource Remove="CQRS\Commands\HLBaseQuantities\**" />
+    <None Remove="CQRS\Commands\HLBaseQuantities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
@@ -25,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="CQRS\Commands\GoodsIssuedRecivedNotes\" />
-    <Folder Include="CQRS\Commands\HLBaseQuantities\" />
     <Folder Include="CQRS\Commands\Invoices\" />
     <Folder Include="CQRS\Queries\Invoices\" />
     <Folder Include="CQRS\Queries\HLBaseQuantities\" />

@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinens;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinenTypes;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinens;
+using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.HotelLinenTypes;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.HotelLinens;
+using HotelLinenManagerV2.DataAccess.CQRS.Commands.HotelLinenTypes;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens;
+using HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinenTypes;
 using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
 using System.Threading;
@@ -12,53 +16,54 @@ using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
 {
-    public class CreateHotelLinenHandler : IRequestHandler<CreateHotelLinenRequest, CreateHotelLinenResponse>
+    public class CreateLinenTypeHandler : IRequestHandler<CreateLinenTypeRequest, CreateLinenTypeResponse>
     {
         private readonly ICommandExecutor commandExecutor;
         private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public CreateHotelLinenHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper)
+        public CreateLinenTypeHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper)
         {
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;
         }
 
-        public async Task<CreateHotelLinenResponse> Handle(CreateHotelLinenRequest request, CancellationToken cancellationToken)
+        public async Task<CreateLinenTypeResponse> Handle(CreateLinenTypeRequest request, CancellationToken cancellationToken)
         {
             if (request.AuthenticationRole == "UserLaundry")
             {
-                return new CreateHotelLinenResponse
+                return new CreateLinenTypeResponse
                 {
                     Error = new ErrorModel(ErrorType.Unauthorized)
                 };
             }
 
-            var query = new GetHotelLinensQuery()
+            var query = new GetAllLinenTypesQuery()
             {
-                HotelLinenTypeId = request.HotelLinenTypeId,
-                NameWithShortDescription = request.NameWithShortDescription,
+                TypeName = request.TypeName,
+                Size = request.Size,
+                Weight = request.Weight
             };
-            var getLinen = await this.queryExecutor.Execute(query);
-            if (getLinen != null)
+            var getLinenType = await this.queryExecutor.Execute(query);
+            if (getLinenType != null)
             {
-                return new CreateHotelLinenResponse()
+                return new CreateLinenTypeResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict + " Bielizna o podanym typie oraz nazwie już istnieje!")
+                    Error = new ErrorModel(ErrorType.Conflict)
                 };
             }
-            var mappedCommand = this.mapper.Map<HotelLinen>(request);
-            var command = new CreateHoteLinenCommand()
+            var mappedCommand = this.mapper.Map<HotelLinenType>(request);
+            var command = new CreateLineTypeCommand()
             {
                 Parameter = mappedCommand
             };
             var createdHotelLinen = await this.commandExecutor.Execute(command);
 
-            var response = new CreateHotelLinenResponse()
+            var response = new CreateLinenTypeResponse()
             {
 
-                Data = this.mapper.Map<API.Domain.Models.HotelLinen>(createdHotelLinen)
+                Data = this.mapper.Map<API.Domain.Models.HotelLinenType>(createdHotelLinen)
 
             };
 

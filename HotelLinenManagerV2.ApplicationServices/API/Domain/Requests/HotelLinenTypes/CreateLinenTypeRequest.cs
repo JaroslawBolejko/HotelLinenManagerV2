@@ -6,9 +6,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinen
 {
     public class CreateLinenTypeRequest : RequestBase,IRequest<CreateLinenTypeResponse>
     {
-        public Type TypeName { get; set; }
+        public Type? TypeName { get; set; }
         public string Size { get; set; }
-        public double Weight { get; set; }
+        public double? Weight { get; set; }
         public decimal PricePerKg { get; set; }
         public decimal Tax { get; set; }
     }

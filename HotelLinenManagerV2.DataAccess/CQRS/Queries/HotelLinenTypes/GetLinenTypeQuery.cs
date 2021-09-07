@@ -8,6 +8,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinenTypes
     public class GetLinenTypeQuery : QueryBase<HotelLinenType>
     {
         public int Id { get; set; }
+        
         public override async Task<HotelLinenType> Execute(WarehauseStorageHotelLinenContext context)
         {
 
