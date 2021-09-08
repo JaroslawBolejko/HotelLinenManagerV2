@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelLinenManagerV2.Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "..\ZKJ_BlazorApp-main\BlazorApp.csproj", "{53088D33-5D3C-4716-A552-79E8479E79E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KonolaTestowa", "..\KonolaTestowa\KonolaTestowa.csproj", "{58CE4875-2950-4D34-93A8-D4298FFC25BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KonolaTestowa", "..\KonolaTestowa\KonolaTestowa.csproj", "{58CE4875-2950-4D34-93A8-D4298FFC25BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

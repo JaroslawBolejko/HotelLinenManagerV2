@@ -1,0 +1,60 @@
+﻿@page "/viewLinendetails/{Id}"
+@attribute [Authorize]
+@inject IHotelLinenTypeService HotelLinenTypeService
+
+
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
+
+@if (LinenType != null)
+{
+    <div class="row justify-content-center m-3">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>@LinenType.TypeName.GetDisplayName()</h4>
+                </div>
+
+                <div class="card-body text-left">
+                    <ul>
+                        <li><b>Size</b> : @LinenType.Size (cm x cm)</li>
+                        <li><b>Weight</b> : @LinenType.Weight (kg)</li>
+                        <li><b>Price per kg</b> : @LinenType.PricePerKg (zł)</li>
+                        <li><b>Tax</b> : @LinenType.Tax (%)</li>
+                    </ul>
+
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/hotellinens" class="btn btn-primary">Back</a>
+                    <a href="/editLinenDetails/@Id" class="btn btn-primary">Edit</a>
+                    @*@if (UserMe.Permission.ToString() == "AdminHotel")
+                        {
+                            <a class="btn btn-danger" @onclick="() => Delete(UserMe.Id)">Delete</a>
+                        }*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private HotelLinenType LinenType { get; set; }
+    public bool SpinnerVisible { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SpinnerVisible = true;
+        LinenType = await HotelLinenTypeService.GetById(int.Parse(Id));
+        SpinnerVisible = false;
+
+    }
+
+
+}
+
+
+

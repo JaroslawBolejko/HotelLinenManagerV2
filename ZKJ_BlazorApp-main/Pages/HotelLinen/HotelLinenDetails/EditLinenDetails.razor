@@ -1,0 +1,62 @@
+﻿@page "/editLinenDetails/{Id}"
+@attribute [Authorize]
+@inject IHotelLinenTypeService HotelLinenTypeService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="LinenType">
+                <div class="form-group">
+                    <label for="Size" class="control-label">Size</label>
+                    <input for="Size" class="form-control" @bind-value="@LinenType.Size" />
+
+                    <label for="Weight" class="control-label">Weight</label>
+                    <input for="Weight" class="form-control" @bind-value="@LinenType.Weight" />
+
+                    <label for="PricePerKg" class="control-label">Price per kg</label>
+                    <input for="PricePerKg" class="form-control" @bind-value="@LinenType.PricePerKg" />
+
+                    <label for="Tax" class="control-label">Tax</label>
+                    <input for="Tax" class="form-control" @bind-value="@LinenType.Tax" />
+
+                    <input type="hidden" @bind-value="@LinenType.Id" />
+                    <input type="hidden" @bind-value="@LinenType.TypeName" />
+
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" @onclick="() => UpdateLinenType()">Save</button>
+                    <button type="button" class="btn btn-danger" @onclick="() => cancel()">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+@code{
+
+    [Parameter]
+    public string Id { get; set; }
+    private HotelLinenType LinenType = new HotelLinenType();
+    public bool SpinnerVisible { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SpinnerVisible = true;
+        LinenType = await HotelLinenTypeService.GetById(int.Parse(Id));
+        SpinnerVisible = false;
+
+    }
+
+    protected async Task UpdateLinenType()
+    {
+        await HotelLinenTypeService.Update(LinenType);
+        navigationManager.NavigateTo($"/viewLinenDetails/{Id}");
+    }
+
+    void cancel()
+    {
+        navigationManager.NavigateTo("/viewLinenDetails");
+    }
+
+
+}

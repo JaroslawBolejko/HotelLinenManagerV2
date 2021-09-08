@@ -6,93 +6,53 @@
 @inject ILaundryServiceDetailsService LaundryServiceDetailsService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
-
-@if (loading)
+@if (SpinnerVisible == true)
 {
-    <div class="spinner-border spinner-border-sm"></div>
-}
-@if (warehause != null)
-{
-    <h3>@warehause.Name nr @warehause.WarehauseNumber</h3>
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
 }
 
-<div class="center">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    Name
-                </th>
-                <th scope="col">
-                    Color
-                </th>
-                <th scope="col">
-                    Amount
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+<SfGrid @ref="warehauseDetailGrid" DataSource="@WarehauseDetails" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+    <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="WarehauseDetail"></GridEvents>
+    <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
+    <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+    <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+   @*Tu dorobić pod WarehauseDetail bo jest Warhause*@
+    <GridColumns>
+        <GridColumn AllowAdding="true" Visible="false" IsPrimaryKey="true" Field=@nameof(WarehauseDetail.Id) HeaderText="Id"></GridColumn>
+        <GridColumn AllowAdding="true" Visible="false" Field="@nameof(Warehause.CompanyId)" HeaderText="CompanyId"></GridColumn>
+        <GridColumn AllowAdding="true" Visible="false" Field=@nameof(Warehause.WarehauseType) HeaderText="WarehauseType"></GridColumn>
+        <GridColumn Field=@nameof(Warehause.Name) HeaderText="Name"></GridColumn>
+        <GridColumn Field=@nameof(Warehause.WarehauseNumber) HeaderText="Warehause number"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
-            @if (warehauseDetails != null)
-            {
-                @foreach (var detail in warehauseDetails)
-                {
-                    <tr>
-                        <th scope="row">@detail.HotelLinenName</th>
-                        <td>@detail.Color</td>
-                        <td>@detail.Amount</td>
 
-                        @if (warehause.WarehauseType.ToString() != "DirtyLinenWarehause")
-                        {
-                            <td>
-
-                                <a class="btn btn-primary" href='/partialMove/@detail.Id'>Move</a>
-                                @*<a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete*@
-                                <a class="btn btn-danger" @onclick="() => Delete(detail.Id)">Delete</a>
-                            </td>
-                        }
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-    <div class="form-group">
-        @if (warehause != null && warehause.WarehauseType.ToString() == "CleanLinenWarehause")
-        {
-            <a class="btn btn-primary" href='/addLinenToWarehause/@Id'>Add Linen To Warehause</a>
-
-        }
-        <a class="btn btn-primary" @onclick="() => MoveToLoundry()">Move To Loundry</a>
-        <a class="btn btn-primary" href='/warehauses'>Back</a>
-    </div>
-</div>
 
 @code {
     [Parameter]
     public string Id { get; set; }
-    private bool loading;
-    private IEnumerable<Models.WarehauseDetail> warehauseDetails;
-    private Warehause warehause;
-    private LaundryService lastLaundry;
+    private IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
+    private Warehause Warehause { get; set; }
+    private LaundryService LastLaundry { get; set; }
     private LaundryService laundry;
     private LaundryServiceDetail laundryServiceDetail;
-    private LaundryService createdLaundryService;
+    private LaundryService CreatedLaundryService { get; set; }
     private string numberToFilter;
+    public bool SpinnerVisible { get; set; }
+    public SfGrid<WarehauseDetail> warehauseDetailGrid { get; set; }
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public int DetailId { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        loading = true;
-        warehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
-        warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
-        lastLaundry = (await LaundryServiceService.GetAllLaundry()).OrderBy(x => x.Number).Last();
-        loading = false;
-    }
-
-    protected async Task Delete(int id)
-    {
-        await WarehauseDetailsService.Delete(id);
+        SpinnerVisible = true;
+        WarehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
+        Warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        LastLaundry = (await LaundryServiceService.GetAllLaundry()).OrderBy(x => x.Number).Last();
+        SpinnerVisible = false;
     }
 
 
@@ -117,13 +77,14 @@
         return sb.Append(docNumber).Append('/').Append(date).ToString();
 
     }
+
     protected async Task MoveToLoundry()
     {
         laundry = new LaundryService
         {
             Name = "Usługa Prania",
-            Number = DocumentNumerCreator(lastLaundry.Number),
-            CompanyId = lastLaundry.CompanyId,
+            Number = DocumentNumerCreator(LastLaundry.Number),
+            CompanyId = LastLaundry.CompanyId,
             IsFinished = false,
             RecievedDate = DateTime.Now,
             IssuedDate = null
@@ -132,14 +93,14 @@
         numberToFilter = laundry.Number;
 
         await LaundryServiceService.CreateLaundry(laundry);
-        createdLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
+        CreatedLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
 
 
-        foreach (var detail in warehauseDetails)
+        foreach (var detail in WarehauseDetails)
         {
             laundryServiceDetail = new LaundryServiceDetail
             {
-                LaundryServiceId = createdLaundryService.Id,
+                LaundryServiceId = CreatedLaundryService.Id,
                 HotelLinenId = detail.HotelLinenId,
                 Amount = detail.Amount
 
@@ -147,7 +108,7 @@
 
             await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
         }
-        foreach (var detail in warehauseDetails)
+        foreach (var detail in WarehauseDetails)
         {
             await WarehauseDetailsService.Delete(detail.Id);
         }
@@ -156,8 +117,45 @@
 
     }
 
+    public void RowSelectHandler(RowSelectEventArgs<WarehauseDetail> args)
+    {
+        DetailId = args.Data.Id;
+    }
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+
+        if (args.Item.Id == "View")
+        {
+            if (DetailId == 0)
+            {
+                navigationManager.NavigateTo($"/viewWarehauseDetails");
+            }
+            else
+            {
+                navigationManager.NavigateTo($"/viewWarehauseDetails/{DetailId}");
+
+            }
+        }
+    }
+    public async void ActionBeginHandler(ActionEventArgs<WarehauseDetail> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            if (args.Action == "Add")
+            {
+                await WarehauseDetailsService.CreateDetails(args.Data);
+                WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
+                warehauseDetailGrid.Refresh();
+            }
+            if (args.Action == "Edit")
+            {
+                await WarehauseDetailsService.UpdateDetails(args.Data);
+            }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await WarehauseDetailsService.Delete(args.Data.Id);
+        }
+    }
 }
-
-
-
-

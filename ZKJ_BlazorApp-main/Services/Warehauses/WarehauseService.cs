@@ -34,10 +34,10 @@ namespace BlazorApp.Services.Warehauses
             return await this.httpService.Get<Warehause>($"/Warehauses/{id}");
 
         }
-        public async Task<int> Update(int id, Warehause warehause)
+        public async Task<int> Update(Warehause warehause)
         {
-            await this.httpService.Put<Warehause>($"/Warehauses/{id}", warehause);
-            return id;
+            await this.httpService.Put<Warehause>($"/Warehauses/{warehause.Id}", warehause);
+            return warehause.Id;
         }
         public async Task<bool> Delete(int id)
         {

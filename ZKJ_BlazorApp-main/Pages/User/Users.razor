@@ -5,11 +5,11 @@
 
 
 
-@if (UserMe == null || UserMe.Company.Name == null)
+@if (SpinnerVisible == true)
 {
-    <div class="spinner"></div>
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
 }
-else
+@if (UserMe != null && UserMe.Company.Name != null)
 {
     <div class="row justify-content-center m-3">
         <div class="col-sm-8">
@@ -43,11 +43,14 @@ else
 
 @code {
     private User UserMe { get; set; }
+    public bool SpinnerVisible { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
+        SpinnerVisible = true;
         UserMe = await UserService.GetMe();
+        SpinnerVisible = false;
     }
 
     protected async Task Delete(int id)

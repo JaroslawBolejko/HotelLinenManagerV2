@@ -74,12 +74,19 @@
     }
     public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
-
         if (args.Item.Id == "View")
         {
+            if (Id == 0)
+            {
+                navigationManager.NavigateTo($"/laundryservices");
+            }
+            else
+            {
+                navigationManager.NavigateTo($"/viewLaudryServiceDetails/{Id}");
 
-            navigationManager.NavigateTo($"/viewLaudryServiceDetails/{Id}");
+            }
         }
+       
     }
 
     public async void ActionBeginHandler(ActionEventArgs<LaundryService> args)

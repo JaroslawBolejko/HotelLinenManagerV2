@@ -1,60 +1,91 @@
-﻿@page "/Warehauses"
+﻿@page "/warehauses"
 @attribute [Authorize]
 @inject IWarehauseService WarehauseService
-
-<div>
-    <a class="btn btn-primary" href='/addWarehause'>Add</a>
-</div>
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 
-<div class="center">
-    @if (loading)
-    {
-        <div class="spinner-border spinner-border-sm"></div>
-    }
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">
-                    Name
-                </th>
-                <th scope="col">
-                    Warehause Number
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (warehauses != null)
-            {
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
 
-                @foreach (var warehause in warehauses)
-                {
-                    <tr>
-                        <th scope="row">@warehause.Name</th>
-                        <td>@warehause.WarehauseNumber</td>
-                        <td>
-                            <a class="btn btn-primary" href='/viewWarehauseDetails/@warehause.Id'>View</a>|
-                            <a class="btn btn-primary" href='/warhause/@warehause.Id'>Edit</a>Delete
-                            @*<a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
-                        </td>
-                    </tr>
-                }
+@if (WarehauseList != null)
+{
+    <SfGrid @ref="warehauseGrid" DataSource="@WarehauseList" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="Warehause"></GridEvents>
+        <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
+        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
 
-            }
-        </tbody>
-    </table>
-</div>
+        <GridColumns>
+            <GridColumn AllowAdding="true" Visible="false" IsPrimaryKey="true" Field=@nameof(Warehause.Id) HeaderText="Id"></GridColumn>
+            <GridColumn AllowAdding="true" Visible="false" Field="@nameof(Warehause.CompanyId)" HeaderText="CompanyId"></GridColumn>
+            <GridColumn AllowAdding="true" Visible="false" Field=@nameof(Warehause.WarehauseType) HeaderText="WarehauseType"></GridColumn>
+            <GridColumn Field=@nameof(Warehause.Name) HeaderText="Name"></GridColumn>
+            <GridColumn Field=@nameof(Warehause.WarehauseNumber) HeaderText="Warehause number"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
 
 @code {
-
-    private bool loading;
-    private IEnumerable<Models.Warehause> warehauses;
-
+    private List<Warehause> WarehauseList { get; set; }
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    public bool SpinnerVisible { get; set; }
+    public SfGrid<Warehause> warehauseGrid { get; set; }
+    public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        loading = true;
-        warehauses = await WarehauseService.GetAll();
-        loading = false;
+        SpinnerVisible = true;
+        WarehauseList = (await WarehauseService.GetAll()).ToList();
+        SpinnerVisible = false;
+
     }
+
+   
+    public void RowSelectHandler(RowSelectEventArgs<Warehause> args)
+    {
+        Id = args.Data.Id;
+    }
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+
+        if (args.Item.Id == "View")
+        {
+            if (Id == 0)
+            {
+                navigationManager.NavigateTo($"/warehauses");
+            }
+            else
+            {
+                navigationManager.NavigateTo($"/viewWarehauseDetails/{Id}");
+
+            }
+        }
+    }
+    public async void ActionBeginHandler(ActionEventArgs<Warehause> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            if (args.Action == "Add")
+            {
+                await WarehauseService.CreateWarehause(args.Data);
+                WarehauseList = (await WarehauseService.GetAll()).ToList();
+                warehauseGrid.Refresh();
+            }
+            if (args.Action == "Edit")
+            {
+                await WarehauseService.Update(args.Data);
+            }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await WarehauseService.Delete(args.Data.Id);
+        }
+    }
+
+
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BlazorApp.Services.HotelLinenTypes
 {
-    interface IHotelLinenTypeService
+ public interface IHotelLinenTypeService
     {
         Task<IEnumerable<HotelLinenType>> GetAll();
         Task<HotelLinenType> GetById(int id);
