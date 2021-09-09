@@ -17,13 +17,11 @@
     <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
     <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
     <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
-   @*Tu dorobić pod WarehauseDetail bo jest Warhause*@
     <GridColumns>
         <GridColumn AllowAdding="true" Visible="false" IsPrimaryKey="true" Field=@nameof(WarehauseDetail.Id) HeaderText="Id"></GridColumn>
-        <GridColumn AllowAdding="true" Visible="false" Field="@nameof(Warehause.CompanyId)" HeaderText="CompanyId"></GridColumn>
-        <GridColumn AllowAdding="true" Visible="false" Field=@nameof(Warehause.WarehauseType) HeaderText="WarehauseType"></GridColumn>
-        <GridColumn Field=@nameof(Warehause.Name) HeaderText="Name"></GridColumn>
-        <GridColumn Field=@nameof(Warehause.WarehauseNumber) HeaderText="Warehause number"></GridColumn>
+        <GridColumn Field="@nameof(WarehauseDetail.HotelLinenName)" HeaderText="Name"></GridColumn>
+        <GridColumn Field=@nameof(WarehauseDetail.Amount) HeaderText="Amount"></GridColumn>
+        <GridColumn Field=@nameof(WarehauseDetail.Color) HeaderText="Color"></GridColumn>
     </GridColumns>
 </SfGrid>
 

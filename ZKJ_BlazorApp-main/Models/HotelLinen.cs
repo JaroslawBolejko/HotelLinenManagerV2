@@ -9,8 +9,10 @@ namespace BlazorApp.Models
         public string Color { get; set; }
         public int HotelLinenTypeId { get; set; }
         public ushort Amount { get; set; }
+        public string TypeName { get; set; }
         public IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
         public int CompanyId { get; set; }
+        public HotelLinenType HotelLinenType { get; set; }
 
     }
 }
