@@ -1,7 +1,6 @@
 ﻿@page "/hotellinens"
 @attribute [Authorize]
 @inject IHotelLinenService HotelLinenService
-@inject IHotelLinenTypeService LinenTypesService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 
@@ -19,10 +18,18 @@
         <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
 
         <GridColumns>
-            <GridColumn AllowAdding="true" Visible="false" IsPrimaryKey="true" Field=@nameof(HotelLinen.Id) HeaderText="ID"></GridColumn>
-            <GridColumn AllowAdding="true" Visible="false" Field=@nameof(HotelLinen.CompanyId) HeaderText="CompanyId"></GridColumn>
-            <GridColumn  Field=@nameof(HotelLinen.TypeName) HeaderText="Type"></GridColumn>
-            <GridColumn Field=@nameof(HotelLinen.NameWithShortDescription) HeaderText="Description"></GridColumn>
+            <GridColumn AllowEditing="false" AllowAdding="false" IsPrimaryKey="true" Field=@nameof(HotelLinen.Id) HeaderText="ID" Width="0"></GridColumn>
+            <GridColumn  AllowEditing="false" AllowAdding="false" Field=@nameof(HotelLinen.CompanyId) HeaderText="CompanyId"></GridColumn>
+            @*<GridColumn Field="HotelLinenType.TypeName" HeaderText="Type">
+                <EditTemplate>
+                    <SfDropDownList  TItem="HotelLinenType" TValue="int" DataSource="@LinenTypes"
+                                    @bind-Value="@((context as HotelLinen).HotelLinenTypeId )">
+                        <DropDownListFieldSettings Text="TypeName" Value="Id"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+                 
+            </GridColumn>*@
+            <GridColumn Field=@nameof(HotelLinen.Description) HeaderText="Description"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Color) HeaderText="Color"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Amount"></GridColumn>
         </GridColumns>
@@ -35,17 +42,16 @@
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
     public bool SpinnerVisible { get; set; }
+
     public SfGrid<HotelLinen> hotelLinenGrid { get; set; }
-    private List<HotelLinenType> LinenTypes { get; set; }
     public int Id { get; set; }
 
-    public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
+    //public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         Linens = (await HotelLinenService.GetAll()).ToList();
-        LinenTypes = (await LinenTypesService.GetAll()).ToList();
         SpinnerVisible = false;
 
     }
@@ -53,23 +59,23 @@
 
     public void RowSelectHandler(RowSelectEventArgs<HotelLinen> args)
     {
-        Id = args.Data.HotelLinenTypeId;
+        // Id = args.Data.HotelLinenTypeId;
     }
     public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
 
-        if (args.Item.Id == "View")
-        {
-            if (Id == 0)
-            {
-                navigationManager.NavigateTo($"/hotellinens");
-            }
-            else
-            {
-                navigationManager.NavigateTo($"/viewLinendetails/{Id}");
+        //if (args.Item.Id == "View")
+        //{
+        //    if (Id == 0)
+        //    {
+        //        navigationManager.NavigateTo($"/hotellinens");
+        //    }
+        //    else
+        //    {
+        //        navigationManager.NavigateTo($"/viewLinendetails/{Id}");
 
-            }
-        }
+        //    }
+        //}
     }
     public async void ActionBeginHandler(ActionEventArgs<HotelLinen> args)
     {
@@ -77,6 +83,7 @@
         {
             if (args.Action == "Add")
             {
+                args.Data.CompanyId = Linens.Select(x => x.CompanyId).First();
                 await HotelLinenService.Create(args.Data);
                 Linens = (await HotelLinenService.GetAll()).ToList();
                 hotelLinenGrid.Refresh();

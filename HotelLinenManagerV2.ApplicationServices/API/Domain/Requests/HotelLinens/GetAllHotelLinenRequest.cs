@@ -5,7 +5,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.HotelLinen
 {
     public class GetAllHotelLinenRequest : RequestBase, IRequest<GetAllHotelLinenResponse>
     {
-        public string NameWithShortDescription  { get; set; }
+        public string Description  { get; set; }
         public int? HotelLinenTypeId { get; set; }
         public int? WarehauseId { get; set; }
     }

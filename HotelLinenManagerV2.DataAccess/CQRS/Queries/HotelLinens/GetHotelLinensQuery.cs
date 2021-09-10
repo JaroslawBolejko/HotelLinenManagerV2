@@ -8,59 +8,32 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
 {
     public class GetHotelLinensQuery : QueryBase<List<HotelLinen>>
     {
-        public int? HotelLinenTypeId { get; set; }
-        public string NameWithShortDescription { get; set; }
+
+        public string Description { get; set; }
         public int? CompanyId { get; set; }
         public int? WarehauseId { get; set; }
 
         public override async Task<List<HotelLinen>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            if (this.HotelLinenTypeId != null && !string.IsNullOrEmpty(this.NameWithShortDescription))
+            if (!string.IsNullOrEmpty(this.Description))
             {
-                if (context.HotelLinens.Any(x => x.HotelLinenTypeId == this.HotelLinenTypeId
-                    && x.NameWithShortDescription == this.NameWithShortDescription))
+                if (context.HotelLinens.Any(x => x.Description == this.Description))
                 {
                     return await context.HotelLinens
-                        .Where(x => x.HotelLinenTypeId == this.HotelLinenTypeId
-                    && x.HotelLinenTypeId == this.HotelLinenTypeId)
-                        .Include(x=>x.HotelLinenType)
+                        .Where(x => x.Description == this.Description)
+                        .Include(x => x.Company)
                         .AsNoTracking()
                         .ToListAsync();
                 }
                 return null;
             }
 
-            if (this.HotelLinenTypeId == null && !string.IsNullOrEmpty(this.NameWithShortDescription))
-            {
-                if (context.HotelLinens.Any(x => x.NameWithShortDescription == this.NameWithShortDescription))
-                {
-                    return await context.HotelLinens
-                        .Where(x => x.NameWithShortDescription == this.NameWithShortDescription)
-                        .Include(x => x.HotelLinenType)
-                        .AsNoTracking()
-                        .ToListAsync();
-                }
-                return null;
-            }
-
-            if (this.HotelLinenTypeId != null && string.IsNullOrEmpty(this.NameWithShortDescription))
-            {
-                if (context.HotelLinens.Any(x => x.HotelLinenTypeId == this.HotelLinenTypeId))
-                {
-                    return await context.HotelLinens
-                        .Where(x => x.HotelLinenTypeId == this.HotelLinenTypeId)
-                        .Include(x => x.HotelLinenType)
-                        .AsNoTracking()
-                        .ToListAsync();
-                }
-                return null;
-            }
 
             if (this.CompanyId != null && this.WarehauseId == null)
             {
                 return await context.HotelLinens
                          .Where(x => x.Company.Id == this.CompanyId)
-                         .Include(x => x.HotelLinenType)
+                         .Include(x => x.Company)
                          .AsNoTracking()
                          .ToListAsync();
             }
@@ -71,7 +44,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                     {
                         Id = hotellinen.Id,
                         WarehauseId = warehausedetail.WarehauseId,
-                        HotelLinenName = hotellinen.NameWithShortDescription
+                        HotelLinenName = hotellinen.Description
                     }).ToListAsync();
 
                 List<HotelLinen> returnList = new();
@@ -80,7 +53,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 {
                     var item = await context.HotelLinens
                         .Where(x => x.Id == result2[i])
-                        .Include(x => x.HotelLinenType)
+                        .Include(x => x.Company)
                         .AsNoTracking()
                         .ToListAsync();
                     if (item != null) returnList.AddRange(item);
@@ -90,7 +63,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
             else
             {
                 return await context.HotelLinens
-                    .Include(x => x.HotelLinenType)
+                    .Include(x => x.Company)
                     .AsNoTracking()
                     .ToListAsync();
             }

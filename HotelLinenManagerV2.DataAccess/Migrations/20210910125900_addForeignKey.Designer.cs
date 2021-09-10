@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20210910125900_addForeignKey")]
+    partial class addForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,10 +95,29 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<int>("HotelLinenTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameWithShortDescription")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("HotelLinenTypeId");
+
+                    b.ToTable("HotelLinens");
+                });
+
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinenType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("PricePerKg")
                         .IsRequired()
@@ -107,9 +128,13 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("TypeName")
+                    b.Property<string>("Tax")
+                        .IsRequired()
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<byte>("TypeName")
                         .HasMaxLength(80)
-                        .HasColumnType("int");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Weight")
                         .IsRequired()
@@ -117,9 +142,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("HotelLinens");
+                    b.ToTable("HotelLinenTypes");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
@@ -297,7 +320,15 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.HotelLinenType", "HotelLinenType")
+                        .WithMany("HotelLinens")
+                        .HasForeignKey("HotelLinenTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
+
+                    b.Navigation("HotelLinenType");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
@@ -385,6 +416,11 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", b =>
                 {
                     b.Navigation("WarehauseDetails");
+                });
+
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinenType", b =>
+                {
+                    b.Navigation("HotelLinens");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>

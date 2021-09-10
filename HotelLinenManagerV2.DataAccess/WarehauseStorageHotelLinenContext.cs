@@ -10,7 +10,6 @@ namespace HotelLinenManagerV2.DataAccess
         }
         public DbSet<Company> Companies { get; set; }
         public DbSet<HotelLinen> HotelLinens { get; set; }
-        public DbSet<HotelLinenType> HotelLinenTypes { get; set; }
         public DbSet<Warehause> Warehauses { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LaundryService> LaundryServices { get; set; }

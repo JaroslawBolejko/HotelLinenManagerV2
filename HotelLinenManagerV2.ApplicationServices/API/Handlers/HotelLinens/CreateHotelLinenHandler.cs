@@ -37,8 +37,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
 
             var query = new GetHotelLinensQuery()
             {
-                HotelLinenTypeId = request.HotelLinenTypeId,
-                NameWithShortDescription = request.NameWithShortDescription,
+                //Dopisać sprawdzenie po wszystkich propercjach
+                Description = request.Description,
             };
             var getLinen = await this.queryExecutor.Execute(query);
             if (getLinen != null)
