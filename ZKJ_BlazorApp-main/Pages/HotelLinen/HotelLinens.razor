@@ -15,23 +15,61 @@
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="HotelLinen"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+            <HeaderTemplate>
+                <span>@GetDialogHeader(context as HotelLinen)</span>
+            </HeaderTemplate>
+        </GridEditSettings>
 
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+                    var linen = (context as HotelLinen);
+                    <table class="detailtable" width="100%">
+                        <colgroup>
+                            <col width="35%">
+                            <col width="35%">
+                            <col width="30%">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Size: </b></span> @linen.Size (cm x cm)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Weight: </b></span> @linen.Weight (kg)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Price per kilogram: </b></span> @linen.PricePerKg (zł)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </DetailTemplate>
+        </GridTemplates>
         <GridColumns>
             <GridColumn AllowEditing="false" AllowAdding="false" IsPrimaryKey="true" Field=@nameof(HotelLinen.Id) HeaderText="ID" Width="0"></GridColumn>
-            <GridColumn  AllowEditing="false" AllowAdding="false" Field=@nameof(HotelLinen.CompanyId) HeaderText="CompanyId"></GridColumn>
-            @*<GridColumn Field="HotelLinenType.TypeName" HeaderText="Type">
+            <GridColumn AllowEditing="false" AllowAdding="false" Field=@nameof(HotelLinen.CompanyId) HeaderText="CompanyId" Width="0"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.TypeName) HeaderText="Type">
                 <EditTemplate>
-                    <SfDropDownList  TItem="HotelLinenType" TValue="int" DataSource="@LinenTypes"
-                                    @bind-Value="@((context as HotelLinen).HotelLinenTypeId )">
-                        <DropDownListFieldSettings Text="TypeName" Value="Id"></DropDownListFieldSettings>
+                    <span>Type</span>
+                    <SfDropDownList  TItem="string" TValue="Models.Type"
+                                    @bind-Value="@((context as HotelLinen).TypeName)"
+                                    DataSource="@TypesEnumValues">
                     </SfDropDownList>
                 </EditTemplate>
-                 
-            </GridColumn>*@
+            </GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Description) HeaderText="Description"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Color) HeaderText="Color"></GridColumn>
-            <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Amount"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Base amount"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.Size) HeaderText="Size" Width="0"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.Weight) HeaderText="Weight" Width="0"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.PricePerKg) HeaderText="Price per kg" Width="0"></GridColumn>
         </GridColumns>
     </SfGrid>
 }
@@ -46,7 +84,7 @@
     public SfGrid<HotelLinen> hotelLinenGrid { get; set; }
     public int Id { get; set; }
 
-    //public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
+    public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,6 +92,18 @@
         Linens = (await HotelLinenService.GetAll()).ToList();
         SpinnerVisible = false;
 
+    }
+
+    public string GetDialogHeader(HotelLinen hotelLinen)
+    {
+        if (hotelLinen.Id == 0)
+        {
+            return "Add New Linen Item";
+        }
+        else
+        {
+            return $"Edit {hotelLinen.TypeName} Details";
+        }
     }
 
 
