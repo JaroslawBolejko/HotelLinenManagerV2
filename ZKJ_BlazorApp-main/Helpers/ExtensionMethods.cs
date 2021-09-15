@@ -32,13 +32,13 @@ namespace BlazorApp.Helpers
             var valueBytes = System.Convert.FromBase64String(value);
             return Encoding.UTF8.GetString(valueBytes);
         }
-        public static string GetDisplayName(this Enum enumValue)
-        {
-            return enumValue.GetType()?
-                            .GetMember(enumValue.ToString())?
-                            .First()?
-                            .GetCustomAttribute<DisplayAttribute>()?
-                            .Name;
-        }
+        //public static string GetDisplayName(this Enum enumValue)
+        //{
+        //    return enumValue.GetType()?
+        //                    .GetMember(enumValue.ToString())?
+        //                    .First()?
+        //                    .GetCustomAttribute<DisplayAttribute>()?
+        //                    .Name;
+        //}
     }
 }

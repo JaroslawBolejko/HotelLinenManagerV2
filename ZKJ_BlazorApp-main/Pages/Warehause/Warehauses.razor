@@ -2,6 +2,11 @@
 @attribute [Authorize]
 @inject IWarehauseService WarehauseService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@using System;
+@using System.ComponentModel.DataAnnotations;
+@using System.Linq;
+@using System.Reflection;
+
 
 
 @if (SpinnerVisible == true)
@@ -15,12 +20,28 @@
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="Warehause"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+            <HeaderTemplate>
+                <span>@GetDialogHeader(context as Warehause)</span>
+            </HeaderTemplate>
+        </GridEditSettings>
 
         <GridColumns>
-            <GridColumn AllowAdding="true" Visible="false" IsPrimaryKey="true" Field=@nameof(Warehause.Id) HeaderText="Id"></GridColumn>
-            <GridColumn AllowAdding="true" Visible="false" Field="@nameof(Warehause.CompanyId)" HeaderText="CompanyId"></GridColumn>
-            <GridColumn AllowAdding="true" Visible="false" Field=@nameof(Warehause.WarehauseType) HeaderText="WarehauseType"></GridColumn>
+            <GridColumn AllowAdding="false" AllowEditing="false" IsPrimaryKey="true" Field=@nameof(Warehause.Id) HeaderText="ID"  Width="0" ></GridColumn>
+            <GridColumn Field=@nameof(Warehause.WarehauseType) HeaderText="WarehauseType">
+                <Template>
+                    <span>
+                        @GetDisplayName((context as Warehause).WarehauseType)
+                    </span>
+                </Template>
+                <EditTemplate>
+                    <span>Warehause Type</span>
+                    <SfDropDownList TItem="string" TValue="Models.WarehauseType"
+                                    @bind-Value="@((context as Warehause).WarehauseType)"
+                                    DataSource="@WarehauseTypesEnumValues">
+                    </SfDropDownList>
+                </EditTemplate>
+            </GridColumn>
             <GridColumn Field=@nameof(Warehause.Name) HeaderText="Name"></GridColumn>
             <GridColumn Field=@nameof(Warehause.WarehauseNumber) HeaderText="Warehause number"></GridColumn>
         </GridColumns>
@@ -35,6 +56,7 @@
     public bool SpinnerVisible { get; set; }
     public SfGrid<Warehause> warehauseGrid { get; set; }
     public int Id { get; set; }
+    public string[] WarehauseTypesEnumValues = Enum.GetNames(typeof(Models.WarehauseType));
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,15 +66,34 @@
 
     }
 
-   
-    public void RowSelectHandler(RowSelectEventArgs<Warehause> args)
+    public string GetDisplayName(Enum enumValue)
     {
-        Id = args.Data.Id;
+        return enumValue.GetType()?
+                        .GetMember(enumValue.ToString())?
+                        .First()?
+                        .GetCustomAttribute<DisplayAttribute>()?
+                        .Name;
     }
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public string GetDialogHeader(Warehause warehause)
+    {
+        if (warehause.Id == 0)
+        {
+            return "Add New Warehause";
+        }
+        else
+        {
+            return $"Edit {warehause.Name} Details";
+        }
+    }
+
+    public void RowSelectHandler(RowSelectEventArgs<Warehause> argsSelect)
+    {
+        Id = argsSelect.Data.Id;
+    }
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs selectArgs)
     {
 
-        if (args.Item.Id == "View")
+        if (selectArgs.Item.Id == "View")
         {
             if (Id == 0)
             {
@@ -71,12 +112,14 @@
         {
             if (args.Action == "Add")
             {
+                args.Data.CompanyId = WarehauseList.Select(x => x.CompanyId).First();
                 await WarehauseService.CreateWarehause(args.Data);
                 WarehauseList = (await WarehauseService.GetAll()).ToList();
                 warehauseGrid.Refresh();
             }
             if (args.Action == "Edit")
             {
+                args.Data.CompanyId = WarehauseList.Select(x => x.CompanyId).First();
                 await WarehauseService.Update(args.Data);
             }
 

@@ -11,5 +11,7 @@ namespace BlazorApp.Models
         public ushort Amount { get; set; }
         public string HotelLinenName { get; set; }
         public string Color { get; set; }
+        public Type HotelLinenType { get; set; }
+
     }
 }

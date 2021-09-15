@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,6 +93,9 @@ namespace HotelLinenManagerV2
             app.UseEndpoints(endpoints =>
             {
              endpoints.MapControllers();
+            });
+            app.Run(async (context) => {
+                await context.Response.WriteAsync("The requested page is unavailable!");
             });
         }
     }

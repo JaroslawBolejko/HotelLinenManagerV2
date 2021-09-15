@@ -18,10 +18,21 @@
     <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
     <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
     <GridColumns>
-        <GridColumn AllowAdding="true" Visible="false" IsPrimaryKey="true" Field=@nameof(WarehauseDetail.Id) HeaderText="Id"></GridColumn>
-        <GridColumn Field="@nameof(WarehauseDetail.HotelLinenName)" HeaderText="Name"></GridColumn>
+        <GridColumn AllowAdding="false" AllowEditing="false" Width="0" IsPrimaryKey="true" Field=@nameof(WarehauseDetail.Id) HeaderText="Id"></GridColumn>
+        <GridColumn Field="@nameof(WarehauseDetail.HotelLinenType)" HeaderText="Description">
+            <EditTemplate>
+                <span>Type</span>
+                <SfDropDownList TItem="string" TValue="Models.Type"
+                                @bind-Value="@((context as WarehauseDetail).HotelLinenType)"
+                                DataSource="@LinenTypesEnumValues">
+                </SfDropDownList>
+            </EditTemplate>
+        </GridColumn>
+        <GridColumn Field="@nameof(WarehauseDetail.HotelLinenName)" HeaderText="Description"></GridColumn>
         <GridColumn Field=@nameof(WarehauseDetail.Amount) HeaderText="Amount"></GridColumn>
         <GridColumn Field=@nameof(WarehauseDetail.Color) HeaderText="Color"></GridColumn>
+        <GridColumn Width="0" AllowAdding="false" AllowEditing="false" Field=@nameof(WarehauseDetail.WarehauseId) HeaderText="WarehauseId"></GridColumn>
+        <GridColumn Width="0" AllowAdding="false" AllowEditing="false" Field=@nameof(WarehauseDetail.HotelLinenId) HeaderText="HotelLinenId"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -40,8 +51,10 @@
     public bool SpinnerVisible { get; set; }
     public SfGrid<WarehauseDetail> warehauseDetailGrid { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+    private List<Object> Toolbaritems = new List<Object>() { /*"Add",*/ "Edit", "Delete", "Update", "Cancel",
+        new ItemModel() { Text = "Move All Linen To Dirty Warehause", TooltipText = "MoveAll", PrefixIcon = "e-click", Id = "MoveAll" } };
     public int DetailId { get; set; }
+    public string[] LinenTypesEnumValues = Enum.GetNames(typeof(Models.Type));
 
 
     protected override async Task OnInitializedAsync()
@@ -76,75 +89,75 @@
 
     }
 
-    protected async Task MoveToLoundry()
-    {
-        laundry = new LaundryService
-        {
-            Name = "Usługa Prania",
-            Number = DocumentNumerCreator(LastLaundry.Number),
-            CompanyId = LastLaundry.CompanyId,
-            IsFinished = false,
-            RecievedDate = DateTime.Now,
-            IssuedDate = null
 
-        };
-        numberToFilter = laundry.Number;
-
-        await LaundryServiceService.CreateLaundry(laundry);
-        CreatedLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
-
-
-        foreach (var detail in WarehauseDetails)
-        {
-            laundryServiceDetail = new LaundryServiceDetail
-            {
-                LaundryServiceId = CreatedLaundryService.Id,
-                HotelLinenId = detail.HotelLinenId,
-                Amount = detail.Amount
-
-            };
-
-            await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
-        }
-        foreach (var detail in WarehauseDetails)
-        {
-            await WarehauseDetailsService.Delete(detail.Id);
-        }
-
-        navigationManager.NavigateTo($"/laundryservices");
-
-    }
 
     public void RowSelectHandler(RowSelectEventArgs<WarehauseDetail> args)
     {
         DetailId = args.Data.Id;
     }
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public async void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
 
-        if (args.Item.Id == "View")
+        if (args.Item.Id == "MoveAll")
         {
             if (DetailId == 0)
             {
-                navigationManager.NavigateTo($"/viewWarehauseDetails");
+                navigationManager.NavigateTo($"/viewWarehauseDetails/{DetailId}");
             }
             else
             {
-                navigationManager.NavigateTo($"/viewWarehauseDetails/{DetailId}");
+                laundry = new LaundryService
+                {
+                    Name = "Usługa Prania",
+                    Number = DocumentNumerCreator(LastLaundry.Number),
+                    CompanyId = LastLaundry.CompanyId,
+                    IsFinished = false,
+                    RecievedDate = DateTime.Now,
+                    IssuedDate = null
+
+                };
+                numberToFilter = laundry.Number;
+
+                await LaundryServiceService.CreateLaundry(laundry);
+                CreatedLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
+
+
+                foreach (var detail in WarehauseDetails)
+                {
+                    laundryServiceDetail = new LaundryServiceDetail
+                    {
+                        LaundryServiceId = CreatedLaundryService.Id,
+                        HotelLinenId = detail.HotelLinenId,
+                        Amount = detail.Amount
+
+                    };
+
+                    await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
+                }
+                foreach (var detail in WarehauseDetails)
+                {
+                    await WarehauseDetailsService.Delete(detail.Id);
+                }
+
+                navigationManager.NavigateTo($"/laundryservices");
 
             }
         }
     }
+
     public async void ActionBeginHandler(ActionEventArgs<WarehauseDetail> args)
     {
+        
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
-            if (args.Action == "Add")
-            {
-                await WarehauseDetailsService.CreateDetails(args.Data);
-                WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
-                warehauseDetailGrid.Refresh();
-            }
+            //if (args.Action == "Add")
+            //{
+            //    args.Data.WarehauseId = int.Parse(Id);
+            //    args.Data.WarehauseId = int.Parse(Id);
+            //    await WarehauseDetailsService.CreateDetails(args.Data);
+            //    WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
+            //    warehauseDetailGrid.Refresh();
+            //}
             if (args.Action == "Edit")
             {
                 await WarehauseDetailsService.UpdateDetails(args.Data);

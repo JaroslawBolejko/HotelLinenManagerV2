@@ -1,4 +1,6 @@
-﻿namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
+﻿using HotelLinenManagerV2.DataAccess.Entities;
+
+namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
 {
     public class WarehauseDetail
     {
@@ -8,6 +10,7 @@
         public string HotelLinenName { get; set; }
         public string Color { get; set; }
         public ushort Amount { get; set; }
+        public Type HotelLinenType { get; set; }
 
     }
 }
