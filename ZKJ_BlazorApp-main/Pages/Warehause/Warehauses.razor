@@ -52,7 +52,8 @@
 @code {
     private List<Warehause> WarehauseList { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel"
+        , new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
     public bool SpinnerVisible { get; set; }
     public SfGrid<Warehause> warehauseGrid { get; set; }
     public int Id { get; set; }

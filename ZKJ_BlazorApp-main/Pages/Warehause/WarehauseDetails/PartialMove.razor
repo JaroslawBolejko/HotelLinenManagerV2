@@ -62,11 +62,12 @@
         warehauseToMove = (await WarehauseDetailsService.GetDetailsWithQuery(newDet.WarehauseToMove, warehauseDetails.HotelLinenId)).FirstOrDefault();
         if (warehauseToMove != null)
         {
-            warehauseToMove.Amount =(ushort)(warehauseToMove.Amount+newDet.AmountToMove);
+            warehauseToMove.Amount = (ushort)(warehauseToMove.Amount + newDet.AmountToMove);
             await WarehauseDetailsService.UpdateDetails(warehauseToMove);
-            warehauseDetails.Amount =(ushort)(warehauseDetails.Amount - newDet.AmountToMove);
+            warehauseDetails.Amount = (ushort)(warehauseDetails.Amount - newDet.AmountToMove);
             await WarehauseDetailsService.UpdateDetails(warehauseDetails);
             navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseDetails.WarehauseId}");
+
         }
         else
         {

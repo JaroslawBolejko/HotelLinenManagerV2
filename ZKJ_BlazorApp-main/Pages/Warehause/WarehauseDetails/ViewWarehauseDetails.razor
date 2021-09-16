@@ -10,10 +10,19 @@
 {
     <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
 }
-
+@if (Warehause != null)
+{
+    <center><h5>@Warehause.Name nr @Warehause.WarehauseNumber</h5></center>
+}
 
 <SfGrid @ref="warehauseDetailGrid" DataSource="@WarehauseDetails" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
-    <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="WarehauseDetail"></GridEvents>
+    <SfToolbar Width="500">
+        <ToolbarItems>
+            <ToolbarItem Text="Back" Type="ItemType.Button" HtmlAttributes="@Item1" CssClass="moveButton"></ToolbarItem>
+
+        </ToolbarItems>
+    </SfToolbar>
+    <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" CommandClicked="OnCommandClicked" TValue="WarehauseDetail"></GridEvents>
     <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
     <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
     <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
@@ -33,6 +42,12 @@
         <GridColumn Field=@nameof(WarehauseDetail.Color) HeaderText="Color"></GridColumn>
         <GridColumn Width="0" AllowAdding="false" AllowEditing="false" Field=@nameof(WarehauseDetail.WarehauseId) HeaderText="WarehauseId"></GridColumn>
         <GridColumn Width="0" AllowAdding="false" AllowEditing="false" Field=@nameof(WarehauseDetail.HotelLinenId) HeaderText="HotelLinenId"></GridColumn>
+        <GridColumn HeaderText="Actions" Width="110">
+            <GridCommandColumns>
+                <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
+                { Content="Move To" , CssClass = "e-flat" })"></GridCommandColumn>
+            </GridCommandColumns>
+        </GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -51,17 +66,27 @@
     public bool SpinnerVisible { get; set; }
     public SfGrid<WarehauseDetail> warehauseDetailGrid { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-    private List<Object> Toolbaritems = new List<Object>() { /*"Add",*/ "Edit", "Delete", "Update", "Cancel",
-        new ItemModel() { Text = "Move All Linen To Dirty Warehause", TooltipText = "MoveAll", PrefixIcon = "e-click", Id = "MoveAll" } };
     public int DetailId { get; set; }
     public string[] LinenTypesEnumValues = Enum.GetNames(typeof(Models.Type));
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel"
+        , new ItemModel() {CssClass="specyfic", Text = "Back", TooltipText = "Back", PrefixIcon = "e-click", Id = "Back" } };
 
+
+    Dictionary<string, object> Item1 = new Dictionary<string, object>()
+{
+        { "class" , "custom_bold" },
+        { "id" , "itemId" }
+    };
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         WarehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
         Warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        if (Warehause != null && Warehause.WarehauseType.ToString() == "Magazyn_Brudnej_Bielizny")
+        {
+            Toolbaritems.Add(new ItemModel() { CssClass = "moveButton", Text = "Move All Linnen To Laundry", TooltipText = "Move To Laundry", PrefixIcon = "e-click", Id = "Move To Laundry" });
+        }
         LastLaundry = (await LaundryServiceService.GetAllLaundry()).OrderBy(x => x.Number).Last();
         SpinnerVisible = false;
     }
@@ -89,70 +114,37 @@
 
     }
 
+    public void OnCommandClicked(CommandClickEventArgs<WarehauseDetail> args)
+    {
 
+        if (args.CommandColumn.ButtonOption.Content == "Move To")
+        {
+            navigationManager.NavigateTo($"/partialmove/{args.RowData.Id}");
+        }
+
+    }
 
     public void RowSelectHandler(RowSelectEventArgs<WarehauseDetail> args)
     {
         DetailId = args.Data.Id;
     }
-    public async void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
 
-        if (args.Item.Id == "MoveAll")
+        if (args.Item.Id == "Back")
         {
-            if (DetailId == 0)
-            {
-                navigationManager.NavigateTo($"/viewWarehauseDetails/{DetailId}");
-            }
-            else
-            {
-                laundry = new LaundryService
-                {
-                    Name = "Usługa Prania",
-                    Number = DocumentNumerCreator(LastLaundry.Number),
-                    CompanyId = LastLaundry.CompanyId,
-                    IsFinished = false,
-                    RecievedDate = DateTime.Now,
-                    IssuedDate = null
-
-                };
-                numberToFilter = laundry.Number;
-
-                await LaundryServiceService.CreateLaundry(laundry);
-                CreatedLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
-
-
-                foreach (var detail in WarehauseDetails)
-                {
-                    laundryServiceDetail = new LaundryServiceDetail
-                    {
-                        LaundryServiceId = CreatedLaundryService.Id,
-                        HotelLinenId = detail.HotelLinenId,
-                        Amount = detail.Amount
-
-                    };
-
-                    await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
-                }
-                foreach (var detail in WarehauseDetails)
-                {
-                    await WarehauseDetailsService.Delete(detail.Id);
-                }
-
-                navigationManager.NavigateTo($"/laundryservices");
-
-            }
+            navigationManager.NavigateTo($"/warehauses");
         }
+
     }
 
     public async void ActionBeginHandler(ActionEventArgs<WarehauseDetail> args)
     {
-        
+
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
             //if (args.Action == "Add")
             //{
-            //    args.Data.WarehauseId = int.Parse(Id);
             //    args.Data.WarehauseId = int.Parse(Id);
             //    await WarehauseDetailsService.CreateDetails(args.Data);
             //    WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
@@ -163,6 +155,7 @@
                 await WarehauseDetailsService.UpdateDetails(args.Data);
             }
 
+
         }
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
         {
@@ -170,3 +163,13 @@
         }
     }
 }
+<style>
+   /* .specyfic {
+        background-color: blue;
+    }*/
+
+    
+    .specyfic.e-toolbar-item .e-tbar-btn {
+        background-color: aqua;
+    }
+</style>
