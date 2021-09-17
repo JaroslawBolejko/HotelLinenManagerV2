@@ -16,12 +16,6 @@
 }
 
 <SfGrid @ref="warehauseDetailGrid" DataSource="@WarehauseDetails" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
-    <SfToolbar Width="500">
-        <ToolbarItems>
-            <ToolbarItem Text="Back" Type="ItemType.Button" HtmlAttributes="@Item1" CssClass="moveButton"></ToolbarItem>
-
-        </ToolbarItems>
-    </SfToolbar>
     <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" CommandClicked="OnCommandClicked" TValue="WarehauseDetail"></GridEvents>
     <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
     <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
@@ -45,7 +39,7 @@
         <GridColumn HeaderText="Actions" Width="110">
             <GridCommandColumns>
                 <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
-                { Content="Move To" , CssClass = "e-flat" })"></GridCommandColumn>
+                                                   { Content = "Move To", CssClass = "e-flat" })"></GridCommandColumn>
             </GridCommandColumns>
         </GridColumn>
     </GridColumns>
@@ -58,7 +52,7 @@
     public string Id { get; set; }
     private IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
     private Warehause Warehause { get; set; }
-    private LaundryService LastLaundry { get; set; }
+    private string LastLaundry { get; set; }
     private LaundryService laundry;
     private LaundryServiceDetail laundryServiceDetail;
     private LaundryService CreatedLaundryService { get; set; }
@@ -68,15 +62,9 @@
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     public int DetailId { get; set; }
     public string[] LinenTypesEnumValues = Enum.GetNames(typeof(Models.Type));
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel"
-        , new ItemModel() {CssClass="specyfic", Text = "Back", TooltipText = "Back", PrefixIcon = "e-click", Id = "Back" } };
+    private List<Object> Toolbaritems = new List<Object>() {"Add","Edit", "Delete", "Update", "Cancel"
+    , new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
 
-
-    Dictionary<string, object> Item1 = new Dictionary<string, object>()
-{
-        { "class" , "custom_bold" },
-        { "id" , "itemId" }
-    };
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,13 +73,22 @@
         Warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
         if (Warehause != null && Warehause.WarehauseType.ToString() == "Magazyn_Brudnej_Bielizny")
         {
-            Toolbaritems.Add(new ItemModel() { CssClass = "moveButton", Text = "Move All Linnen To Laundry", TooltipText = "Move To Laundry", PrefixIcon = "e-click", Id = "Move To Laundry" });
+            Toolbaritems.Remove("Add");
+            Toolbaritems.Add(new ItemModel()
+            {
+                CssClass = "specyfic",
+                Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
+                Text = "Move All Linnen To Laundry",
+                TooltipText = "Move To Laundry",
+                Id = "MoveToLaundry"
+            });
         }
-        LastLaundry = (await LaundryServiceService.GetAllLaundry()).OrderBy(x => x.Number).Last();
+       
+        LastLaundry = (await LaundryServiceService.GetAllLaundry()).Select(x => x.Number).Last();
         SpinnerVisible = false;
     }
 
-
+    ///TU jest Bug napraw to po miesiacu i roku ma numer lecieć od pocżatku,
     protected string DocumentNumerCreator(string str)
     {
         StringBuilder sb = new StringBuilder();
@@ -128,28 +125,71 @@
     {
         DetailId = args.Data.Id;
     }
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public async void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
 
         if (args.Item.Id == "Back")
         {
             navigationManager.NavigateTo($"/warehauses");
         }
+        if (args.Item.Id == "MoveToLaundry")
+        {
+            await MoveToLoundry();
+        }
 
     }
+    protected async Task MoveToLoundry()
+    {
+        laundry = new LaundryService
+        {
+            Name = "Usługa Prania",
+            Number = DocumentNumerCreator(LastLaundry),
+            CompanyId = Warehause.CompanyId,
+            IsFinished = false,
+            RecievedDate = DateTime.Now,
+            IssuedDate = null
 
+        };
+        numberToFilter = laundry.Number;
+
+        await LaundryServiceService.CreateLaundry(laundry);
+        CreatedLaundryService = (await LaundryServiceService.GetServiceByNumber(numberToFilter)).First();
+
+
+        foreach (var detail in WarehauseDetails)
+        {
+            laundryServiceDetail = new LaundryServiceDetail
+            {
+                LaundryServiceId = CreatedLaundryService.Id,
+                HotelLinenId = detail.HotelLinenId,
+                Amount = detail.Amount
+
+            };
+
+            await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
+        }
+        foreach (var detail in WarehauseDetails)
+        {
+            await WarehauseDetailsService.Delete(detail.Id);
+        }
+
+        navigationManager.NavigateTo($"/laundryservices");
+
+    }
     public async void ActionBeginHandler(ActionEventArgs<WarehauseDetail> args)
     {
 
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
-            //if (args.Action == "Add")
-            //{
-            //    args.Data.WarehauseId = int.Parse(Id);
-            //    await WarehauseDetailsService.CreateDetails(args.Data);
-            //    WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
-            //    warehauseDetailGrid.Refresh();
-            //}
+
+            if (args.Action == "Add")
+            {
+                args.Data.WarehauseId = int.Parse(Id);
+                await WarehauseDetailsService.CreateDetails(args.Data);
+                WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
+                warehauseDetailGrid.Refresh();
+            }
+
             if (args.Action == "Edit")
             {
                 await WarehauseDetailsService.UpdateDetails(args.Data);
@@ -164,12 +204,11 @@
     }
 }
 <style>
-   /* .specyfic {
-        background-color: blue;
-    }*/
-
-    
     .specyfic.e-toolbar-item .e-tbar-btn {
-        background-color: aqua;
+        background-color: orange;
+    }
+
+    .e-toolbar-item .e-tbar-btn {
+        border: solid;
     }
 </style>

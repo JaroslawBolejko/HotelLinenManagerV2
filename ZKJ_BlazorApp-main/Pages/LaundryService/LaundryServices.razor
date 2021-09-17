@@ -57,7 +57,8 @@
 
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
-    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel", new ItemModel() { Text = "View Details", TooltipText = "View", PrefixIcon = "e-click", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
+        new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
 
     public int Id { get; set; }
 
@@ -166,10 +167,13 @@
 <style>
     .true {
         background-color: lawngreen;
-    }
+      }
 
     .false {
         background-color: orangered;
+           }
+    .e-toolbar-item .e-tbar-btn {
+        border: solid;
     }
 </style>
 

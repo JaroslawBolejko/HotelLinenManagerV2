@@ -25,12 +25,7 @@
             <DetailTemplate>
                 @{
                     var linen = (context as HotelLinen);
-                    <table class="detailtable" width="100%">
-                        <colgroup>
-                            <col width="35%">
-                            <col width="35%">
-                            <col width="30%">
-                        </colgroup>
+                    <table class="detailtable">
                         <tbody>
                             <tr>
                                 <td>
@@ -58,7 +53,7 @@
             <GridColumn Field=@nameof(HotelLinen.TypeName) HeaderText="Type">
                 <EditTemplate>
                     <span>Type</span>
-                    <SfDropDownList  TItem="string" TValue="Models.Type"
+                    <SfDropDownList TItem="string" TValue="Models.Type"
                                     @bind-Value="@((context as HotelLinen).TypeName)"
                                     DataSource="@TypesEnumValues">
                     </SfDropDownList>
@@ -149,6 +144,9 @@
             await HotelLinenService.Delete(args.Data.Id);
         }
     }
-
-
 }
+<style>
+    .e-toolbar-item .e-tbar-btn {
+        border: solid;
+    }
+</style>

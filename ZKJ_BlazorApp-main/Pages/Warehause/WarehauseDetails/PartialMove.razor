@@ -10,7 +10,7 @@
         <div class="col-md-4">
             <EditForm Model="warehauseDetails">
                 <div class="form-group">
-                    
+
                     <input type="hidden" @bind-value="@warehauseDetails.Id" />
 
                     <label for="Amount" class="control-label">Amount</label>
@@ -50,6 +50,8 @@
     {
         warehauseDetails = await WarehauseDetailsService.GetWarehauseDetailById(int.Parse(Id));
         warehauses = await WarehauseService.GetAll();
+        newDet.AmountToMove = warehauseDetails.Amount;
+       // newDet.WarehauseToMove = warehauses.First().WarehauseType.ToString();
     }
 
     void cancel()
@@ -65,7 +67,15 @@
             warehauseToMove.Amount = (ushort)(warehauseToMove.Amount + newDet.AmountToMove);
             await WarehauseDetailsService.UpdateDetails(warehauseToMove);
             warehauseDetails.Amount = (ushort)(warehauseDetails.Amount - newDet.AmountToMove);
-            await WarehauseDetailsService.UpdateDetails(warehauseDetails);
+            if (warehauseDetails.Amount == 0)
+            {
+                await WarehauseDetailsService.Delete(warehauseDetails.Id);
+
+            }
+            else
+            {
+                await WarehauseDetailsService.UpdateDetails(warehauseDetails);
+            }
             navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseDetails.WarehauseId}");
 
         }
@@ -78,7 +88,15 @@
             await WarehauseDetailsService.CreateDetails(newDetail);
 
             warehauseDetails.Amount = (ushort)(warehauseDetails.Amount - newDet.AmountToMove);
-            await WarehauseDetailsService.UpdateDetails(warehauseDetails);
+            if (warehauseDetails.Amount == 0)
+            {
+                await WarehauseDetailsService.Delete(warehauseDetails.Id);
+
+            }
+            else
+            {
+                await WarehauseDetailsService.UpdateDetails(warehauseDetails);
+            }
 
             navigationManager.NavigateTo($"/viewWarehauseDetails/{warehauseDetails.WarehauseId}");
         }
