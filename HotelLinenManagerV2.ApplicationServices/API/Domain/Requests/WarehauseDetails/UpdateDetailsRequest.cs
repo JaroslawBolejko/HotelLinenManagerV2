@@ -8,6 +8,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.WarehauseD
         public int Id { get; set; }
         public int HotelLinenId { get; set; }
         public int WarehauseId { get; set; }
-        public int Amount { get; set; }
+        public ushort Amount { get; set; }
     }
 }

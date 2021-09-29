@@ -1,6 +1,8 @@
 ﻿@page "/hotellinens"
 @attribute [Authorize]
 @inject IHotelLinenService HotelLinenService
+@inject IWarehauseService WarehauseService
+@inject IWarehauseDetailsService WarehauseDetailsService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 
@@ -12,7 +14,7 @@
 @if (Linens != null)
 {
     <SfGrid @ref="hotelLinenGrid" DataSource="@Linens" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
-        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="HotelLinen"></GridEvents>
+        <GridEvents OnActionBegin="ActionBeginHandler" TValue="HotelLinen"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
@@ -48,7 +50,7 @@
             </DetailTemplate>
         </GridTemplates>
         <GridColumns>
-            <GridColumn AllowEditing="false" AllowAdding="false" IsPrimaryKey="true" Field=@nameof(HotelLinen.Id) HeaderText="ID" Width="0"></GridColumn>
+            <GridColumn AllowEditing="false" AllowAdding="false" IsPrimaryKey="true" Field=@nameof(HotelLinen.Id) HeaderText="ID" ></GridColumn>
             <GridColumn AllowEditing="false" AllowAdding="false" Field=@nameof(HotelLinen.CompanyId) HeaderText="CompanyId" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.TypeName) HeaderText="Type">
                 <EditTemplate>
@@ -65,6 +67,16 @@
             <GridColumn Field=@nameof(HotelLinen.Size) HeaderText="Size" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Weight) HeaderText="Weight" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.PricePerKg) HeaderText="Price per kg" Width="0"></GridColumn>
+            <GridColumn Field=Warehause.Name HeaderText="Warehause Name" Width="0">
+                <EditTemplate>
+                    <span>Choose warehause to put in added linen</span>
+                    <SfDropDownList TItem="Warehause" TValue="int" DataSource="@Warehauses"
+                                    @bind-Value="@((context as HotelLinen).WarehauseId)">
+                        <DropDownListFieldSettings Text="Name" Value="Id">
+                        </DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+            </GridColumn>
         </GridColumns>
     </SfGrid>
 }
@@ -75,16 +87,19 @@
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
     public bool SpinnerVisible { get; set; }
-
+    private WarehauseDetail detail = new WarehauseDetail();
     public SfGrid<HotelLinen> hotelLinenGrid { get; set; }
     public int Id { get; set; }
-
     public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
+    public List<Warehause> Warehauses { get; set; }
+
+
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         Linens = (await HotelLinenService.GetAll()).ToList();
+        Warehauses = (await WarehauseService.GetAll()).ToList();
         SpinnerVisible = false;
 
     }
@@ -102,26 +117,6 @@
     }
 
 
-    public void RowSelectHandler(RowSelectEventArgs<HotelLinen> args)
-    {
-        // Id = args.Data.HotelLinenTypeId;
-    }
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
-    {
-
-        //if (args.Item.Id == "View")
-        //{
-        //    if (Id == 0)
-        //    {
-        //        navigationManager.NavigateTo($"/hotellinens");
-        //    }
-        //    else
-        //    {
-        //        navigationManager.NavigateTo($"/viewLinendetails/{Id}");
-
-        //    }
-        //}
-    }
     public async void ActionBeginHandler(ActionEventArgs<HotelLinen> args)
     {
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
@@ -131,6 +126,18 @@
                 args.Data.CompanyId = Linens.Select(x => x.CompanyId).First();
                 await HotelLinenService.Create(args.Data);
                 Linens = (await HotelLinenService.GetAll()).ToList();
+
+
+                detail.HotelLinenId = Linens.Select(x=>x.Id).Last();
+                detail.WarehauseId = args.Data.WarehauseId;
+                detail.Amount = args.Data.Amount;
+                detail.HotelLinenName = null;
+                detail.Color = null;
+                detail.HotelLinenType = args.Data.TypeName;
+
+
+
+                await WarehauseDetailsService.CreateDetails(detail);
                 hotelLinenGrid.Refresh();
             }
             if (args.Action == "Edit")

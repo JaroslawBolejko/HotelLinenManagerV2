@@ -24,7 +24,6 @@ namespace BlazorApp.Models
         public int Id { get; set; }
         public string Description { get; set; }
         public string Color { get; set; }
-        public int HotelLinenTypeId { get; set; }
         public ushort Amount { get; set; }
         public Type TypeName { get; set; }
         public string Size { get; set; }
@@ -32,6 +31,8 @@ namespace BlazorApp.Models
         public decimal PricePerKg { get; set; }
         public int CompanyId { get; set; }
         public Company Company { get; set; }
+        public int WarehauseId {get;set;}
+        public Warehause Warehause { get; set; }
         public IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
 
     }

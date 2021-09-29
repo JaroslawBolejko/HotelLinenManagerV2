@@ -126,24 +126,36 @@
     }
     protected string DocumentNumerCreator(string str)
     {
-        StringBuilder sb = new StringBuilder();
-        string docNumber;
-        int number = 0;
+        var number = 1;
+        var currentYear = DateTime.Now.Year;
+        var currentMonth = DateTime.Now.Month;
+
         if (str == null)
         {
-            docNumber = "1";
+            return $"{number}/{currentMonth}/{currentYear}";
         }
         else
         {
-            var tab = str.Split("/", StringSplitOptions.RemoveEmptyEntries);
-            number = int.Parse(tab[0]) + 1;
-            docNumber = number.ToString();
+            var tabOfNumbersFromDocument = str.Split("/", StringSplitOptions.RemoveEmptyEntries);
+            var docNumber = int.Parse(tabOfNumbersFromDocument[0]);
+            var month = int.Parse(tabOfNumbersFromDocument[1]);
+            var year = int.Parse(tabOfNumbersFromDocument[2]);
+
+            if (currentMonth > month)
+            {
+                return $"{number}/{currentMonth}/{currentYear}";
+            }
+            else if (currentYear > year)
+            {
+                return $"{number}/{currentMonth}/{currentYear}";
+            }
+            else
+            {
+                return $"{++docNumber}/{currentMonth}/{currentYear}";
+            }
+
 
         }
-        string date = DateTime.Now.ToString("MM/yyyy").Replace(".", "/");
-
-        return sb.Append(docNumber).Append('/').Append(date).ToString();
-
     }
     public void CustomizeCell(QueryCellInfoEventArgs<LaundryService> args)
     {
@@ -161,7 +173,7 @@
         }
 
     }
-   
+
 }
 
 <style>

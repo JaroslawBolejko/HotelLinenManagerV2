@@ -4,6 +4,7 @@
 @inject IWarehauseService WarehauseService
 @inject ILaundryServiceService LaundryServiceService
 @inject ILaundryServiceDetailsService LaundryServiceDetailsService
+@inject IHotelLinenService HotelLinenService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 @if (SpinnerVisible == true)
@@ -27,15 +28,13 @@
                 <span>Type</span>
                 <SfDropDownList TItem="string" TValue="Models.Type"
                                 @bind-Value="@((context as WarehauseDetail).HotelLinenType)"
-                                DataSource="@LinenTypesEnumValues">
+                                DataSource="@AvailableLinens">
                 </SfDropDownList>
             </EditTemplate>
         </GridColumn>
         <GridColumn Field="@nameof(WarehauseDetail.HotelLinenName)" HeaderText="Description"></GridColumn>
         <GridColumn Field=@nameof(WarehauseDetail.Amount) HeaderText="Amount"></GridColumn>
         <GridColumn Field=@nameof(WarehauseDetail.Color) HeaderText="Color"></GridColumn>
-        <GridColumn Width="0" AllowAdding="false" AllowEditing="false" Field=@nameof(WarehauseDetail.WarehauseId) HeaderText="WarehauseId"></GridColumn>
-        <GridColumn Width="0" AllowAdding="false" AllowEditing="false" Field=@nameof(WarehauseDetail.HotelLinenId) HeaderText="HotelLinenId"></GridColumn>
         <GridColumn HeaderText="Actions" Width="110">
             <GridCommandColumns>
                 <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
@@ -61,16 +60,19 @@
     public SfGrid<WarehauseDetail> warehauseDetailGrid { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     public int DetailId { get; set; }
-    public string[] LinenTypesEnumValues = Enum.GetNames(typeof(Models.Type));
+    // public string[] LinenTypesEnumValues = Enum.GetNames(typeof(Models.Type));
+    // public List<HotelLinen> AvailableLinens { get; set; }
+    public string[] AvailableLinens { get; set; }
     private List<Object> Toolbaritems = new List<Object>() {"Add","Edit", "Delete", "Update", "Cancel"
     , new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
-
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         WarehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
         Warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        AvailableLinens = (await HotelLinenService.GetAll()).Select(x => x.TypeName.ToString()).ToArray();
+
         if (Warehause != null && Warehause.WarehauseType.ToString() == "Magazyn_Brudnej_Bielizny")
         {
             Toolbaritems.Remove("Add");
@@ -83,7 +85,7 @@
                 Id = "MoveToLaundry"
             });
         }
-       
+
         LastLaundry = (await LaundryServiceService.GetAllLaundry()).Select(x => x.Number).Last();
         SpinnerVisible = false;
     }
