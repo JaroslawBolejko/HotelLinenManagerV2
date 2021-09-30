@@ -69,7 +69,7 @@
             <GridColumn Field=@nameof(HotelLinen.PricePerKg) HeaderText="Price per kg" Width="0"></GridColumn>
             <GridColumn Field=Warehause.Name HeaderText="Warehause Name" Width="0">
                 <EditTemplate>
-                    <span>Choose warehause to put in added linen</span>
+                    <span>Choose warehause to placed added linen</span>
                     <SfDropDownList TItem="Warehause" TValue="int" DataSource="@Warehauses"
                                     @bind-Value="@((context as HotelLinen).WarehauseId)">
                         <DropDownListFieldSettings Text="Name" Value="Id">
