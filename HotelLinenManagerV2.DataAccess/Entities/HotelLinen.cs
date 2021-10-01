@@ -44,7 +44,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [MaxLength(50)]
         public string Color { get; set; }
         [Required]
-        public ushort Amount { get; set; }
+        [Range(0,10000)]
+        public int Amount { get; set; }
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public Company Company { get; set; }

@@ -9,7 +9,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public int WarehauseId { get; set; }
         public string HotelLinenName { get; set; }
         public string Color { get; set; }
-        public ushort Amount { get; set; }
+        public int Amount { get; set; }
         public Type HotelLinenType { get; set; }
 
     }

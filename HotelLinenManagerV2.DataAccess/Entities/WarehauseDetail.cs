@@ -9,7 +9,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         public int WarehauseId { get; set; }
         [Required]
-        public ushort Amount { get; set; }
+        [Range(0, 10000)]
+        public int Amount { get; set; }
         public HotelLinen HotelLinen { get; set; }
         public Warehause Warehause { get; set; }
 

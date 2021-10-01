@@ -10,7 +10,7 @@ namespace BlazorApp.Models
         public int Id { get; set; }
         public int LaundryServiceId { get; set; }
         public int HotelLinenId { get; set; }
-        public ushort Amount { get; set; }
+        public int Amount { get; set; }
         public string HotelLinenName { get; set; }
         public string Color { get; set; }
     }

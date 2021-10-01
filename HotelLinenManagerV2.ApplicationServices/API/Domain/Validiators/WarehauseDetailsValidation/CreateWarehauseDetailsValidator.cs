@@ -7,9 +7,12 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Warehau
     {
         public CreateWarehauseDetailsValidator()
         {
-            this.RuleFor(x => x.WarehauseId).GreaterThan(0).WithMessage("Id Nie może być równe 0!").NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+            this.RuleFor(x => x.WarehauseId)
+                .GreaterThan(0).WithMessage("Id Nie może być równe 0!")
+                .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.HotelLinenId).GreaterThan(0).WithMessage("Id Nie może być równe 0!").NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Amount)
+                .GreaterThan(0).WithMessage("Ilość nie może być mniejsza od 0!")
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
         }
     }

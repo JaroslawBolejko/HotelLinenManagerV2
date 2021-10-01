@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlazorApp.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace BlazorApp.Models
@@ -7,8 +8,13 @@ namespace BlazorApp.Models
     {
         public int WarehauseToMove { get; set; }
         public int HotelLinenToMove { get; set; }
-        [Range(0,65535)]
-        public ushort AmountToMove { get; set; }
-       
+        [Required]
+        //[Range(0,10000, ErrorMessage ="Wartość nie może być ujemna lub większa od 10000")]
+        [AllowedLinenAmountToMoveAtrribute(9,ErrorMessage ="huj")]
+        public int AmountToMove { get; set; }
+
+        public int WarehauseDetailId { get; set; }
+        
+        
     }
 }

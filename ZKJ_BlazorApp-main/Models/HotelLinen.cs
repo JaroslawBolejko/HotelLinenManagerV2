@@ -24,7 +24,7 @@ namespace BlazorApp.Models
         public int Id { get; set; }
         public string Description { get; set; }
         public string Color { get; set; }
-        public ushort Amount { get; set; }
+        public int Amount { get; set; }
         public Type TypeName { get; set; }
         public string Size { get; set; }
         public double Weight { get; set; }
