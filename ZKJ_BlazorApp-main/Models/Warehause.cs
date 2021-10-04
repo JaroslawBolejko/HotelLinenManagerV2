@@ -23,7 +23,7 @@ namespace BlazorApp.Models
         public int? WarehauseNumber { get; set; }
         [Required]
         public int CompanyId { get; set; }
-        public IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
+        public List<WarehauseDetail> WarehauseDetails { get; set; }
 
 
     }

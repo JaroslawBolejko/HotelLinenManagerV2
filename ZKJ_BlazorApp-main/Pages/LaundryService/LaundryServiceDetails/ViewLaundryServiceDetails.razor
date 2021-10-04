@@ -16,7 +16,10 @@
         <thead>
             <tr>
                 <th scope="col">
-                    Name
+                    Type
+                </th>
+                <th scope="col">
+                    Description
                 </th>
                 <th scope="col">
                     Color
@@ -33,13 +36,10 @@
                 @foreach (var detail in laundryDetails)
                 {
                     <tr>
-                        <th scope="row">@detail.HotelLinenName</th>
+                        <th scope="row">@detail.HotelLinenType</th>
+                        <td>@detail.HotelLinenName</td>
                         <td>@detail.Color</td>
                         <td>@detail.Amount</td>
-                        <td>
-                            @* <a class="btn btn-primary" href='/edithotellinen/@hotelLinen.Id'>Edit</a>  | Delete
-                                <a class="btn btn-danger" @onclick="() => DeleteHotelLinen(hotelLinen.Id)">Delete</a>*@
-                        </td>
                     </tr>
                 }
             }
@@ -47,7 +47,7 @@
     </table>
     <div class="form-group">
         <a class="btn btn-primary" href='/laundryservices'>Back</a>
-        @if (laundryService!=null && laundryService.IsFinished != true)
+        @if (laundryService != null && laundryService.IsFinished != true)
         {
             <a class="btn btn-primary" @onclick="()=>CloseTheService()">Close the service</a>
         }
@@ -77,6 +77,7 @@
 
     protected async Task CloseTheService()
     {
+        //Jest na sztywno wpisany czysty 1 ale, trzeba to zmienić dając wybór w okienie dialogowym gdzie co ma iść.
         warehause = (await WarehauseService.GetWarehausesByType(0)).First();
         foreach (var item in laundryDetails)
         {
@@ -98,7 +99,7 @@
                 .Select(x => x.Id).First();
 
                 cleanLaundry.Id = warehauseDetailID;
-                cleanLaundry.Amount = (ushort)(warehauseItemAmount + cleanLaundry.Amount);
+                cleanLaundry.Amount = warehauseItemAmount + cleanLaundry.Amount;
 
                 await WarehauseDetailsService.UpdateDetails(cleanLaundry);
             }

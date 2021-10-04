@@ -60,8 +60,6 @@
     public SfGrid<WarehauseDetail> warehauseDetailGrid { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     public int DetailId { get; set; }
-    // public string[] LinenTypesEnumValues = Enum.GetNames(typeof(Models.Type));
-    // public List<HotelLinen> AvailableLinens { get; set; }
     public string[] AvailableLinens { get; set; }
     private List<Object> Toolbaritems = new List<Object>() {"Edit", "Delete", "Update", "Cancel"
     , new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };

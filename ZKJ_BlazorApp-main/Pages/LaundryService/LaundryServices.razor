@@ -66,7 +66,7 @@
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
-        Laundries = (await LaundryServiceService.GetAllLaundry()).OrderByDescending(x=>x.RecievedDate).ToList();
+        Laundries = (await LaundryServiceService.GetAllLaundry()).OrderByDescending(x => x.RecievedDate).ToList();
         SpinnerVisible = false;
     }
     public void RowSelectHandler(RowSelectEventArgs<LaundryService> args)
@@ -94,25 +94,7 @@
     {
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
-            //    if (args.Action == "Add")
-            //    {
-            //        var lastNum = Laundries.OrderByDescending(x => x.Id).Select(x => x.Number).First();
-            //        var companyId = Laundries.Select(x => x.CompanyId).First();
 
-            //        var newService = new LaundryService()
-            //        {
-            //            Id = 0,
-            //            CompanyId = companyId,
-            //            Name = "Usługa Prania",
-            //            Number = args.Data.Number = DocumentNumerCreator(lastNum),
-            //            RecievedDate = DateTime.Now,
-            //            IssuedDate = null,
-            //            IsFinished = false
-            //        };
-
-
-            //        await LaundryServiceService.CreateLaundry(newService);
-            //    }
             if (args.Action == "Edit")
             {
                 await LaundryServiceService.UpdateLaundry(args.Data);
@@ -179,11 +161,12 @@
 <style>
     .true {
         background-color: lawngreen;
-      }
+    }
 
     .false {
         background-color: orangered;
-           }
+    }
+
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }

@@ -1,4 +1,5 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
+using System.Collections.Generic;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
 {

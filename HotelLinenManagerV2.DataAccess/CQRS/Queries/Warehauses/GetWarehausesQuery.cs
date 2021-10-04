@@ -59,9 +59,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Warehauses
 
             if (this.WarehauseType != null && this.CompanyId != null && this.WarehauseNumber == null)
             {
-                //Enum.GetValues(typeof(WarehauseType));
                 return await context.Warehauses
                     .Where(x => (byte)x.WarehauseType == this.WarehauseType && x.CompanyId == this.CompanyId)
+                    .Include(x=>x.WarehauseDetails)
                     .AsNoTracking()
                     .ToListAsync();
             }

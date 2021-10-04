@@ -35,20 +35,29 @@
                     <button type="button" class="btn btn-primary" @onclick="() => AmountValidator()">Save</button>
                     <button type="button" class="btn btn-danger" @onclick="() => Cancel()">Cancel</button>
                 </div>
-                <SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible">
-                    <DialogTemplates>
-                        <Header> Uwaga ! </Header>
-                        <Content> Ilość, którą chcesz przenieść jest większa od ilośći w magazynie.</Content>
-                    </DialogTemplates>
-                    <DialogButtons>
-                        <DialogButton Content="OK" IsPrimary="true" OnClick="@CloseDialog" />
-                    </DialogButtons>
-                </SfDialog>
-
             </EditForm>
         </div>
     </div>
 </div>
+<div id="target">
+    <SfDialog  Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible"
+              AllowDragging="true" EnableResize="true" ResizeHandles="@dialogResizeDirections">
+        <DialogTemplates>
+            <Header> Uwaga ! </Header>
+            <Content> Ilość, którą chcesz przenieść jest większa od ilośći w magazynie.</Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="OK" IsPrimary="true" OnClick="@CloseDialog" />
+        </DialogButtons>
+    </SfDialog>
+</div>
+<style>
+    #target {
+        min-height: 400px;
+        height: 100%;
+        position: relative;
+    }
+</style>
 @code{
     [Parameter]
     public string Id { get; set; }
@@ -67,7 +76,7 @@
         }
         else
         {
-          await  Move();
+            await Move();
         }
     }
 
@@ -77,13 +86,14 @@
         warehauses = await WarehauseService.GetAll();
         newDet.AmountToMove = warehauseDetails.Amount;
     }
-    
-   
+
+    private ResizeDirection[] dialogResizeDirections { get; set; } = new ResizeDirection[] { ResizeDirection.All };
+
     public void Cancel()
     {
         navigationManager.NavigateTo("/warehauses");
     }
-   
+
     public void CloseDialog()
     {
         IsVisible = false;
@@ -102,7 +112,7 @@
                 await WarehauseDetailsService.Delete(warehauseDetails.Id);
 
             }
-           
+
             else
             {
                 await WarehauseDetailsService.UpdateDetails(warehauseDetails);
@@ -133,7 +143,6 @@
         }
 
     }
-  
 
 }
 
