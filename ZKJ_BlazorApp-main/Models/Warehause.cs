@@ -15,9 +15,13 @@ namespace BlazorApp.Models
     public class Warehause
     {
         public int Id { get; set; }
+        [Required]
         public WarehauseType WarehauseType { get; set; }
+        [Required]
+        [MaxLength(100)]
         public string Name { get; set; }
-        public int WarehauseNumber { get; set; }
+        public int? WarehauseNumber { get; set; }
+        [Required]
         public int CompanyId { get; set; }
         public IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
 

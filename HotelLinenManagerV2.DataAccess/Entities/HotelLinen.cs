@@ -26,7 +26,6 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     public class HotelLinen : EntityBase
     {
         [Required]
-        [MaxLength(80)]
         public Type TypeName { get; set; }
         [Required]
         [MaxLength(50)]
