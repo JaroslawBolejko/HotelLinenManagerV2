@@ -32,15 +32,27 @@
 
                 </div>
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" @onclick="() => AmountValidator()">Save</button>
-                    <button type="button" class="btn btn-danger" @onclick="() => Cancel()">Cancel</button>
+                    <button type="button" class="btn btn-success" @onclick="() => Validator()">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="() => Cancel()">Cancel</button>
                 </div>
             </EditForm>
         </div>
     </div>
 </div>
 <div id="target">
-    <SfDialog  Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible"
+    <SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible2"
+              AllowDragging="true" EnableResize="true" ResizeHandles="@dialogResizeDirections">
+        <DialogTemplates>
+            <Header> Uwaga ! </Header>
+            <Content>Wybierz inny magazyn lub pomieszczenie!</Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="OK" IsPrimary="true" OnClick="@CloseDialog" />
+        </DialogButtons>
+    </SfDialog>
+</div>
+<div class="error">
+    <SfDialog Width="250px" ShowCloseIcon="true" IsModal="true" @bind-Visible="@IsVisible1"
               AllowDragging="true" EnableResize="true" ResizeHandles="@dialogResizeDirections">
         <DialogTemplates>
             <Header> Uwaga ! </Header>
@@ -52,7 +64,7 @@
     </SfDialog>
 </div>
 <style>
-    #target {
+    #target .error {
         min-height: 400px;
         height: 100%;
         position: relative;
@@ -66,25 +78,31 @@
     private WarehauseDetail newDetail = new WarehauseDetail();
     private Move newDet = new Move();
     private IEnumerable<Warehause> warehauses;
-    private bool IsVisible { get; set; } = false;
-
-    public async Task AmountValidator()
-    {
-        if (warehauseDetails.Amount < newDet.AmountToMove)
-        {
-            IsVisible = true;
-        }
-        else
-        {
-            await Move();
-        }
-    }
+    private bool IsVisible1 { get; set; } = false;
+    private bool IsVisible2 { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
         warehauseDetails = await WarehauseDetailsService.GetWarehauseDetailById(int.Parse(Id));
         warehauses = await WarehauseService.GetAll();
         newDet.AmountToMove = warehauseDetails.Amount;
+        newDet.WarehauseToMove = warehauseDetails.WarehauseId;
+    }
+
+    public async Task Validator()
+    {
+        if (warehauseDetails.Amount < newDet.AmountToMove)
+        {
+            IsVisible1 = true;
+        }
+        else if (warehauseDetails.WarehauseId == newDet.WarehauseToMove)
+        {
+            IsVisible2 = true;
+        }
+        else
+        {
+            await Move();
+        }
     }
 
     private ResizeDirection[] dialogResizeDirections { get; set; } = new ResizeDirection[] { ResizeDirection.All };
@@ -96,12 +114,21 @@
 
     public void CloseDialog()
     {
-        IsVisible = false;
+        if (IsVisible1 == true)
+        {
+            IsVisible1 = false;
+        }
+        else if (IsVisible2 == true)
+        {
+            IsVisible2 = false;
+        }
     }
+    
     protected async Task Move()
     {
         //warehauseToMove is a wearehause to update new amount of linen, newDet.WarehauseToMove is a WarehauseId to move to chosen linen.
         warehauseToMove = (await WarehauseDetailsService.GetDetailsWithQuery(newDet.WarehauseToMove, warehauseDetails.HotelLinenId)).FirstOrDefault();
+
         if (warehauseToMove != null)
         {
             warehauseToMove.Amount = warehauseToMove.Amount + newDet.AmountToMove;

@@ -20,7 +20,7 @@
     <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" CommandClicked="OnCommandClicked" TValue="WarehauseDetail"></GridEvents>
     <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
     <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-    <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+    <GridEditSettings Mode="EditMode.Dialog" AllowEditOnDblClick="true" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
     <GridColumns>
         <GridColumn AllowAdding="false" AllowEditing="false" Width="0" IsPrimaryKey="true" Field=@nameof(WarehauseDetail.Id) HeaderText="Id"></GridColumn>
         <GridColumn Field="@nameof(WarehauseDetail.HotelLinenType)" HeaderText="Description">
@@ -62,7 +62,7 @@
     public int DetailId { get; set; }
     public string[] AvailableLinens { get; set; }
     private List<Object> Toolbaritems = new List<Object>() {"Edit", "Delete", "Update", "Cancel"
-    , new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
+    , new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
 
     protected override async Task OnInitializedAsync()
     {
@@ -222,4 +222,4 @@
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }
-</style>
+   </style>

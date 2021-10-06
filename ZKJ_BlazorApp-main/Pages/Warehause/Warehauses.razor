@@ -53,7 +53,7 @@
     private List<Warehause> WarehauseList { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel"
-        , new ItemModel() { Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
+        , new ItemModel() { Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View", CssClass="specyfic"} };
     public bool SpinnerVisible { get; set; }
     public SfGrid<Warehause> warehauseGrid { get; set; }
     public int Id { get; set; }
@@ -136,6 +136,10 @@
 <style>
     .e-toolbar-item .e-tbar-btn {
         border: solid;
-    } 
+    }
+    
+    .specyfic.e-toolbar-item .e-tbar-btn {
+        background-color: orange;
+    }
 </style>
  
