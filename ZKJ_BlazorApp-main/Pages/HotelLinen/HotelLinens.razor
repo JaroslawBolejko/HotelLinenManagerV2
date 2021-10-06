@@ -4,6 +4,7 @@
 @inject IWarehauseService WarehauseService
 @inject IWarehauseDetailsService WarehauseDetailsService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@using System.Linq;
 
 
 @if (SpinnerVisible == true)
@@ -67,7 +68,7 @@
             <GridColumn Field=@nameof(HotelLinen.Size) HeaderText="Size" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Weight) HeaderText="Weight" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.PricePerKg) HeaderText="Price per kg" Width="0"></GridColumn>
-            @*<GridColumn AllowEditing="false" Field=Warehause.Name HeaderText="Warehause Name" Width="0">
+            @*<GridColumn  Field=Warehause.Name HeaderText="Warehause Name" Width="0">
                 <EditTemplate>
                     <span>Choose warehause to placed added linen</span>
                     <SfDropDownList TItem="Warehause" TValue="int" DataSource="@Warehauses"
@@ -92,6 +93,7 @@
     public int Id { get; set; }
     public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
     public List<Warehause> Warehauses { get; set; }
+    public int WarehauseId { get; set; }
 
 
 
@@ -99,7 +101,8 @@
     {
         SpinnerVisible = true;
         Linens = (await HotelLinenService.GetAll()).ToList();
-        Warehauses = (await WarehauseService.GetAll()).ToList();
+        // Warehauses = (await WarehauseService.GetAll()).ToList();
+        WarehauseId = (await WarehauseService.GetAll()).Where(x=>x.WarehauseType==0).Select(x=>x.Id).First();
         SpinnerVisible = false;
 
     }
@@ -125,17 +128,20 @@
             {
                 args.Data.CompanyId = Linens.Select(x => x.CompanyId).First();
                 await HotelLinenService.Create(args.Data);
+
                 Linens = (await HotelLinenService.GetAll()).ToList();
 
-                //detail.HotelLinenId = Linens.Select(x=>x.Id).Last();
-                //detail.WarehauseId = args.Data.WarehauseId;
-                //detail.Amount = args.Data.Amount;
-                //detail.HotelLinenName = null;
-                //detail.Color = null;
-                //detail.HotelLinenType = args.Data.TypeName;
+                detail.HotelLinenId = Linens.Select(x => x.Id).Last();
+                // detail.WarehauseId = args.Data.WarehauseId;
+                detail.WarehauseId = WarehauseId;
+                detail.Amount = args.Data.Amount;
+                detail.HotelLinenName = null;
+                detail.Color = null;
+                detail.HotelLinenType = args.Data.TypeName;
 
-                //await WarehauseDetailsService.CreateDetails(detail);
+                await WarehauseDetailsService.CreateDetails(detail);
 
+                Linens = (await HotelLinenService.GetAll()).ToList();
                 hotelLinenGrid.Refresh();
             }
             if (args.Action == "Edit")
