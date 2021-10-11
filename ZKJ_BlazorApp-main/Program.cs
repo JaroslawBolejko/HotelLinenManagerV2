@@ -22,7 +22,7 @@ namespace BlazorApp
     {
         public static async Task Main(string[] args)
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDkzMzM2QDMxMzkyZTMyMmUzME8yVVQwVDh3MkJiaHRyRlA3Wjc2TElpRWhaZ0xaQk1aWVRXTHNQOHNjaHc9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTE0MjU0QDMxMzkyZTMzMmUzMExkQngvUWUrcTkzbGYrWjh4KzUwQys2SW5QbisreGErbmxmcVl1SkZoU0U9");
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             builder.RootComponents.Add<App>("app");

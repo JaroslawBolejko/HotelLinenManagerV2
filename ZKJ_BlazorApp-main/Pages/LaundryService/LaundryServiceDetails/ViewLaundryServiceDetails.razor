@@ -46,11 +46,12 @@
         </tbody>
     </table>
     <div class="form-group">
-        <a class="btn btn-primary" href='/laundryservices'>Back</a>
         @if (laundryService != null && laundryService.IsFinished != true)
         {
-            <a class="btn btn-primary" @onclick="()=>CloseTheService()">Close the service</a>
+            <a class="btn btn-warning" @onclick="()=>CloseTheService()">Close the service</a>
         }
+        <a class="btn btn-success" @onclick="()=>NavigateToDocument()">Generate Document</a>
+        <a class="btn btn-secondary" href='/laundryservices'>Back</a>
     </div>
 </div>
 
@@ -73,6 +74,10 @@
         laundryDetails = await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id));
         laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         loading = false;
+    }
+    protected void NavigateToDocument()
+    {
+        navigationManager.NavigateTo($"/docio/sales-invoice/{Id}");
     }
 
     protected async Task CloseTheService()
