@@ -40,7 +40,7 @@ namespace BlazorApp.Services.Authentications
             };
             await _localStorageService.SetItem("user", User);
             User = await _httpService.Get<User>("/Users/me");
-           // await _localStorageService.SetItem("user", User);
+            await _localStorageService.SetItem("userData", User);
 
         }
 

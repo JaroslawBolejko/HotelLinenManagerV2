@@ -1,6 +1,7 @@
 ﻿@page "/docio/sales-invoice/{Id}"
 @inject ILaundryServiceDetailsService LaundryServiceDetailsService
 @inject ILaundryServiceService LaundryServiceService
+@inject ILocalStorageService LocalStorageService
 @inject Microsoft.JSInterop.IJSRuntime JS
 @using System.IO
 @using Syncfusion.Blazor.Buttons
@@ -26,6 +27,7 @@
         //Set page size of the section
         section.PageSetup.PageSize = new Syncfusion.Drawing.SizeF(612, 792);
 
+
         //Create Paragraph styles
         WParagraphStyle style = document.AddParagraphStyle("Normal") as WParagraphStyle;
         style.CharacterFormat.FontName = "Calibri";
@@ -36,6 +38,7 @@
 
         style = document.AddParagraphStyle("Heading 1") as WParagraphStyle;
         style.ApplyBaseStyle("Normal");
+
         style.CharacterFormat.FontName = "Calibri Light";
         style.CharacterFormat.FontSize = 16f;
         style.CharacterFormat.TextColor = Syncfusion.Drawing.Color.FromArgb(3, 160, 98);
@@ -48,10 +51,28 @@
 
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        WTextRange textRange = paragraph.AppendText("Adventure Works Cycles") as WTextRange;
+
+        WTextRange textRange = paragraph.AppendText($"{User.Company.Name}\n" +
+            $"{User.Company.Street} {User.Company.Number}\n" +
+            $"{User.Company.ZipCode} {User.Company.City}\n" +
+            $"Tel.: {User.Company.TelefonNumber}" +
+            $"NIP: {User.Company.TaxNumber}") as WTextRange;
+        paragraph.ParagraphFormat.LineSpacing = 8;
         textRange.CharacterFormat.FontSize = 12f;
         textRange.CharacterFormat.FontName = "Calibri";
-        textRange.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Red;
+        textRange.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Black;
+        textRange.CharacterFormat.NumberSpacing.Equals(1);
+        //Adres po prawej
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Normal");
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
+        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\t{User.Company.Name}\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{User.Company.Street} {User.Company.Number}\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{User.Company.ZipCode} {User.Company.City}\n" +
+           $"\t\t\t\t\t\t\t\t\t\tTel.: {User.Company.TelefonNumber}\n" +
+           $"\t\t\t\t\t\t\t\t\t\tNIP: {User.Company.TaxNumber}") as WTextRange;
+        paragraph.ParagraphFormat.LineSpacing = 8;
+
 
         //Appends paragraph
         paragraph = section.AddParagraph();
@@ -61,19 +82,50 @@
         textRange.CharacterFormat.FontSize = 18f;
         textRange.CharacterFormat.FontName = "Calibri";
 
-        //Appends paragraph
-        paragraph = section.AddParagraph();
-        paragraph.ParagraphFormat.FirstLineIndent = 36;
-        paragraph.BreakCharacterFormat.FontSize = 12f;
-        textRange = paragraph.AppendText("Adventure Works Cycles, the fictitious company on which the AdventureWorks sample databases are based, is a large, multinational manufacturing company. The company manufactures and sells metal and composite bicycles to North American, European and Asian commercial markets. While its base operation is in Bothell, Washington with 290 employees, several regional sales teams are located throughout their market base.") as WTextRange;
-        textRange.CharacterFormat.FontSize = 12f;
 
-        //Appends paragraph
-        paragraph = section.AddParagraph();
-        paragraph.ParagraphFormat.FirstLineIndent = 36;
-        paragraph.BreakCharacterFormat.FontSize = 12f;
-        textRange = paragraph.AppendText("In 2000, AdventureWorks Cycles bought a small manufacturing plant, Importadores Neptuno, located in Mexico. Importadores Neptuno manufactures several critical subcomponents for the AdventureWorks Cycles product line. These subcomponents are shipped to the Bothell location for final product assembly. In 2001, Importadores Neptuno, became the sole manufacturer and distributor of the touring bicycle product group.") as WTextRange;
-        textRange.CharacterFormat.FontSize = 12f;
+        IWTable table = section.AddTable();
+        //Creates the specified number of rows and columns
+        table.ResetCells(2, 2);
+        //Accesses the instance of the cell (first row, first cell)
+        WTableCell firstCell = table.Rows[0].Cells[0];
+        //Specifies the width of the cell
+        firstCell.Width = 150;
+        //Adds a paragraph into the cell; a cell must have atleast 1 paragraph
+        paragraph = firstCell.AddParagraph();
+        IWTextRange textRange3 = paragraph.AppendText("Profile picture");
+        textRange.CharacterFormat.Bold = true;
+        //Accesses the instance of cell (first row, second cell)
+        WTableCell secondCell = table.Rows[0].Cells[1];
+        secondCell.Width = 330;
+        paragraph = secondCell.AddParagraph();
+        textRange3 = paragraph.AppendText("Description");
+        textRange.CharacterFormat.Bold = true;
+        firstCell = table.Rows[1].Cells[0];
+        firstCell.Width = 150;
+        paragraph = firstCell.AddParagraph();
+        //FileStream image2 = new FileStream("DummyProfile-Picture.jpg", FileMode.Open, FileAccess.Read);
+        //IWPicture profilePicture = paragraph.AppendPicture(image2);
+        // profilePicture.Height = 100;
+        // profilePicture.Width = 100;
+        secondCell = table.Rows[1].Cells[1];
+        secondCell.Width = 330;
+      
+        paragraph = secondCell.AddParagraph();
+        textRange3 = paragraph.AppendText($"{laundryService.IssuedDate}");
+
+        ////Appends paragraph
+        //paragraph = section.AddParagraph();
+        //paragraph.ParagraphFormat.FirstLineIndent = 36;
+        //paragraph.BreakCharacterFormat.FontSize = 12f;
+        //textRange = paragraph.AppendText("Adventure Works Cycles, the fictitious company on which the AdventureWorks sample databases are based, is a large, multinational manufacturing company. The company manufactures and sells metal and composite bicycles to North American, European and Asian commercial markets. While its base operation is in Bothell, Washington with 290 employees, several regional sales teams are located throughout their market base.") as WTextRange;
+        //textRange.CharacterFormat.FontSize = 12f;
+
+        ////Appends paragraph
+        //paragraph = section.AddParagraph();
+        //paragraph.ParagraphFormat.FirstLineIndent = 36;
+        //paragraph.BreakCharacterFormat.FontSize = 12f;
+        //textRange = paragraph.AppendText("In 2000, AdventureWorks Cycles bought a small manufacturing plant, Importadores Neptuno, located in Mexico. Importadores Neptuno manufactures several critical subcomponents for the AdventureWorks Cycles product line. These subcomponents are shipped to the Bothell location for final product assembly. In 2001, Importadores Neptuno, became the sole manufacturer and distributor of the touring bicycle product group.") as WTextRange;
+        //textRange.CharacterFormat.FontSize = 12f;
 
         //Saves the Word document to MemoryStream
         MemoryStream stream = new MemoryStream();
@@ -90,11 +142,14 @@
     private LaundryService laundryService;
     [Parameter]
     public string Id { get; set; }
+    private User User { get; set; }
     protected override async Task OnInitializedAsync()
     {
         // loading = true;
-       // laundryDetails = await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id));
+        // laundryDetails = await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id));
         laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
+        User = await LocalStorageService.GetItem<User>("userData");
+
         //laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         //loading = false;
     }
