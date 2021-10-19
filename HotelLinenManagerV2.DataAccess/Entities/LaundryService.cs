@@ -8,7 +8,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     public class LaundryService : EntityBase
     {
         [Required]
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
+        public int? LaundryId { get; set; }
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
@@ -22,6 +23,9 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public DateTime? IssuedDate { get; set; }
         public bool IsFinished { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
-        public Company Company { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual Company Company { get; set; }
+        [ForeignKey("LaundryId")]
+        public virtual Company Laundry { get; set; }
     }
 }

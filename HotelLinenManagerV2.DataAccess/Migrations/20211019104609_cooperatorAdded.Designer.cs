@@ -4,20 +4,37 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211019104609_cooperatorAdded")]
+    partial class cooperatorAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CompanyCooperator", b =>
+                {
+                    b.Property<int>("CompaniesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CooperatorsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CompaniesId", "CooperatorsId");
+
+                    b.HasIndex("CooperatorsId");
+
+                    b.ToTable("CompanyCooperator");
+                });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Company", b =>
                 {
@@ -75,6 +92,18 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Cooperator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cooperators");
+                });
+
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", b =>
                 {
                     b.Property<int>("Id")
@@ -128,8 +157,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompanyId")
-                        .IsRequired()
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsFinished")
@@ -137,9 +165,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
                     b.Property<DateTime?>("IssuedDate")
                         .HasColumnType("date");
-
-                    b.Property<int?>("LaundryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -156,8 +181,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("LaundryId");
 
                     b.ToTable("LaundryServices");
                 });
@@ -294,6 +317,21 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.ToTable("WarehauseDetails");
                 });
 
+            modelBuilder.Entity("CompanyCooperator", b =>
+                {
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompaniesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Cooperator", null)
+                        .WithMany()
+                        .HasForeignKey("CooperatorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", b =>
                 {
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Company")
@@ -308,18 +346,12 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
                 {
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Company")
-                        .WithMany("CompanyLaundryServices")
+                        .WithMany("LaundryServices")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Laundry")
-                        .WithMany("LaundryLaundryServices")
-                        .HasForeignKey("LaundryId");
-
                     b.Navigation("Company");
-
-                    b.Navigation("Laundry");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryServiceDetail", b =>
@@ -384,11 +416,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Company", b =>
                 {
-                    b.Navigation("CompanyLaundryServices");
-
                     b.Navigation("HotelLinens");
 
-                    b.Navigation("LaundryLaundryServices");
+                    b.Navigation("LaundryServices");
 
                     b.Navigation("Users");
 
