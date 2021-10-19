@@ -26,9 +26,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
 
         public async Task<CreateLaundryResponse> Handle(CreateLaundryRequest request, CancellationToken cancellationToken)
         {
+            
             var query = new GetAllLaundryQuery()
             {
-                //Number=request.Number
             };
 
             var details = await this.queryExecutor.Execute(query);

@@ -2,7 +2,9 @@
 @inject ILaundryServiceDetailsService LaundryServiceDetailsService
 @inject ILaundryServiceService LaundryServiceService
 @inject ILocalStorageService LocalStorageService
+@inject IUserService UserService
 @inject Microsoft.JSInterop.IJSRuntime JS
+@using System.Linq
 @using System.IO
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.DropDowns
@@ -13,10 +15,84 @@
 <h2>Syncfusion DocIO library (Essential DocIO)</h2>
 <p>Syncfusion Blazor DocIO library (Essential DocIO) used to create, read, edit, and convert DocIO files in your applications without Microsoft Office dependencies.</p>
 <button class="btn btn-primary" @onclick="@CreateWord">Create Word</button>
+<button class="btn btn-primary" @onclick="@CreateMerge">Create Merge</button>
 
 
 @code{
-    async void CreateWord()
+
+    private List<LaundryServiceDetail> LaundryDetails { get; set; }
+    private LaundryService laundryService;
+    [Parameter]
+    public string Id { get; set; }
+    private User User { get; set; }
+    private User UserValues { get; set; }
+
+    //string[] fieldValues = new string[3];
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // loading = true;
+        LaundryDetails = (await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id))).ToList();
+        laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
+        User = await LocalStorageService.GetItem<User>("userData");
+        UserValues = await UserService.GetMe();
+        //laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
+        //loading = false;
+    }
+    public void CreateMerge()
+    {
+        //// Creates an instance of a WordDocument
+        //WordDocument document = new WordDocument();
+        //// Adds one section and one paragraph to the document
+        //document.EnsureMinimal();
+        //// Sets page margins to the last section of the document
+        //document.LastSection.PageSetup.Margins.All = 72;
+        //// Appends text to the last paragraph.
+        //document.LastParagraph.AppendText("Id: ");
+        //// Appends merge field to the last paragraph.
+        //document.LastParagraph.AppendField("Id", FieldType.FieldMergeField);
+        //document.LastParagraph.AppendText("\nFirstName: ");
+        //document.LastParagraph.AppendField("FirstName", FieldType.FieldMergeField);
+        //document.LastParagraph.AppendText("\nLastName: ");
+        //document.LastParagraph.AppendField("LastName", FieldType.FieldMergeField);
+
+        ////Saves and closes the WordDocument instance.
+        //MemoryStream stream = new MemoryStream();
+        //document.Save(stream, FormatType.Docx);
+        ////Closes the Word document
+        //document.Close();
+
+        //JS.SaveAs("Merge.docx", stream.ToArray());
+
+        /////////////////////////////////////////////
+
+        string basePath = @"wwwroot/";
+        string dataPath = basePath + @"data/docio/merge.docx";
+        string newPath = @"C:\FileStream\merge.docx";
+
+        FileStream fileStreamPath = new FileStream(newPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        WordDocument document = new WordDocument(fileStreamPath, FormatType.Doc);
+
+        string[] fieldNames = new string[] { "Id", "FirstName", "LastName" };
+        string[] fieldValues = new string[] { UserValues.Id.ToString(), UserValues.FirstName.ToString(), UserValues.LastName.ToString() };
+
+
+        //Performs the mail merge
+        document.MailMerge.Execute(fieldNames, fieldValues);
+        //Saves and closes the WordDocument instance
+        MemoryStream stream = new MemoryStream();
+        document.Save(stream, FormatType.Docx);
+        //Closes the Word document
+        document.Close();
+        stream.Position = 0;
+
+        JS.SaveAs("Merge.docx", stream.ToArray());
+
+
+    }
+
+    public void CreateWord()
     {
         //Creating a new document
         WordDocument document = new WordDocument();
@@ -55,7 +131,7 @@
         WTextRange textRange = paragraph.AppendText($"{User.Company.Name}\n" +
             $"{User.Company.Street} {User.Company.Number}\n" +
             $"{User.Company.ZipCode} {User.Company.City}\n" +
-            $"Tel.: {User.Company.TelefonNumber}" +
+            $"Tel.: {User.Company.TelefonNumber}\n" +
             $"NIP: {User.Company.TaxNumber}") as WTextRange;
         paragraph.ParagraphFormat.LineSpacing = 8;
         textRange.CharacterFormat.FontSize = 12f;
@@ -82,50 +158,71 @@
         textRange.CharacterFormat.FontSize = 18f;
         textRange.CharacterFormat.FontName = "Calibri";
 
+        int tableSize = LaundryDetails.Count;
 
         IWTable table = section.AddTable();
+        table.TableFormat.HorizontalAlignment = RowAlignment.Center;
         //Creates the specified number of rows and columns
-        table.ResetCells(2, 2);
+        table.ResetCells(tableSize + 1, 4);
         //Accesses the instance of the cell (first row, first cell)
         WTableCell firstCell = table.Rows[0].Cells[0];
         //Specifies the width of the cell
-        firstCell.Width = 150;
+        firstCell.Width = 30;
         //Adds a paragraph into the cell; a cell must have atleast 1 paragraph
         paragraph = firstCell.AddParagraph();
-        IWTextRange textRange3 = paragraph.AppendText("Profile picture");
-        textRange.CharacterFormat.Bold = true;
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        IWTextRange textRange3 = paragraph.AppendText("L.P");
+        textRange3.CharacterFormat.Bold = true;
         //Accesses the instance of cell (first row, second cell)
         WTableCell secondCell = table.Rows[0].Cells[1];
-        secondCell.Width = 330;
+        secondCell.Width = 120;
         paragraph = secondCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Type");
+        textRange3.CharacterFormat.Bold = true;
+        WTableCell thirdCell = table.Rows[0].Cells[2];
+        thirdCell.Width = 120;
+        paragraph = thirdCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
         textRange3 = paragraph.AppendText("Description");
-        textRange.CharacterFormat.Bold = true;
-        firstCell = table.Rows[1].Cells[0];
-        firstCell.Width = 150;
-        paragraph = firstCell.AddParagraph();
-        //FileStream image2 = new FileStream("DummyProfile-Picture.jpg", FileMode.Open, FileAccess.Read);
-        //IWPicture profilePicture = paragraph.AppendPicture(image2);
-        // profilePicture.Height = 100;
-        // profilePicture.Width = 100;
-        secondCell = table.Rows[1].Cells[1];
-        secondCell.Width = 330;
-      
-        paragraph = secondCell.AddParagraph();
-        textRange3 = paragraph.AppendText($"{laundryService.IssuedDate}");
+        textRange3.CharacterFormat.Bold = true;
+        WTableCell fourthCell = table.Rows[0].Cells[3];
+        fourthCell.Width = 120;
+        paragraph = fourthCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Amount");
+        textRange3.CharacterFormat.Bold = true;
 
-        ////Appends paragraph
-        //paragraph = section.AddParagraph();
-        //paragraph.ParagraphFormat.FirstLineIndent = 36;
-        //paragraph.BreakCharacterFormat.FontSize = 12f;
-        //textRange = paragraph.AppendText("Adventure Works Cycles, the fictitious company on which the AdventureWorks sample databases are based, is a large, multinational manufacturing company. The company manufactures and sells metal and composite bicycles to North American, European and Asian commercial markets. While its base operation is in Bothell, Washington with 290 employees, several regional sales teams are located throughout their market base.") as WTextRange;
-        //textRange.CharacterFormat.FontSize = 12f;
 
-        ////Appends paragraph
-        //paragraph = section.AddParagraph();
-        //paragraph.ParagraphFormat.FirstLineIndent = 36;
-        //paragraph.BreakCharacterFormat.FontSize = 12f;
-        //textRange = paragraph.AppendText("In 2000, AdventureWorks Cycles bought a small manufacturing plant, Importadores Neptuno, located in Mexico. Importadores Neptuno manufactures several critical subcomponents for the AdventureWorks Cycles product line. These subcomponents are shipped to the Bothell location for final product assembly. In 2001, Importadores Neptuno, became the sole manufacturer and distributor of the touring bicycle product group.") as WTextRange;
-        //textRange.CharacterFormat.FontSize = 12f;
+        for (int i = 1; i <= tableSize; i++)
+        {
+
+            firstCell = table.Rows[i].Cells[0];
+            firstCell.Width = 30;
+            firstCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = firstCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{i}");
+            secondCell = table.Rows[i].Cells[1];
+            secondCell.Width = 120;
+            secondCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = secondCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{LaundryDetails[i - 1].HotelLinenType.ToString()}");
+            thirdCell = table.Rows[i].Cells[2];
+            thirdCell.Width = 120;
+            thirdCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = thirdCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{LaundryDetails[i - 1].HotelLinenName}");
+            fourthCell = table.Rows[i].Cells[3];
+            fourthCell.Width = 120;
+            fourthCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = fourthCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{LaundryDetails[i - 1].Amount}");
+
+        }
 
         //Saves the Word document to MemoryStream
         MemoryStream stream = new MemoryStream();
@@ -138,20 +235,6 @@
         JS.SaveAs("Sample.docx", stream.ToArray());
     }
 
-    private IEnumerable<LaundryServiceDetail> laundryDetails;
-    private LaundryService laundryService;
-    [Parameter]
-    public string Id { get; set; }
-    private User User { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        // loading = true;
-        // laundryDetails = await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id));
-        laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
-        User = await LocalStorageService.GetItem<User>("userData");
 
-        //laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
-        //loading = false;
-    }
 }
 

@@ -5,7 +5,9 @@
 @inject ILaundryServiceService LaundryServiceService
 @inject ILaundryServiceDetailsService LaundryServiceDetailsService
 @inject IHotelLinenService HotelLinenService
+@inject ILocalStorageService LocalStorageService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
 
 @if (SpinnerVisible == true)
 {
@@ -49,6 +51,7 @@
 @code {
     [Parameter]
     public string Id { get; set; }
+    public string WarehauseId { get; set; }
     private IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
     private Warehause Warehause { get; set; }
     private string LastLaundry { get; set; }
@@ -63,12 +66,15 @@
     public string[] AvailableLinens { get; set; }
     private List<Object> Toolbaritems = new List<Object>() {"Edit", "Delete", "Update", "Cancel"
     , new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
+    private DocNumCreator docCreator = new DocNumCreator();
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         WarehauseDetails = await WarehauseDetailsService.GetWarehauseLinen(int.Parse(Id));
         Warehause = await WarehauseService.GetWarehauseById(int.Parse(Id));
+        WarehauseId = Id;
+        await LocalStorageService.SetItem("warehauseId", WarehauseId);
         AvailableLinens = (await HotelLinenService.GetAll()).Select(x => x.TypeName.ToString()).ToArray();
 
         if (Warehause != null && Warehause.WarehauseType.ToString() == "Magazyn_Brudnej_Bielizny")
@@ -88,40 +94,7 @@
         SpinnerVisible = false;
     }
 
-    protected string DocumentNumerCreator(string str)
-    {
-        var number = 1;
-        var currentYear = DateTime.Now.Year;
-        var currentMonth = DateTime.Now.Month;
-
-        if (str == null)
-        {
-            return $"{number}/{currentMonth}/{currentYear}";
-        }
-        else
-        {
-            var tabOfNumbersFromDocument = str.Split("/", StringSplitOptions.RemoveEmptyEntries);
-            var docNumber = int.Parse(tabOfNumbersFromDocument[0]);
-            var month = int.Parse(tabOfNumbersFromDocument[1]);
-            var year = int.Parse(tabOfNumbersFromDocument[2]);
-
-            if (currentMonth > month)
-            {
-                return $"{number}/{currentMonth}/{currentYear}";
-            }
-            else if (currentYear > year)
-            {
-                return $"{number}/{currentMonth}/{currentYear}";
-            }
-            else
-            {
-                return $"{++docNumber}/{currentMonth}/{currentYear}";
-            }
-
-        }
-
-    }
-
+    
     public void OnCommandClicked(CommandClickEventArgs<WarehauseDetail> args)
     {
 
@@ -154,7 +127,7 @@
         laundry = new LaundryService
         {
             Name = "Usługa Prania",
-            Number = DocumentNumerCreator(LastLaundry),
+            Number = docCreator.DocumentNumerCreator(LastLaundry),
             CompanyId = Warehause.CompanyId,
             IsFinished = false,
             RecievedDate = DateTime.Now,
@@ -222,4 +195,4 @@
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }
-   </style>
+</style>

@@ -1,6 +1,7 @@
 ﻿@page "/partialmove/{Id}"
 @inject IWarehauseDetailsService WarehauseDetailsService
 @inject IWarehauseService WarehauseService
+@inject ILocalStorageService LocalStorageService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 @using Syncfusion.Blazor.Popups
 
@@ -80,6 +81,8 @@
     private IEnumerable<Warehause> warehauses;
     private bool IsVisible1 { get; set; } = false;
     private bool IsVisible2 { get; set; } = false;
+    public string WarehauseId { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,6 +90,7 @@
         warehauses = await WarehauseService.GetAll();
         newDet.AmountToMove = warehauseDetails.Amount;
         newDet.WarehauseToMove = warehauseDetails.WarehauseId;
+       WarehauseId = await LocalStorageService.GetItem<string>("warehauseId");
     }
 
     public async Task Validator()
@@ -107,9 +111,11 @@
 
     private ResizeDirection[] dialogResizeDirections { get; set; } = new ResizeDirection[] { ResizeDirection.All };
 
-    public void Cancel()
+    public async Task Cancel()
     {
-        navigationManager.NavigateTo("/warehauses");
+        navigationManager.NavigateTo($"/viewWarehauseDetails/{WarehauseId}");
+        await LocalStorageService.RemoveItem("warehauseId");
+
     }
 
     public void CloseDialog()
@@ -123,7 +129,7 @@
             IsVisible2 = false;
         }
     }
-    
+
     protected async Task Move()
     {
         //warehauseToMove is a wearehause to update new amount of linen, newDet.WarehauseToMove is a WarehauseId to move to chosen linen.
