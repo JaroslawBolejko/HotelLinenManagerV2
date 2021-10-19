@@ -12,6 +12,8 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
         {
             return await context.LaundryServices
                 .Where(x => x.Id == this.Id)
+                .Include(x => x.Company)
+                .Include(x => x.Laundry)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }

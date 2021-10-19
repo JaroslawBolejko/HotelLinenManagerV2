@@ -21,7 +21,7 @@
 @code{
 
     private List<LaundryServiceDetail> LaundryDetails { get; set; }
-    private LaundryService laundryService;
+    private LaundryService LaundryService { get; set; }
     [Parameter]
     public string Id { get; set; }
     private User User { get; set; }
@@ -34,7 +34,7 @@
     {
         // loading = true;
         LaundryDetails = (await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id))).ToList();
-        laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
+        LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         User = await LocalStorageService.GetItem<User>("userData");
         UserValues = await UserService.GetMe();
         //laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
@@ -142,11 +142,11 @@
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\t{User.Company.Name}\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{User.Company.Street} {User.Company.Number}\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{User.Company.ZipCode} {User.Company.City}\n" +
-           $"\t\t\t\t\t\t\t\t\t\tTel.: {User.Company.TelefonNumber}\n" +
-           $"\t\t\t\t\t\t\t\t\t\tNIP: {User.Company.TaxNumber}") as WTextRange;
+        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.Name}\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.Street} {LaundryService.Laundry.Number}\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.ZipCode} {LaundryService.Laundry.City}\n" +
+           $"\t\t\t\t\t\t\t\t\t\tTel.: {LaundryService.Laundry.TelefonNumber}\n" +
+           $"\t\t\t\t\t\t\t\t\t\tNIP: {LaundryService.Laundry.TaxNumber}") as WTextRange;
         paragraph.ParagraphFormat.LineSpacing = 8;
 
 
@@ -154,7 +154,7 @@
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Heading 1");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
-        textRange = paragraph.AppendText($"Dokument Usługi prania nr {laundryService.Number} ") as WTextRange;
+        textRange = paragraph.AppendText($"Dokument Usługi prania nr {LaundryService.Number} ") as WTextRange;
         textRange.CharacterFormat.FontSize = 18f;
         textRange.CharacterFormat.FontName = "Calibri";
 

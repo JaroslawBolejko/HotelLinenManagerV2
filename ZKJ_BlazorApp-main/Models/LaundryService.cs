@@ -12,6 +12,8 @@ namespace BlazorApp.Models
         [Required]
         public int CompanyId { get; set; }
         [Required]
+        public int LaundryId { get; set; }
+        [Required]
         [MaxLength(100)]
         public string Name { get; set; }
         [Required]
@@ -23,6 +25,8 @@ namespace BlazorApp.Models
         public DateTime? IssuedDate { get; set; }
         public bool IsFinished { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
+        public Company Company { get; set; }
+        public Company Laundry { get; set; }
 
 
 
