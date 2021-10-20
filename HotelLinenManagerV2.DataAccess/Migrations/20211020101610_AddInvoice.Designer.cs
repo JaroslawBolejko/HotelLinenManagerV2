@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211020101610_AddInvoice")]
+    partial class AddInvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,8 +147,8 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("date");
 
-                    b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("TotalCost")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -188,15 +190,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Property<DateTime>("RecievedDate")
                         .HasColumnType("date");
 
-                    b.Property<decimal>("TotalBrutto")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalNetto")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalTax")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
@@ -223,15 +216,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
                     b.Property<int>("LaundryServiceId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("PricePerKg")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TaxValue")
-                        .HasColumnType("int");
-
-                    b.Property<double>("TotalWeight")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

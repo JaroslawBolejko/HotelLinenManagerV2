@@ -49,7 +49,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
             this.CreateMap<DeleteCompanyByIdRequest, DataAccess.Entities.Company>()
               .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
 
-           // this.CreateMap<RootDaneSzukajPodmioty, CreateCompanyRequest>();
         }
     }
 }

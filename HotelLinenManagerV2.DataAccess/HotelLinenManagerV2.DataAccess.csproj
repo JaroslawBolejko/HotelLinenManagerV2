@@ -6,9 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CQRS\Commands\GoodsIssuedRecivedNotes\**" />
     <Compile Remove="CQRS\Commands\HLBaseQuantities\**" />
+    <Compile Remove="CQRS\Queries\HLBaseQuantities\**" />
+    <EmbeddedResource Remove="CQRS\Commands\GoodsIssuedRecivedNotes\**" />
     <EmbeddedResource Remove="CQRS\Commands\HLBaseQuantities\**" />
+    <EmbeddedResource Remove="CQRS\Queries\HLBaseQuantities\**" />
+    <None Remove="CQRS\Commands\GoodsIssuedRecivedNotes\**" />
     <None Remove="CQRS\Commands\HLBaseQuantities\**" />
+    <None Remove="CQRS\Queries\HLBaseQuantities\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,13 +33,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.1.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CQRS\Commands\GoodsIssuedRecivedNotes\" />
-    <Folder Include="CQRS\Commands\Invoices\" />
-    <Folder Include="CQRS\Queries\Invoices\" />
-    <Folder Include="CQRS\Queries\HLBaseQuantities\" />
   </ItemGroup>
 
 </Project>

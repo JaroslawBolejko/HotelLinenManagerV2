@@ -13,7 +13,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
-        
+
         [MaxLength(150)]
         public string Number { get; set; }
         [Required]
@@ -21,7 +21,14 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public DateTime RecievedDate { get; set; }
         [Column(TypeName = "date")]
         public DateTime? IssuedDate { get; set; }
+        [Required]
         public bool IsFinished { get; set; }
+        [Required]
+        public decimal TotalTax { get; set; }
+        [Required]
+        public decimal TotalNetto { get; set; }
+        [Required]
+        public decimal TotalBrutto { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
         [ForeignKey("CompanyId")]
         public virtual Company Company { get; set; }
