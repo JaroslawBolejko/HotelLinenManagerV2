@@ -4,7 +4,7 @@ using System;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Invoices
 {
-    public class CreateInvoiceRequest : RequestBase, IRequest<CreateRequestResponse>
+    public class CreateInvoiceRequest : RequestBase, IRequest<CreateInvoiceResponse>
     {
         public string Name { get; set; }
         public string Number { get; set; }

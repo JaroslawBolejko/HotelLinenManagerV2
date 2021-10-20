@@ -7,6 +7,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public class Invoice : EntityBase
     {
+        
         [MaxLength(50)]
         public string Name { get; set; } = "Faktura VAT";
         [Required]

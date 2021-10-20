@@ -11,5 +11,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string HotelLinenName { get; set; }
         public Type HotelLinenType { get; set; }
         public string Color { get; set; }
+        public decimal PricePerKg { get; set; }
+        public double TotalWeight { get; set; }
+        public int TaxValue { get; set; }
     }
 }
