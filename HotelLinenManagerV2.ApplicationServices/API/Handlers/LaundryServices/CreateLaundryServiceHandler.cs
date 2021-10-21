@@ -2,6 +2,7 @@
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundryServices;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.LaundryServices;
+using HotelLinenManagerV2.ApplicationServices.Components.DocNumCreator;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.LaundryServices;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices;
@@ -16,30 +17,36 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
         private readonly ICommandExecutor commandExecutor;
         private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
+        private readonly IDocNumCreator docNumCreator;
+        private string lastDocNumber;
 
-        public CreateLaundryServiceHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper)
+        public CreateLaundryServiceHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper, IDocNumCreator docNumCreator)
         {
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;
+            this.docNumCreator = docNumCreator;
         }
 
         public async Task<CreateLaundryResponse> Handle(CreateLaundryRequest request, CancellationToken cancellationToken)
         {
-            
-            var query = new GetAllLaundryQuery()
+
+            // Coś mi sie wydaje że nie koniecznie musze dostawać ostanie pranie , pomyśl nad innym rozwiązaniem
+            var query = new GetLaundryQuery()
             {
+                CompanyId = request.AuthenticationCompanyId,
+                WouldLikeToCreate = true
             };
-
-            var details = await this.queryExecutor.Execute(query);
-
-            if (details != null)
+            var lastLaundry = await this.queryExecutor.Execute(query);
+            if (lastLaundry != null)
             {
-                return new CreateLaundryResponse()
-                {
-                    Error = new ErrorModel(ErrorType.Conflict)
-                };
+                lastDocNumber = lastLaundry.Number;
             }
+            else
+            {
+                lastDocNumber = "0/0/0";
+            }
+            request.Number = docNumCreator.DocumentNumberCreator(lastDocNumber);
 
             var mappedDetails = this.mapper.Map<DataAccess.Entities.LaundryService>(request);
             var command = new CreateLaundryCommand()

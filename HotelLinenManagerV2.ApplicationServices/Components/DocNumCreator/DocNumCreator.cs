@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace BlazorApp.Helpers
-
+namespace HotelLinenManagerV2.ApplicationServices.Components.DocNumCreator
 {
-    public class DocNumCreator
+    public  class DocNumCreator : IDocNumCreator
     {
-        public string DocumentNumerCreator(string str)
+        public  string DocumentNumberCreator(string str)
         {
             var number = 1;
             var currentYear = DateTime.Now.Year;
             var currentMonth = DateTime.Now.Month;
 
-            if (str == null)
+            if (str == "0/0/0")
             {
                 return $"{number}/{currentMonth}/{currentYear}";
             }

@@ -24,6 +24,9 @@ namespace BlazorApp.Models
         public DateTime RecievedDate { get; set; }
         public DateTime? IssuedDate { get; set; }
         public bool IsFinished { get; set; }
+        public decimal TotalTax { get; set; }
+        public decimal TotalNetto { get; set; }
+        public decimal TotalBrutto { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
         public Company Company { get; set; }
         public Company Laundry { get; set; }

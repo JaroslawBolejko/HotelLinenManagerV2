@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211021072114_AddNullableFoInvoiceId")]
+    partial class AddNullableFoInvoiceId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,6 +163,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CompanyId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("InvoiceId")
@@ -363,7 +366,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                 {
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Company")
                         .WithMany("CompanyLaundryServices")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Invoice", "Invoice")
                         .WithMany("LaundryServices")

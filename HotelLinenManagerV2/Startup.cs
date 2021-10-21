@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using HotelLinenManagerV2.ApplicationServices.Components.DocNumCreator;
 
 namespace HotelLinenManagerV2
 {
@@ -59,6 +60,7 @@ namespace HotelLinenManagerV2
             services.AddTransient<IStartsWithDigit, StartsWithDigit>();
             services.AddTransient<IZipCode, ZipCode>();
             services.AddTransient<IGUSDataConnector, GUSDataConnector>();
+            services.AddTransient<IDocNumCreator, DocNumCreator>();
             services.AddTransient<ICommandExecutor, CommandExecutor>();
             services.AddTransient<IQueryExecutor, QueryExecutor>();
             services.AddAutoMapper(typeof(HotelLinensProfile).Assembly);

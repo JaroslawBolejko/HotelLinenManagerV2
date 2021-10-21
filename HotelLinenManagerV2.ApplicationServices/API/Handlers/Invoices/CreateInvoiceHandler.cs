@@ -26,12 +26,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
 
         public async Task<CreateInvoiceResponse> Handle(CreateInvoiceRequest request, CancellationToken cancellationToken)
         {
-           
-
-            var query = new GetAllInvoicesQuery()
+            var query = new GetInvoiceQuery()
             {
-                //Dopisać sprawdzenie po numerze faktury
-               
+                Number = request.Number
             };
             var getInvoice = await this.queryExecutor.Execute(query);
             if (getInvoice != null)

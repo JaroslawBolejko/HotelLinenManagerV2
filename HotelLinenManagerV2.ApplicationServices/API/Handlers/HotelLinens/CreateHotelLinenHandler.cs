@@ -37,8 +37,12 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
 
             var query = new GetHotelLinensQuery()
             {
-                //Dopisać sprawdzenie po wszystkich propercjach
+                Color = request.Color,
+                Size = request.Size,
                 Description = request.Description,
+                Weight = request.Weight,
+                LinenType = request.TypeName
+
             };
             var getLinen = await this.queryExecutor.Execute(query);
             if (getLinen != null)

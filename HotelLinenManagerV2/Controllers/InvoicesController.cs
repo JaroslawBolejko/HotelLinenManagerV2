@@ -4,9 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Controllers
@@ -21,6 +18,7 @@ namespace HotelLinenManagerV2.Controllers
             logger.LogInformation("We are in Invoice");
 
         }
+
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllInvoices([FromQuery] GetAllInvoicesRequest request)

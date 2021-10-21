@@ -54,7 +54,6 @@
     public string WarehauseId { get; set; }
     private IEnumerable<WarehauseDetail> WarehauseDetails { get; set; }
     private Warehause Warehause { get; set; }
-    private string LastLaundry { get; set; }
     private LaundryService laundry;
     private LaundryServiceDetail laundryServiceDetail;
     private LaundryService CreatedLaundryService { get; set; }
@@ -66,7 +65,6 @@
     public string[] AvailableLinens { get; set; }
     private List<Object> Toolbaritems = new List<Object>() {"Edit", "Delete", "Update", "Cancel"
     , new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
-    private DocNumCreator docCreator = new DocNumCreator();
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,11 +88,10 @@
             });
         }
 
-        LastLaundry = (await LaundryServiceService.GetAllLaundry()).Select(x => x.Number).Last();
         SpinnerVisible = false;
     }
 
-    
+
     public void OnCommandClicked(CommandClickEventArgs<WarehauseDetail> args)
     {
 
@@ -127,11 +124,15 @@
         laundry = new LaundryService
         {
             Name = "Usługa Prania",
-            Number = docCreator.DocumentNumerCreator(LastLaundry),
+            Number = null,
             CompanyId = Warehause.CompanyId,
             IsFinished = false,
             RecievedDate = DateTime.Now,
-            IssuedDate = null
+            IssuedDate = null,
+            TotalTax = 1,
+            TotalBrutto = 1,
+            TotalNetto = 1,
+            LaundryId = 4
 
         };
         numberToFilter = laundry.Number;
@@ -146,7 +147,10 @@
             {
                 LaundryServiceId = CreatedLaundryService.Id,
                 HotelLinenId = detail.HotelLinenId,
-                Amount = detail.Amount
+                Amount = detail.Amount,
+                PricePerKg = 1,
+                TotalWeight = 1,
+                TaxValue = 1
 
             };
 

@@ -18,8 +18,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Invoice
             this.RuleFor(x => x.TotalCost)
                .GreaterThanOrEqualTo(0).WithMessage("Suma nie może być ujuemna")
                .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
-            this.RuleFor(x => x.IsPaid)
-               .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+           
         }
     }
 }

@@ -10,11 +10,12 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
     {
         public string Number { get; set; }
         public int? CompanyId { get; set; }
+      ///  public bool WouldLikeToCreate { get; set; }
         //public int Skip { get; set; }
         //public int Take { get; set; }
         public override async Task<List<LaundryService>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            if (!string.IsNullOrEmpty(this.Number) && this.CompanyId!=null)
+            if (!string.IsNullOrEmpty(this.Number) && this.CompanyId!=null /*&& WouldLikeToCreate == false*/)
             {
                 return await context.LaundryServices
                     .Where(x => x.Number == this.Number)
@@ -23,7 +24,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .AsNoTracking()
                     .ToListAsync();
             }
-            else if (this.CompanyId != null)
+            else if (this.CompanyId != null /*&& WouldLikeToCreate==false*/)
             {
                 return await context.LaundryServices
                     .Where(x => x.CompanyId == this.CompanyId)
@@ -34,6 +35,11 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .AsNoTracking()
                     .ToListAsync();
             }
+           // else if (this.CompanyId !=null/* && WouldLikeToCreate == false)
+            //{
+            //    return await context.LaundryServices
+            //        .LastOrDefaultAsync().ToL;
+            //}
             else return null;
 
         }

@@ -52,7 +52,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
             var response = new DeleteInvoiceByIdResponse()
             {
 
-                Data = this.mapper.Map<API.Domain.Models.Invoice>(created)
+                Data = created
 
             };
 
