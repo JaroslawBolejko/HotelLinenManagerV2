@@ -9,11 +9,12 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Invoices
    public class GetAllInvoicesQuery : QueryBase<List<Invoice>>
     {
         public int CompanyId { get; set; }
+       
         public override async Task<List<Invoice>> Execute(WarehauseStorageHotelLinenContext context)
         {
-
-            return await context.Invoices
-                .Include(x=>x.LaundryServices.Where(x=>x.LaundryId==this.CompanyId || x.CompanyId==this.CompanyId))
+            //(x => x.LaundryServices.Select(y => y.CompanyId).FirstOrDefault() == this.CompanyId)
+            return await context.Invoices.Where(x => x.LaundryServices.Select(y => y.CompanyId).FirstOrDefault() == this.CompanyId)
+                .Include(x=>x.LaundryServices)
                 .AsNoTracking()
                 .ToListAsync();
                 
