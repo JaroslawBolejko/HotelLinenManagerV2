@@ -49,6 +49,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public int CompanyId { get; set; }
         public Company Company { get; set; }
         public List<WarehauseDetail> WarehauseDetails { get; set; }
+        public PriceList Price { get; set; }
 
     }
 

@@ -21,11 +21,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public DateTime? IssuedDate { get; set; }
         [Required]
         public bool IsFinished { get; set; }
-        [Required]
         public decimal TotalTax { get; set; }
-        [Required]
         public decimal TotalNetto { get; set; }
-        [Required]
         public decimal TotalBrutto { get; set; }
         public int? InvoiceId { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
