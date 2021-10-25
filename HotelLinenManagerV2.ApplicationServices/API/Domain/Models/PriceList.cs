@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace HotelLinenManagerV2.DataAccess.Entities
+namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
 {
-    public class PriceList : EntityBase
+    public class PriceList
     {
-        public string Name { get; set; }
-        public string Number { get; set; }
+        public int Id { get; set; }
         public int LaundryId { get; set; }
         public decimal PricePerKg { get; set; }
         public int TaxValue { get; set; }

@@ -43,6 +43,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [InverseProperty("Laundry")]
         public virtual List<LaundryService> LaundryLaundryServices { get; set; }
         public List<HotelLinen> HotelLinens { get; set; }
+        public List<PriceList> PriceLists { get; set; }
 
     }
 }

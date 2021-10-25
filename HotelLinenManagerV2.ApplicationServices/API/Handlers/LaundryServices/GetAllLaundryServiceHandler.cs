@@ -33,15 +33,15 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
                 //Take = request.Take
             }; 
             var details = await this.queryExecutor.Execute(query);
-            var mappedDetails = this.mapper.Map<List<LaundryService>>(details);
-
-            if (mappedDetails == null)
+            if (details == null)
             {
                 return new GetAllLaundryResponse()
                 {
                     Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
                 };
             }
+            var mappedDetails = this.mapper.Map<List<LaundryService>>(details);
+
             return new GetAllLaundryResponse()
             {
                 Data = mappedDetails

@@ -25,13 +25,12 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
 
         public async Task<GetAllInvoicesResponse> Handle(GetAllInvoicesRequest request, CancellationToken cancellationToken)
         {
-            //Sprawdź albo zrób tak aby Użytkownik z laundry miał dostę tylko do faktur wystawionych przez siebie
-            //CompanyId powinno wyjaśnić sprawe ale trzeba to sprawdzić
-
             var query = new GetAllInvoicesQuery()
             {
-                CompanyId = request.AuthenticationCompanyId
+              CompanyId = request.AuthenticationCompanyId,
+              UserRole = request.AuthenticationRole.ToString()
             };
+                                        
             var invoice = await this.queryExecutor.Execute(query);
 
             if (invoice == null)
