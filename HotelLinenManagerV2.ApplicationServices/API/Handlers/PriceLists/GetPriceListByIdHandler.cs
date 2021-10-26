@@ -16,7 +16,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceLists
         private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public GetPriceListByIdHandler(IQueryExecutor queryExecutor,IMapper mapper)
+        public GetPriceListByIdHandler(IQueryExecutor queryExecutor, IMapper mapper)
         {
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
-using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.PriceLists;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.PriceLists;
 using HotelLinenManagerV2.DataAccess.CQRS;
@@ -21,10 +20,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceLists
 
         public DeletePriceListByIdHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper)
         {
-            if (commandExecutor is null)
-            {
-                throw new ArgumentNullException(nameof(commandExecutor));
-            }
+          
 
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;

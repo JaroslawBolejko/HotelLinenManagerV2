@@ -28,18 +28,18 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceLists
 
         public async Task<CreatePriceListResponse> Handle(CreatePriceListRequest request, CancellationToken cancellationToken)
         {
-            var query = new GetAllPricesQuery()
-            {
-                CompanyId = request.AuthenticationCompanyId
-            };
-            var prices = await this.queryExecutor.Execute(query);
-            if (prices != null)
-            {
-                return new CreatePriceListResponse()
-                {
-                    Error = new Domain.ErrorHandling.ErrorModel(ErrorType.Conflict)
-                };
-            }
+            //var query = new GetAllPricesQuery()
+            //{
+            //    CompanyId = request.AuthenticationCompanyId
+            //};
+            //var prices = await this.queryExecutor.Execute(query);
+            //if (prices != null)
+            //{
+            //    return new CreatePriceListResponse()
+            //    {
+            //        Error = new Domain.ErrorHandling.ErrorModel(ErrorType.Conflict)
+            //    };
+            //}
             var mappedPrices = this.mapper.Map<PriceList>(request);
             var command = new CreatePriceListCommand()
             {

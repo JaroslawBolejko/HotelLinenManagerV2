@@ -16,6 +16,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string City { get; set; }
         public string Email { get; set; }
         public string TelefonNumber { get; set; }
-      
+       
+        public List<PriceList> CompanyPriceLists { get; set; }
+       
+        public List<PriceList> LaundryPriceLists { get; set; }
+
     }
 }

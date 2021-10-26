@@ -21,7 +21,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceLists
 
         public UpdatePriceListByIdHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper)
         {
-         
+
             this.commandExecutor = commandExecutor;
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;

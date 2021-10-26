@@ -98,9 +98,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("PriceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PricePerKg")
                         .IsRequired()
                         .HasColumnType("varchar(10)");
@@ -120,8 +117,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("PriceId");
 
                     b.ToTable("HotelLinens");
                 });
@@ -247,7 +242,38 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("LaundryId")
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DocName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LaundryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("LaundryId");
+
+                    b.ToTable("PriceLists");
+                });
+
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceListDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("HotelLinenId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("PricePerKg")
@@ -258,9 +284,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LaundryId");
+                    b.HasIndex("HotelLinenId");
 
-                    b.ToTable("PriceLists");
+                    b.ToTable("PriceListDetails");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.User", b =>
@@ -378,13 +404,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.PriceList", "Price")
-                        .WithMany("HotelLinens")
-                        .HasForeignKey("PriceId");
-
                     b.Navigation("Company");
-
-                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
@@ -429,13 +449,28 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceList", b =>
                 {
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Company")
+                        .WithMany("CompanyPriceLists")
+                        .HasForeignKey("CompanyId");
+
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Laundry")
-                        .WithMany("PriceLists")
-                        .HasForeignKey("LaundryId")
+                        .WithMany("LaundryPriceLists")
+                        .HasForeignKey("LaundryId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Laundry");
+                });
+
+            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceListDetail", b =>
+                {
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", "HotelLinen")
+                        .WithMany()
+                        .HasForeignKey("HotelLinenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Laundry");
+                    b.Navigation("HotelLinen");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.User", b =>
@@ -483,11 +518,13 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                 {
                     b.Navigation("CompanyLaundryServices");
 
+                    b.Navigation("CompanyPriceLists");
+
                     b.Navigation("HotelLinens");
 
                     b.Navigation("LaundryLaundryServices");
 
-                    b.Navigation("PriceLists");
+                    b.Navigation("LaundryPriceLists");
 
                     b.Navigation("Users");
 
@@ -507,11 +544,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
                 {
                     b.Navigation("LaundryServiceDetails");
-                });
-
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceList", b =>
-                {
-                    b.Navigation("HotelLinens");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Warehause", b =>
