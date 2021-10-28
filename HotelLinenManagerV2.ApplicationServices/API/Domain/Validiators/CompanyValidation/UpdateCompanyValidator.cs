@@ -20,10 +20,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.Company
                 .MaximumLength(15).WithMessage("NIP składa się z 10 cyfr, bez znaków dodatkowych oraz oznaczeń kraju!");
             this.RuleFor(x => x.Street).MaximumLength(50).WithMessage("Wprowadzona liczba znaków w polu {PropertyName} jest za duża");
             this.RuleFor(x => x.Number).MaximumLength(10).WithMessage("Wprowadzona liczba znaków w polu {PropertyName} jest za duża");
-            this.RuleFor(x => x.ApartmentNumber).Must(startsWithDigit.DigitStarter).WithMessage("Numer lokalu musi zawierać cyfre")
+            this.RuleFor(x => x.ApartmentNumber).Must(this.startsWithDigit.DigitStarter).WithMessage("Numer lokalu musi zawierać cyfre")
                 .MaximumLength(10).WithMessage("Wprowadzona liczba znaków w polu {PropertyName} jest za duża");
             this.RuleFor(x => x.ZipCode).MaximumLength(6).WithMessage("Wprowadzona liczba znaków w polu {PropertyName} powinna wynosić 6")
-                .Must(zipCode.IsPostalCode).WithMessage("zły format kodu!prawidłowy to xx-xxx, gdzie x - jest liczbą całkowitą.");
+                .Must(this.zipCode.IsPostalCode).WithMessage("zły format kodu!prawidłowy to xx-xxx, gdzie x - jest liczbą całkowitą.");
             this.RuleFor(x => x.City).MaximumLength(100).WithMessage("Wprowadzona liczba znaków w polu {PropertyName} jest za duża");
             
         }

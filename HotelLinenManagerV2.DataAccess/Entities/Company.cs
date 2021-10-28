@@ -49,6 +49,11 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [InverseProperty("Laundry")]
         public virtual List<PriceList> LaundryPriceLists { get; set; }
 
+        [InverseProperty("Company")]
+        public virtual List<RelatedCompany> Companies { get; set; }
+        [InverseProperty("Laundry")]
+        public virtual List<RelatedCompany> Laundries { get; set; }
+
 
     }
 }

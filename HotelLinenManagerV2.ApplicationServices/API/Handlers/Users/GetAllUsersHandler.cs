@@ -26,7 +26,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
         {
             var query = new GetUsersQuery()
             {
-
+                CompanyId = request.AuthenticationCompanyId
             };
             var users = await this.queryExecutor.Execute(query);
             var mappedUsers = this.mapper.Map<List<User>>(users);

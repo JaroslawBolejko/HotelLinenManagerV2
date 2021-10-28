@@ -18,6 +18,7 @@ namespace HotelLinenManagerV2.DataAccess
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<PriceListDetail> PriceListDetails { get; set; }
+        public DbSet<RelatedCompany> RelatedCompanies { get; set; }
 
 
 
