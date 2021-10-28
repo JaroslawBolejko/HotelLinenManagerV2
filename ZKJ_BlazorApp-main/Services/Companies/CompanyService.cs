@@ -14,6 +14,18 @@ namespace BlazorApp.Services.Companies
             this.httpService = httpService;
         }
 
+        public async Task<int> Create(Company company)
+        {
+            var result = await this.httpService.Post<Company>("/companies", company);
+            return result.Id;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            await this.httpService.Delete($"/companies/{id}");
+            return true;
+        }
+
         public async Task<IEnumerable<Company>> GetAll()
         {
             return await this.httpService.Get<IEnumerable<Company>>("/Companies");
@@ -21,6 +33,12 @@ namespace BlazorApp.Services.Companies
         public async Task<Company> GetCompanyById(int id)
         {
             return await this.httpService.Get<Company>($"/Companies/{id}");
+        }
+
+        public async Task<int> Update(Company company)
+        {
+            var result = await this.httpService.Put<Company>($"/companies/{company.Id}", company);
+            return result.Id;
         }
     }
 }

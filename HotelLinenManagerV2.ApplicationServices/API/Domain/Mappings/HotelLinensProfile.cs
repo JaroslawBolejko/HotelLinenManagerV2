@@ -14,6 +14,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                  .ForMember(x => x.Color, y => y.MapFrom(z => z.Color))
                  .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                  .ForMember(x => x.Company, y => y.MapFrom(z => z.Company))
+                 .ForMember(x => x.PriceListDetails, y => y.MapFrom(z => z.PriceListDetails))
                  .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount));
 
             this.CreateMap<CreateHotelLinenRequest, DataAccess.Entities.HotelLinen>()

@@ -1,0 +1,60 @@
+﻿@page "/companies3"
+@attribute [Authorize]
+@inject ICompanyService CompService
+
+<SfGrid @ref="companyGrid" DataSource="@CompanyList" Toolbar="Toolbaritems">
+    <GridEvents OnActionBegin="ActionBeginHandler" TValue="Company"></GridEvents>
+        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+    <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+    </GridEditSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Company.Name) HeaderText="Name"></GridColumn>
+        <GridColumn Field=@nameof(Company.Type) HeaderText="Type"></GridColumn>
+        <GridColumn Field=@nameof(Company.Street) HeaderText="Street"></GridColumn>
+        <GridColumn Field=@nameof(Company.Number) HeaderText="Number"></GridColumn>
+        <GridColumn Field=@nameof(Company.City) HeaderText="City"></GridColumn>
+        <GridColumn Field=@nameof(Company.TaxNumber) HeaderText="TaxNumber"></GridColumn>
+        <GridColumn Field=@nameof(Company.TelefonNumber) HeaderText="Telefon Number"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code {
+
+   
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public bool SpinnerVisible { get; set; }
+    private IEnumerable<Company> CompanyList { get; set; }
+    public SfGrid<Company> companyGrid { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SpinnerVisible = true;
+        CompanyList = await CompService.GetAll();
+        SpinnerVisible = false;
+    }
+
+    public async void ActionBeginHandler(ActionEventArgs<Company> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            if (args.Action == "Add")
+            {
+
+                await CompService.Create(args.Data);
+
+                CompanyList = (await CompService.GetAll()).ToList();
+                companyGrid.Refresh();
+            }
+            if (args.Action == "Edit")
+            {
+                await CompService.Update(args.Data);
+            }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await CompService.Delete(args.Data.Id);
+        }
+    }
+
+}

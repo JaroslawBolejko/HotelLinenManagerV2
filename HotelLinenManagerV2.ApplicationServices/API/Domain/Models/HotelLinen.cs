@@ -16,6 +16,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public int CompanyId { get; set; }
         public Company Company { get; set; }
         public List<WarehauseDetail> WarehauseDetails { get; set; }
+        public List<PriceListDetail> PriceListDetails { get; set; }
 
 
 

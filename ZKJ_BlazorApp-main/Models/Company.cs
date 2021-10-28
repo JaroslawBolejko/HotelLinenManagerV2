@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace BlazorApp.Models
 {
@@ -9,6 +12,7 @@ namespace BlazorApp.Models
     }
     public class Company
     {
+        public int Id { get; set; }
         [Required]
         public CompanyType Type { get; set; }
         [Required]
@@ -34,5 +38,10 @@ namespace BlazorApp.Models
         public string EMail { get; set; }
         [MaxLength(20)]
         public string TelefonNumber { get; set; }
+        public List<PriceList> CompanyPriceLists { get; set; }
+
+        public List<PriceList> LaundryPriceLists { get; set; }
+        
+
     }
 }
