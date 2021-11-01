@@ -1,0 +1,74 @@
+﻿@page "/relatedCompany"
+@attribute [Authorize]
+@inject ICompanyService CompService
+@inject IRelatedCompaniesService RelatedCompanyService
+@inject ILocalStorageService LocalStorageService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+
+<SfGrid DataSource="@RelatedCompany" Toolbar="Toolbaritems">
+    <GridEvents OnActionBegin="ActionBeginHandler" TValue="Company"></GridEvents>
+    <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+    <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+    </GridEditSettings>
+    <GridColumns>
+        <GridColumn Field=Company.Name HeaderText="Company Name" Width="0">
+            <SfDropDownList TItem="Company" TValue="int" DataSource="@Companies"
+                            @bind-Value="@((context as RelatedCompany).LaundryId)">
+                <DropDownListFieldSettings Text="Name" Value="Id">
+                </DropDownListFieldSettings>
+            </SfDropDownList>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+@code {
+    @code{
+        public List<Company> Companies { get; set; }
+        public List<Models.RelatedCompany> RelatedCompany { get; set; }
+        public int CompanyId { get; set; }
+        public bool SpinnerVisible { get; set; }
+        private List<Object> Toolbaritems = new List<Object>() { "Add", "Delete", "Update", "Cancel" };
+
+
+        protected override async Task OnInitializedAsync()
+        {
+            SpinnerVisible = true;
+            CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
+            Companies = (await CompService.GetAll()).ToList();
+            RelatedCompany = (await RelatedCompanyService.GetAllRelatedCompanies(CompanyId)).ToList();
+            SpinnerVisible = false;
+
+        }
+        protected void Back()
+        {
+            navigationManager.NavigateTo("/");
+        }
+        protected void ShowRelatedCompanies()
+        {
+            navigationManager.NavigateTo("/relatedCopmapnies");
+        }
+        public async void ActionBeginHandler(ActionEventArgs<Company> args)
+        {
+            if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+            {
+                if (args.Action == "Add")
+                {
+
+
+                }
+                if (args.Action == "Edit")
+                {
+
+                }
+
+            }
+            if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+            {
+
+            }
+        }
+
+    }
+}

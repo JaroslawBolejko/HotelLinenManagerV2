@@ -1,1 +1,76 @@
-﻿
+﻿@page "/companies"
+@attribute [Authorize]
+@inject ICompanyService CompService
+@inject IRelatedCompaniesService RelatedCompanyService
+@inject ILocalStorageService LocalStorageService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<div class="btn-toolbar  mt-2" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button class="btn btn-warning border border-dark" @onclick="()=>ShowRelatedCompanies()">Show Related Companies</button>
+    </div>
+    <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <button class="btn btn-warning border border-dark" @onclick="()=>Back()">Back</button>
+
+    </div>
+</div>
+@if (Company != null)
+{
+    <table class="table table-bordered mt-2">
+               <tbody>
+            <tr>
+                <th width="20%" scope="row" class="text-center">Company Name</th>
+                <td>@Company.Name</td>
+            </tr>
+            <tr>
+                <th width="20%" scope="row" class="text-center">Street</th>
+                <td>@Company.Street</td>
+            </tr>
+            <tr>
+                <th width="20%" scope="row" class="text-center">Number</th>
+                <td>@Company.Number</td>
+            </tr>
+            <tr>
+                <th width="20%" scope="row" class="text-center">Zip Code</th>
+                <td>@Company.ZipCode</td>
+            </tr>
+            <tr>
+                <th width="20%" scope="row" class="text-center">City</th>
+                <td>@Company.City</td>
+            </tr>
+            <tr>
+                <th width="20%" scope="row" class="text-center">Telefon Number</th>
+                <td>@Company.TelefonNumber</td>
+            </tr>
+            <tr>
+                <th width="20%" scope="row" class="text-center">Tax Number</th>
+                <td>@Company.TaxNumber</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code{
+    public Company Company { get; set; }
+    public int CompanyId { get; set; }
+    public bool SpinnerVisible { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        SpinnerVisible = true;
+        CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
+        Company = await CompService.GetCompanyById(CompanyId);
+        SpinnerVisible = false;
+    }
+    protected void Back()
+    {
+        navigationManager.NavigateTo("/");
+    }
+    protected void ShowRelatedCompanies()
+    {
+        navigationManager.NavigateTo("/relatedCopmapnies");
+    }
+
+
+}

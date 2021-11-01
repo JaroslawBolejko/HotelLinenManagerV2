@@ -1,16 +1,15 @@
 ﻿using BlazorApp.Models;
 using BlazorApp.Services.HttpServices;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Services.PriceListDetails
 {
-    public class PriceListService : IPriceListDetailsService
+    public class PriceListDetailsService : IPriceListDetailsService
     {
         private readonly IHttpService httpService;
 
-        public PriceListService(IHttpService httpService)
+        public PriceListDetailsService(IHttpService httpService)
         {
             this.httpService = httpService;
         }

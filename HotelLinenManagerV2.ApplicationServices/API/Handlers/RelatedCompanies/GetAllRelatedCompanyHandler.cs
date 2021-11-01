@@ -29,7 +29,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.RelatedCompanies
         {
             var query = new GetAllRelatedCompaniesQuery()
             {
-                CompanyId = request.AuthenticationCompanyId
+                CompanyId = request.AuthenticationCompanyId,
+                LaundryId = request.LaundryId
             };
             var users = await this.queryExecutor.Execute(query);
             var mappedRelatedComp = this.mapper.Map<List<RelatedCompany>>(users);

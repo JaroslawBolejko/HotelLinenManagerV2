@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace BlazorApp.Services.RelatedCompanies
 {
-    public class RelatedCompanyService : IRelatedCompaniesService
+    public class RelatedCompaniesService : IRelatedCompaniesService
     {
         private readonly IHttpService httpService;
 
-        public RelatedCompanyService(IHttpService httpService)
+        public RelatedCompaniesService(IHttpService httpService)
         {
             this.httpService = httpService;
         }
@@ -29,6 +29,12 @@ namespace BlazorApp.Services.RelatedCompanies
         public async Task<IEnumerable<RelatedCompany>> GetAllRelatedCompanies()
         {
             return await this.httpService.Get<IEnumerable<RelatedCompany>>("/relatedCompanies");
+        }
+
+        public async  Task<IEnumerable<RelatedCompany>> GetAllRelatedCompanies(int companyId)
+        {
+            return await this.httpService.Get<IEnumerable<RelatedCompany>>($"/relatedCompanies?companyId={companyId}");
+
         }
     }
 }

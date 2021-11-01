@@ -5,5 +5,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.RelatedCom
 {
     public class GetAllRelatedCompaniesRequest : RequestBase,IRequest<GetAllRelatedCompaniesResponse>
     {
+        public int? LaundryId { get; set; }
     }
 }
