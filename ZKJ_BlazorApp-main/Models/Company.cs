@@ -41,6 +41,7 @@ namespace BlazorApp.Models
         public List<PriceList> CompanyPriceLists { get; set; }
 
         public List<PriceList> LaundryPriceLists { get; set; }
+        public List<RelatedCompany> RelatedCompanies { get; set; }
         
 
     }

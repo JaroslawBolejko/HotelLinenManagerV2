@@ -18,7 +18,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
             if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(TaxNumber))
             {
                 var result = await context.Companies
-                    .Where(x => x.Name == this.Name && x.TaxNumber == this.TaxNumber && x.Id==this.CompanyId)
+                    .Where(x => x.Name == this.Name && x.TaxNumber == this.TaxNumber)
                     .Include(x=>x.CompanyPriceLists)
                     .AsNoTracking()
                     .ToListAsync();
@@ -26,10 +26,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
                     return null;
                 return result;
             }
-            if (!string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(TaxNumber))
+            else if (!string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(TaxNumber))
             {
                 var result = await context.Companies
-                    .Where(x => x.Name == this.Name && x.Id == this.CompanyId)
+                    .Where(x => x.Name == this.Name )
                     .Include(x => x.CompanyPriceLists)
                     .AsNoTracking()
                     .ToListAsync();
@@ -37,10 +37,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
                     return null;
                 return result;
             }
-            if (string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(TaxNumber))
+           else if (string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(TaxNumber))
             {
                 var result = await context.Companies
-                    .Where(x =>x.TaxNumber == this.TaxNumber && x.Id == this.CompanyId)
+                    .Where(x =>x.TaxNumber == this.TaxNumber)
                     .Include(x => x.CompanyPriceLists)
                     .AsNoTracking()
                     .ToListAsync();
@@ -48,15 +48,15 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
                     return null;
                 return result;
             }
-            if (this.CompanyId!= null)
-            {
-                return await context.Companies
-                    .Where(x => x.Id == this.CompanyId)
-                    .Include(x => x.CompanyPriceLists)
-                    .AsNoTracking()
-                    .ToListAsync();
-            }
-            return await context.Companies
+            //if (this.CompanyId!= null)
+            //{
+            //    return await context.Companies
+            //        .Where(x => x.Id == this.CompanyId)
+            //        .Include(x => x.CompanyPriceLists)
+            //        .AsNoTracking()
+            //        .ToListAsync();
+            //}
+           else  return await context.Companies
                 .Include(x => x.CompanyPriceLists)
                 .AsNoTracking()
                 .ToListAsync();
