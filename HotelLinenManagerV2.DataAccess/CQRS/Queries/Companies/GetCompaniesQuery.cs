@@ -1,9 +1,7 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
@@ -48,15 +46,15 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
                     return null;
                 return result;
             }
-            //if (this.CompanyId!= null)
-            //{
-            //    return await context.Companies
-            //        .Where(x => x.Id == this.CompanyId)
-            //        .Include(x => x.CompanyPriceLists)
-            //        .AsNoTracking()
-            //        .ToListAsync();
-            //}
-           else  return await context.Companies
+            else if (this.CompanyId != null && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(TaxNumber))
+            {
+                return await context.Companies
+                    .Where(x => x.Id == this.CompanyId)
+                    .Include(x => x.CompanyPriceLists)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            else  return await context.Companies
                 .Include(x => x.CompanyPriceLists)
                 .AsNoTracking()
                 .ToListAsync();

@@ -1,53 +1,116 @@
-﻿@page "/companies3"
+﻿@page "/companies"
 @attribute [Authorize]
 @inject ICompanyService CompService
+@inject ILocalStorageService LocalStorageService
+@inject IRelatedCompaniesService RelatedCompanyService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
-<SfGrid @ref="companyGrid" DataSource="@CompanyList" Toolbar="Toolbaritems">
-    <GridEvents OnActionBegin="ActionBeginHandler" TValue="Company"></GridEvents>
+
+
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
+<br />
+<h3><span>Your Company</span></h3>
+<br />
+@if (CompanyList != null)
+{
+    <SfGrid @ref="companyGrid" DataSource="@CompanyList" Toolbar="CompanyToolbaritems">
+        <GridEvents OnActionBegin="ActionBeginHandlerCompany" TValue="Company"></GridEvents>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-    <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
-    </GridEditSettings>
-    <GridColumns>
-        <GridColumn Field=@nameof(Company.Name) HeaderText="Name"></GridColumn>
-        <GridColumn Field=@nameof(Company.Type) HeaderText="Type"></GridColumn>
-        <GridColumn Field=@nameof(Company.Street) HeaderText="Street"></GridColumn>
-        <GridColumn Field=@nameof(Company.Number) HeaderText="Number"></GridColumn>
-        <GridColumn Field=@nameof(Company.City) HeaderText="City"></GridColumn>
-        <GridColumn Field=@nameof(Company.TaxNumber) HeaderText="TaxNumber"></GridColumn>
-        <GridColumn Field=@nameof(Company.TelefonNumber) HeaderText="Telefon Number"></GridColumn>
-    </GridColumns>
-</SfGrid>
+        <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn Field=@nameof(Company.Name) HeaderText="Name"></GridColumn>
+            <GridColumn Field=@nameof(Company.Type) HeaderText="Type"></GridColumn>
+            <GridColumn Field=@nameof(Company.Street) HeaderText="Street"></GridColumn>
+            <GridColumn Field=@nameof(Company.Number) HeaderText="Number"></GridColumn>
+            <GridColumn Field=@nameof(Company.City) HeaderText="City"></GridColumn>
+            <GridColumn Field=@nameof(Company.TaxNumber) HeaderText="TaxNumber"></GridColumn>
+            <GridColumn Field=@nameof(Company.TelefonNumber) HeaderText="Telefon Number"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+<br />
+<h3><span>Related Companies</span></h3>
+<br />
+@if (RelatedCompanies != null)
+{
+    <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
+        <GridEvents OnActionBegin="ActionBeginHandlerRelatedCompnaies" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
+        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn Field=Laundry.Name HeaderText="Company Name"></GridColumn>
+            <GridColumn Field=Laundry.City HeaderText="City"></GridColumn>
+            <GridColumn Field=Laundry.Street HeaderText="Street"></GridColumn>
+            <GridColumn Field=Laundry.Number HeaderText="Number"></GridColumn>
+            <GridColumn Field=Laundry.TelefonNumber HeaderText="Number"></GridColumn>
+            <GridColumn Field=Laundry.EMail HeaderText="EMail"></GridColumn>
+            <GridColumn Field=Laundry.TaxNumber HeaderText="TaxNumber"></GridColumn>
+            <GridColumn HeaderText="Actions" Width="110">
+                <GridCommandColumns>
+                    <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
+                                                   { Content = "PriceList", CssClass = "e-flat" })"></GridCommandColumn>
+                </GridCommandColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
 
 @code {
 
-   
-    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+
+    private List<Object> CompanyToolbaritems = new List<Object>() { "Edit", "Update", "Cancel" };
+    private List<Object> RelatedToolbaritems = new List<Object>() { "Add", "Delete", "Update", "Cancel" };
     public bool SpinnerVisible { get; set; }
-    private IEnumerable<Company> CompanyList { get; set; }
-    public SfGrid<Company> companyGrid { get; set; }
+    private List<RelatedCompany> RelatedCompanies { get; set; }
+    private SfGrid<Company> companyGrid { get; set; }
+    private SfGrid<RelatedCompany> relatedGrid { get; set; }
+    private int CompanyId { get; set; }
+    private List<Company> CompanyList { get; set; }
+    // private int PriceListCompanyId { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
-        CompanyList = await CompService.GetAll();
+        CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
+        CompanyList = (await CompService.GetAll(CompanyId)).ToList();
+        RelatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies(CompanyId)).ToList();
+
         SpinnerVisible = false;
     }
 
-    public async void ActionBeginHandler(ActionEventArgs<Company> args)
+    public async void ActionBeginHandlerRelatedCompnaies(ActionEventArgs<RelatedCompany> args)
     {
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
             if (args.Action == "Add")
             {
 
-                await CompService.Create(args.Data);
-
-                CompanyList = (await CompService.GetAll()).ToList();
-                companyGrid.Refresh();
+                await RelatedCompanyService.CreateRelatedCompany(args.Data);
+                relatedGrid.Refresh();
             }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await RelatedCompanyService.DeleteRelatedCompany(args.Data.Id);
+        }
+    }
+
+    public async void ActionBeginHandlerCompany(ActionEventArgs<Company> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+
             if (args.Action == "Edit")
             {
                 await CompService.Update(args.Data);
+                companyGrid.Refresh();
             }
 
         }
@@ -55,6 +118,18 @@
         {
             await CompService.Delete(args.Data.Id);
         }
+    }
+
+
+    public void OnCommandClicked(CommandClickEventArgs<RelatedCompany> args)
+    {
+
+        if (args.CommandColumn.ButtonOption.Content == "PriceList")
+        {
+            //navigationManager.NavigateTo($"/priceList/{args.RowData.Id}");
+            navigationManager.NavigateTo("/priceList");
+        }
+
     }
 
 }

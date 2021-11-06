@@ -1,4 +1,4 @@
-﻿@page "/companies"
+﻿@page "/companies4"
 @attribute [Authorize]
 @inject ICompanyService CompService
 @inject IRelatedCompaniesService RelatedCompanyService
@@ -9,26 +9,18 @@
 {
     <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
 }
-@*<div class="btn-toolbar  mt-2" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button class="btn btn-warning border border-dark" @onclick="()=>ShowRelatedCompanies()">Show Related Companies</button>
-        </div>
-        <div class="btn-group mr-2" role="group" aria-label="Second group">
-            <button class="btn btn-warning border border-dark" @onclick="()=>Back()">Back</button>
-
-        </div>
-    </div>*@
 
 <SfToolbar>
     <ToolbarEvents Clicked="ActionBeginHandler"></ToolbarEvents>
     <ToolbarItems>
+        <ToolbarItem Id="Edit" Text="Edit" Align="ItemAlign.Left"></ToolbarItem>
         <ToolbarItem Id="Show" Text="ShowRelatedCompanies" Align="ItemAlign.Left"></ToolbarItem>
         <ToolbarItem Text="Back" Align="ItemAlign.Right"></ToolbarItem>
     </ToolbarItems>
 </SfToolbar>
 @if (Company != null)
 {
-    <table class="table table-bordered mt-2">
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th width="20%" scope="row" class="text-center">Company Name</th>
@@ -93,6 +85,10 @@
         {
             navigationManager.NavigateTo("/relatedComapnies");
 
+        }
+        if (args.Item.Id == "Edit")
+        {
+            navigationManager.NavigateTo("/editComapnies");
         }
     }
 }

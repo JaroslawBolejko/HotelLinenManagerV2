@@ -30,6 +30,12 @@ namespace BlazorApp.Services.Companies
         {
             return await this.httpService.Get<IEnumerable<Company>>("/Companies");
         }
+
+        public async  Task<IEnumerable<Company>> GetAll(int companyId)
+        {
+            return await this.httpService.Get<IEnumerable<Company>>($"/Companies?CompanyId={companyId}");
+        }
+
         public async Task<Company> GetCompanyById(int id)
         {
             return await this.httpService.Get<Company>($"/Companies/{id}");
