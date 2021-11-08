@@ -5,10 +5,11 @@ namespace BlazorApp.Services.PriceListDetails
 {
     public interface IPriceListDetailsService
     {
-        Task<IEnumerable<Models.PriceListDetail>> GetAllLaundry();
-        Task<Models.PriceListDetail> GetLaundryById(int id);
-        Task<int> CreateLaundry(Models.PriceListDetail priceListDetails);
-        Task<int> UpdateLaundry(Models.PriceListDetail priceListDetails);
+        Task<IEnumerable<Models.PriceListDetail>> GetAllPriceDetails();
+        Task<IEnumerable<Models.PriceListDetail>> GetAllPriceDetails(int priceListId);
+        Task<Models.PriceListDetail> GetPriceDetailById(int id);
+        Task<int> CreatePriceDetail(Models.PriceListDetail priceListDetails);
+        Task<int> UpdatePriceDetail(Models.PriceListDetail priceListDetails);
         Task<bool> Delete(int id);
     }
 }

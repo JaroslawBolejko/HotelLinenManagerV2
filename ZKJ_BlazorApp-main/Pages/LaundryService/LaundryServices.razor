@@ -27,7 +27,6 @@
             <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date">
-          
                 <Template>
                     @{
                         var con = context as LaundryService;
@@ -107,8 +106,8 @@
             await LaundryServiceService.Delete(args.Data.Id);
         }
     }
-    
-    
+
+
     public void CustomizeCell(QueryCellInfoEventArgs<LaundryService> args)
     {
         if (args.Column.Field == "IsFinished")

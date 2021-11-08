@@ -9,6 +9,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.PriceListD
         public decimal PricePerKg { get; set; }
         public int TaxValue { get; set; }
         public int HotelLinenId { get; set; }
-        
+        public int PriceListId { get; set; }
+
     }
 }

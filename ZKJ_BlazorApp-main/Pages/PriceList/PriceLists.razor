@@ -1,0 +1,87 @@
+﻿@page "/priceList"
+@attribute [Authorize]
+@inject IPriceListService PriceListService
+@inject IPriceListDetailsService PriceListDetailsService
+@inject ILocalStorageService LocalStorageService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
+@if (PriceIndex != null)
+{
+    <SfGrid @ref="priceListGrid" DataSource="PriceIndex" Toolbar="Toolbaritems">
+        <GridEvents OnActionBegin="ActionBeginHandler" CommandClicked="OnCommandClicked" TValue="PriceList"></GridEvents>
+        <GridPageSettings PageSize="10" PageCount="5" PageSizes="pagerDropDown"></GridPageSettings>
+        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridColumns>
+            <GridColumn HeaderText="Price Lists" TextAlign="TextAlign.Center">
+                <GridColumns>
+                    <GridColumn Field=@nameof(PriceList.Name) HeaderText="Name"></GridColumn>
+                    <GridColumn Field=@nameof(PriceList.Number) HeaderText="Number"></GridColumn>
+                    <GridColumn Field=@nameof(PriceList.CreationDate) Format="d" HeaderText="Date od creation"></GridColumn>
+                    <GridColumn Field="Laundry.Name" HeaderText="Laundry Name"></GridColumn>
+                    <GridColumn Field="@nameof(PriceList.IsCurrent)" HeaderText="Current Price List"></GridColumn>
+                    <GridColumn HeaderText="Actions" Width="110">
+                        <GridCommandColumns>
+                            <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
+                                                   { Content = "Show Details", CssClass = "e-flat" })"></GridCommandColumn>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
+@code {
+    private List<Models.PriceList> PriceIndex { get; set; }
+    private int CompanyId { get; set; }
+    private SfGrid<Models.PriceList> priceListGrid { get; set; }
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
+    string[] pagerDropDown = new string[] { "All", "5", "10", "15", "20" };
+    public bool SpinnerVisible { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
+        PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId)).ToList();
+
+    }
+    public async void ActionBeginHandler(ActionEventArgs<PriceList> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+
+            if (args.Action == "Add")
+            {
+                await PriceListService.CreatePriceList(args.Data);
+                priceListGrid.Refresh();
+            }
+            if (args.Action == "Edit")
+            {
+                await PriceListService.UpdatePriceList(args.Data);
+                priceListGrid.Refresh();
+            }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await PriceListService.Delete(args.Data.Id);
+        }
+
+    }
+    public void OnCommandClicked(CommandClickEventArgs<PriceList> args)
+    {
+
+        if (args.CommandColumn.ButtonOption.Content == "Show Details")
+        {
+            //navigationManager.NavigateTo($"/priceList/{args.RowData.Id}");
+            navigationManager.NavigateTo($"/priceListDetails/{args.RowData.Id}");
+        }
+
+    }
+}

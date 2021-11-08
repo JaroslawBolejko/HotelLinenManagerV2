@@ -11,6 +11,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.PriceLists
         public string Number { get; set; }
         public int LaundryId { get; set; }
         public int CompanyId { get; set; }
+        public bool IsCurrent { get; set; }
         public DateTime CreationDate { get; set; }
     }
 }

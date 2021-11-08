@@ -11,9 +11,7 @@
 {
     <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
 }
-<br />
-<h3><span>Your Company</span></h3>
-<br />
+
 @if (CompanyList != null)
 {
     <SfGrid @ref="companyGrid" DataSource="@CompanyList" Toolbar="CompanyToolbaritems">
@@ -22,42 +20,48 @@
         <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
         </GridEditSettings>
         <GridColumns>
-            <GridColumn Field=@nameof(Company.Name) HeaderText="Name"></GridColumn>
-            <GridColumn Field=@nameof(Company.Type) HeaderText="Type"></GridColumn>
-            <GridColumn Field=@nameof(Company.Street) HeaderText="Street"></GridColumn>
-            <GridColumn Field=@nameof(Company.Number) HeaderText="Number"></GridColumn>
-            <GridColumn Field=@nameof(Company.City) HeaderText="City"></GridColumn>
-            <GridColumn Field=@nameof(Company.TaxNumber) HeaderText="TaxNumber"></GridColumn>
-            <GridColumn Field=@nameof(Company.TelefonNumber) HeaderText="Telefon Number"></GridColumn>
-        </GridColumns>
-    </SfGrid>
-}
-<br />
-<h3><span>Related Companies</span></h3>
-<br />
-@if (RelatedCompanies != null)
-{
-    <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
-        <GridEvents OnActionBegin="ActionBeginHandlerRelatedCompnaies" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
-        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
-        </GridEditSettings>
-        <GridColumns>
-            <GridColumn Field=Laundry.Name HeaderText="Company Name"></GridColumn>
-            <GridColumn Field=Laundry.City HeaderText="City"></GridColumn>
-            <GridColumn Field=Laundry.Street HeaderText="Street"></GridColumn>
-            <GridColumn Field=Laundry.Number HeaderText="Number"></GridColumn>
-            <GridColumn Field=Laundry.TelefonNumber HeaderText="Number"></GridColumn>
-            <GridColumn Field=Laundry.EMail HeaderText="EMail"></GridColumn>
-            <GridColumn Field=Laundry.TaxNumber HeaderText="TaxNumber"></GridColumn>
-            <GridColumn HeaderText="Actions" Width="110">
-                <GridCommandColumns>
-                    <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
-                                                   { Content = "PriceList", CssClass = "e-flat" })"></GridCommandColumn>
-                </GridCommandColumns>
+            <GridColumn HeaderText="Your Company" TextAlign="TextAlign.Center">
+                <GridColumns>
+                    <GridColumn Field=@nameof(Company.Name) HeaderText="Name"></GridColumn>
+                    <GridColumn Field=@nameof(Company.Type) HeaderText="Type"></GridColumn>
+                    <GridColumn Field=@nameof(Company.Street) HeaderText="Street"></GridColumn>
+                    <GridColumn Field=@nameof(Company.Number) HeaderText="Number"></GridColumn>
+                    <GridColumn Field=@nameof(Company.City) HeaderText="City"></GridColumn>
+                    <GridColumn Field=@nameof(Company.TaxNumber) HeaderText="TaxNumber"></GridColumn>
+                    <GridColumn Field=@nameof(Company.TelefonNumber) HeaderText="Telefon Number"></GridColumn>
+                </GridColumns>
             </GridColumn>
         </GridColumns>
     </SfGrid>
+}
+<br/>
+@if (RelatedCompanies != null)
+{
+<SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
+    <GridEvents OnActionBegin="ActionBeginHandlerRelatedCompnaies" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
+    <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+    <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+    </GridEditSettings>
+    <GridColumns>
+        <GridColumn HeaderText="Related Companies" TextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=Laundry.Name HeaderText="Company Name"></GridColumn>
+                <GridColumn Field=Laundry.City HeaderText="City"></GridColumn>
+                <GridColumn Field=Laundry.Street HeaderText="Street"></GridColumn>
+                <GridColumn Field=Laundry.Number HeaderText="Number"></GridColumn>
+                <GridColumn Field=Laundry.TelefonNumber HeaderText="Number"></GridColumn>
+                <GridColumn Field=Laundry.EMail HeaderText="EMail"></GridColumn>
+                <GridColumn Field=Laundry.TaxNumber HeaderText="TaxNumber"></GridColumn>
+                <GridColumn HeaderText="Actions" Width="110">
+                    <GridCommandColumns>
+                        <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
+                                                   { Content = "Price List", CssClass = "e-flat" })"></GridCommandColumn>
+                    </GridCommandColumns>
+                </GridColumn>
+            </GridColumns>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
 }
 
 @code {
@@ -71,7 +75,6 @@
     private SfGrid<RelatedCompany> relatedGrid { get; set; }
     private int CompanyId { get; set; }
     private List<Company> CompanyList { get; set; }
-    // private int PriceListCompanyId { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -124,7 +127,7 @@
     public void OnCommandClicked(CommandClickEventArgs<RelatedCompany> args)
     {
 
-        if (args.CommandColumn.ButtonOption.Content == "PriceList")
+        if (args.CommandColumn.ButtonOption.Content == "Price List")
         {
             //navigationManager.NavigateTo($"/priceList/{args.RowData.Id}");
             navigationManager.NavigateTo("/priceList");

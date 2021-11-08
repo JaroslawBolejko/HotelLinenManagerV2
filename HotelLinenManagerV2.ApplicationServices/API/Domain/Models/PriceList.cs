@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
 {
@@ -9,8 +10,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string Number { get; set; }
         public int LaundryId { get; set; }
         public int CompanyId { get; set; }
+        public bool IsCurrent { get; set; }
         public DateTime CreationDate { get; set; }
-        public virtual Company Laundry { get; set; }
-        public virtual Company Company { get; set; }
+        public Company Laundry { get; set; }
+        public Company Company { get; set; }
+        public List<PriceListDetail> Details { get; set; }
     }
 }

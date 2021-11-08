@@ -1,0 +1,19 @@
+﻿@page "/priceListDetails/{Id}"
+@inject IPriceListDetailsService PriceListDetailsService
+@inject ILocalStorageService LocalStorageService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<h3>PriceListDetails</h3>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private List<Models.PriceListDetail> PriceIndexDetails { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PriceIndexDetails = (await PriceListDetailsService.GetAllPriceDetails(int.Parse(Id))).ToList();
+
+    }
+
+}

@@ -14,6 +14,9 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceLists
 
             var response = await context.PriceLists
                 .Where(x => x.CompanyId == this.CompanyId)
+                .Include(x=>x.Company)
+                .Include(x=>x.Laundry)
+                .AsNoTracking()
                 .ToListAsync();
             if (response.Count == 0) return null;
             return response;

@@ -5,5 +5,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.PriceListD
 {
     public class GetAllPriceListDetailsRequest : RequestBase,IRequest<GetAllPriceListDetailsResponse>
     {
+        public int? PriceListId { get; set; }
     }
 }

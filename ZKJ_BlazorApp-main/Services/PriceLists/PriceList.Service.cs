@@ -2,7 +2,6 @@
 using BlazorApp.Services.HttpServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Services.PriceLists
@@ -16,7 +15,7 @@ namespace BlazorApp.Services.PriceLists
             this.httpService = httpService;
         }
 
-        public async Task<int> CreateLaundry(PriceList priceList)
+        public async Task<int> CreatePriceList(PriceList priceList)
         {
             var result = await this.httpService.Post<PriceList>("/priceLists", priceList);
             return result.Id;
@@ -28,17 +27,22 @@ namespace BlazorApp.Services.PriceLists
             return true;
         }
 
-        public async Task<IEnumerable<PriceList>> GetAllLaundry()
+        public async Task<IEnumerable<PriceList>> GetAllPriceLists()
         {
             return await this.httpService.Get<IEnumerable<PriceList>>("/priceLists");
         }
 
-        public async Task<PriceList> GetLaundryById(int id)
+        public async Task<IEnumerable<PriceList>> GetAllPriceLists(int companyId)
         {
-          return  await this.httpService.Get<PriceList>($"/priceLists/{id}");
+            return await this.httpService.Get<IEnumerable<PriceList>>($"/priceLists?CompanyId={companyId}");
         }
 
-        public async Task<int> UpdateLaundry(PriceList priceList)
+        public async Task<PriceList> GetPriceListById(int id)
+        {
+            return await this.httpService.Get<PriceList>($"/priceLists/{id}");
+        }
+
+        public async Task<int> UpdatePriceList(PriceList priceList)
         {
             var result = await this.httpService.Put<PriceList>($"/priceLists/{priceList.Id}", priceList);
             return result.Id;

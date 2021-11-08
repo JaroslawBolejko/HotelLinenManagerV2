@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211108103234_AddIsCurrentToPriceList")]
+    partial class AddIsCurrentToPriceList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,9 +281,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Property<int>("HotelLinenId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PriceListId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("PricePerKg")
                         .HasColumnType("decimal(18,2)");
 
@@ -291,8 +290,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("HotelLinenId");
-
-                    b.HasIndex("PriceListId");
 
                     b.ToTable("PriceListDetails");
                 });
@@ -500,15 +497,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.PriceList", "PriceList")
-                        .WithMany("Details")
-                        .HasForeignKey("PriceListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("HotelLinen");
-
-                    b.Navigation("PriceList");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.RelatedCompany", b =>
@@ -603,11 +592,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
                 {
                     b.Navigation("LaundryServiceDetails");
-                });
-
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceList", b =>
-                {
-                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Warehause", b =>
