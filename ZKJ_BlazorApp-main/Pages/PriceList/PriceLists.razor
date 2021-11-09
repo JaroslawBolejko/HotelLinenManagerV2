@@ -1,4 +1,4 @@
-﻿@page "/priceList/{Id}"
+﻿@page "/priceLists/{Id}"
 @attribute [Authorize]
 @inject IPriceListService PriceListService
 @inject IPriceListDetailsService PriceListDetailsService
@@ -47,6 +47,7 @@
     public bool SpinnerVisible { get; set; }
     [Parameter]
     public string Id { get; set; }
+    private int LaundryId { get; set; }
 
 
 
@@ -57,6 +58,7 @@
         PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId,int.Parse(Id))).ToList();
         SpinnerVisible = false;
     }
+
     public async void ActionBeginHandler(ActionEventArgs<PriceList> args)
     {
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
@@ -80,12 +82,15 @@
         }
 
     }
-    public void OnCommandClicked(CommandClickEventArgs<PriceList> args)
+    public async Task OnCommandClicked(CommandClickEventArgs<PriceList> args)
     {
 
         if (args.CommandColumn.ButtonOption.Content == "Show Details")
         {
-            navigationManager.NavigateTo($"/priceListDetails/{args.RowData.Id}");
+            LaundryId = args.RowData.Id;
+            await LocalStorageService.SetItem<int>("laundryId",LaundryId);
+
+            navigationManager.NavigateTo($"/priceListDetails/{LaundryId}");
         }
 
     }
@@ -121,8 +126,6 @@
     .true {
        background-color: lightgreen;
     }
-
-
     .back.e-toolbar-item .e-tbar-btn {
         border: solid;
         background-color: orange;

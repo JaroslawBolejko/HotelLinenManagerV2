@@ -8,7 +8,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceListDetails
 {
     public class GetAllPriceListDetailsQuery : QueryBase<List<PriceListDetail>>
     {
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public int? PriceListId { get; set; }
         public override async Task<List<PriceListDetail>> Execute(WarehauseStorageHotelLinenContext context)
         {
@@ -16,6 +16,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceListDetails
             {
                 return await context.PriceListDetails
                     .Where(x => x.PriceListId == this.PriceListId)
+                    .Include(x=>x.HotelLinen)
                     .AsNoTracking()
                     .ToListAsync();
             }
