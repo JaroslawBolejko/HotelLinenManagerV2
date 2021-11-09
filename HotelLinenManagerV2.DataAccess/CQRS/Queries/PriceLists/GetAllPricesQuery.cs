@@ -15,6 +15,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceLists
 
             var result = await context.PriceLists
                 .Where(x => x.CompanyId == this.CompanyId && x.LaundryId==this.LaundryId)
+                .OrderByDescending(x=>x.CreationDate)
                 .Include(x=>x.Company)
                 .Include(x=>x.Laundry)
                 .AsNoTracking()
