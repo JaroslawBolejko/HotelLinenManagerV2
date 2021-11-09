@@ -5,6 +5,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.PriceLists
 {
     public class GetAllPriceListsRequest : RequestBase,IRequest<GetAllPriceListsResponse>
     {
-
+        public int LaundryId { get; set; }
     }
 }

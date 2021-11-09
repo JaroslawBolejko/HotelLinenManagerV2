@@ -1,4 +1,4 @@
-﻿@page "/priceList"
+﻿@page "/priceList/{Id}"
 @attribute [Authorize]
 @inject IPriceListService PriceListService
 @inject IPriceListDetailsService PriceListDetailsService
@@ -43,12 +43,15 @@
     private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "Update", "Cancel" };
     string[] pagerDropDown = new string[] { "All", "5", "10", "15", "20" };
     public bool SpinnerVisible { get; set; }
+    [Parameter]
+    public string Id { get; set; }
+
 
 
     protected override async Task OnInitializedAsync()
     {
         CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
-        PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId)).ToList();
+        PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId,int.Parse(Id))).ToList();
 
     }
     public async void ActionBeginHandler(ActionEventArgs<PriceList> args)
@@ -81,6 +84,7 @@
         {
             //navigationManager.NavigateTo($"/priceList/{args.RowData.Id}");
             navigationManager.NavigateTo($"/priceListDetails/{args.RowData.Id}");
+            //śa błedy Row dataId to cały czas pokazuje pralnie uzdowiskową dlaczego?
         }
 
     }

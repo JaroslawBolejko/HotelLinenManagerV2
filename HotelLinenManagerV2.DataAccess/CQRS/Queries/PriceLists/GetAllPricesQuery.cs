@@ -8,18 +8,19 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceLists
 {
     public class GetAllPricesQuery : QueryBase<List<PriceList>>
     {
+        public int LaundryId { get; set; }
         public int CompanyId { get; set; }
         public override async Task<List<PriceList>> Execute(WarehauseStorageHotelLinenContext context)
         {
 
-            var response = await context.PriceLists
-                .Where(x => x.CompanyId == this.CompanyId)
+            var result = await context.PriceLists
+                .Where(x => x.CompanyId == this.CompanyId && x.LaundryId==this.LaundryId)
                 .Include(x=>x.Company)
                 .Include(x=>x.Laundry)
                 .AsNoTracking()
                 .ToListAsync();
-            if (response.Count == 0) return null;
-            return response;
+            if (result.Count == 0) return null;
+            return result;
 
         }
     }

@@ -32,9 +32,9 @@ namespace BlazorApp.Services.PriceLists
             return await this.httpService.Get<IEnumerable<PriceList>>("/priceLists");
         }
 
-        public async Task<IEnumerable<PriceList>> GetAllPriceLists(int companyId)
+        public async Task<IEnumerable<PriceList>> GetAllPriceLists(int companyId, int laundryId)
         {
-            return await this.httpService.Get<IEnumerable<PriceList>>($"/priceLists?CompanyId={companyId}");
+            return await this.httpService.Get<IEnumerable<PriceList>>($"/priceLists?CompanyId={companyId}&LaundryId={laundryId}");
         }
 
         public async Task<PriceList> GetPriceListById(int id)

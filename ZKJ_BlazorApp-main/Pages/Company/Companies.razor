@@ -129,8 +129,7 @@
 
         if (args.CommandColumn.ButtonOption.Content == "Price List")
         {
-            //navigationManager.NavigateTo($"/priceList/{args.RowData.Id}");
-            navigationManager.NavigateTo("/priceList");
+            navigationManager.NavigateTo($"/priceList/{args.RowData.LaundryId}");
         }
 
     }
