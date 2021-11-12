@@ -22,7 +22,7 @@ namespace BlazorApp.Services.RelatedCompanies
 
         public async Task<bool> DeleteRelatedCompany(int id)
         {
-            await this.httpService.Delete($"/relatedCompany/{id}");
+            await this.httpService.Delete($"/relatedCompanies/{id}");
             return true;
         }
 

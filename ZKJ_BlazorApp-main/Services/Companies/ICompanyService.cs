@@ -8,6 +8,7 @@ namespace BlazorApp.Services.Companies
     {
         Task<IEnumerable<Company>> GetAll();
         Task<IEnumerable<Company>> GetAll(int companyId);
+        Task<IEnumerable<Company>> GetAll(string taxNumber);
         Task<Company> GetCompanyById(int id);
         Task<int> Create(Company company);
         Task<bool> Delete(int id);

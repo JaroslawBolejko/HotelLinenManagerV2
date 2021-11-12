@@ -4,6 +4,9 @@
 @inject ILocalStorageService LocalStorageService
 @inject IRelatedCompaniesService RelatedCompanyService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.Buttons
+
 
 
 
@@ -34,47 +37,88 @@
         </GridColumns>
     </SfGrid>
 }
-<br/>
+<br />
 @if (RelatedCompanies != null)
 {
-<SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
-    <GridEvents OnActionBegin="ActionBeginHandlerRelatedCompnaies" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
-    <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-    <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
-    </GridEditSettings>
-    <GridColumns>
-        <GridColumn HeaderText="Related Companies" TextAlign="TextAlign.Center">
-            <GridColumns>
-                <GridColumn Field=Laundry.Name HeaderText="Company Name"></GridColumn>
-                <GridColumn Field=Laundry.City HeaderText="City"></GridColumn>
-                <GridColumn Field=Laundry.Street HeaderText="Street"></GridColumn>
-                <GridColumn Field=Laundry.Number HeaderText="Number"></GridColumn>
-                <GridColumn Field=Laundry.TelefonNumber HeaderText="Number"></GridColumn>
-                <GridColumn Field=Laundry.EMail HeaderText="EMail"></GridColumn>
-                <GridColumn Field=Laundry.TaxNumber HeaderText="TaxNumber"></GridColumn>
-                <GridColumn HeaderText="Actions" Width="110">
-                    <GridCommandColumns>
-                        <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
+    <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
+        <GridEvents OnToolbarClick="ToolbarClickHandler" OnActionBegin="OnActionRelated" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
+        <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <GridEditSettings Mode="EditMode.Normal" AllowAdding="false" AllowEditing="false" AllowDeleting="true">
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn HeaderText="Related Companies" TextAlign="TextAlign.Center">
+                <GridColumns>
+                    <GridColumn Field=Laundry.Name HeaderText="Company Name"></GridColumn>
+                    <GridColumn Field=Laundry.City HeaderText="City"></GridColumn>
+                    <GridColumn Field=Laundry.Street HeaderText="Street"></GridColumn>
+                    <GridColumn Field=Laundry.Number HeaderText="Number"></GridColumn>
+                    <GridColumn Field=Laundry.TelefonNumber HeaderText="Telefon Number"></GridColumn>
+                    <GridColumn Field=Laundry.EMail HeaderText="EMail"></GridColumn>
+                    <GridColumn Field=Laundry.TaxNumber HeaderText="TaxNumber"></GridColumn>
+                    <GridColumn Field="@nameof(RelatedCompany.CompanyId)" HeaderText="CompId" Width="0"></GridColumn>
+                    <GridColumn Field="@nameof(RelatedCompany.LaundryId)" HeaderText="LaundryId" Width="0"></GridColumn>
+                    <GridColumn HeaderText="Actions">
+                        <GridCommandColumns>
+                            <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
                                                    { Content = "Price List", CssClass = "e-flat" })"></GridCommandColumn>
-                    </GridCommandColumns>
-                </GridColumn>
-            </GridColumns>
-        </GridColumn>
-    </GridColumns>
-</SfGrid>
+                        </GridCommandColumns>
+                    </GridColumn>
+                </GridColumns>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
 }
 
+<div class="add">
+    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="300px" IsModal="true">
+        <DialogTemplates>
+            <Header>Add Company</Header>
+            <Content>
+                <EditForm Model="@newCompany" OnValidSubmit="HandleValidSubmit">
+                    <div class="dialogForm">
+                        <form>
+                            <label for="taxNumber">TaxNumber:</label>
+                            <input type="text" id="taxNumber" name="taxNumber" placeholder="Company Tax number..">
+
+                            <label for="email">E-mail:</label>
+                            <input type="text" id="email" name="email" placeholder="Company e-mail..">
+
+                            <label for="telNumber">Last Name:</label>
+                            <input type="text" id="telNumber" name="telefonNumber" placeholder="Company telefon number..">
+                        </form>
+                    </div>
+
+                </EditForm>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton CssClass="dialogButton" Content="Submit" IsPrimary="true" OnClick="@OnClick" />
+            <DialogButton CssClass="dialogButton" Content="Cancel" OnClick="@Cancel" />
+        </DialogButtons>
+    </SfDialog>
+</div>
 @code {
 
 
     private List<Object> CompanyToolbaritems = new List<Object>() { "Edit", "Update", "Cancel" };
-    private List<Object> RelatedToolbaritems = new List<Object>() { "Add", "Delete", "Update", "Cancel" };
+    private List<Object> RelatedToolbaritems = new List<Object>() {new ItemModel()
+    { Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Company",
+        TooltipText = "Add", Id = "Add"} };
     public bool SpinnerVisible { get; set; }
     private List<RelatedCompany> RelatedCompanies { get; set; }
     private SfGrid<Company> companyGrid { get; set; }
     private SfGrid<RelatedCompany> relatedGrid { get; set; }
     private int CompanyId { get; set; }
+    private int relatedLaundryId;
+    public int RelationId { get; set; }
+
     private List<Company> CompanyList { get; set; }
+    private DialogSettings DialogParams = new DialogSettings { Width = "450px", Height = "550px" };
+    private Company newCompany = new Company();
+    private RelatedCompany newRelation = new RelatedCompany();
+    private bool IsVisible { get; set; }
+
+
 
 
     protected override async Task OnInitializedAsync()
@@ -89,19 +133,11 @@
 
     public async void ActionBeginHandlerRelatedCompnaies(ActionEventArgs<RelatedCompany> args)
     {
-        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
-        {
-            if (args.Action == "Add")
-            {
 
-                await RelatedCompanyService.CreateRelatedCompany(args.Data);
-                relatedGrid.Refresh();
-            }
-
-        }
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
         {
-            await RelatedCompanyService.DeleteRelatedCompany(args.Data.Id);
+            int deleteId = args.Data.Id;
+            await RelatedCompanyService.DeleteRelatedCompany(deleteId);
         }
     }
 
@@ -122,9 +158,28 @@
             await CompService.Delete(args.Data.Id);
         }
     }
+    //bez metody onaction nie działa gridrefresh... zostawić deleta tu chociaż może edit orzejdzie
+    public async void OnActionRelated(ActionEventArgs<RelatedCompany> args)
+    {
+        //if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        //{
+
+        //    if (args.Action == "Edit")
+        //    {
+        //        //await CompService.Update(args.Data);
+        //        //companyGrid.Refresh();
+        //    }
+
+        //}
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await CompService.Delete(args.Data.Id);
+        }
+    }
 
 
-    public void OnCommandClicked(CommandClickEventArgs<RelatedCompany> args)
+    public void OnCommandClicked(CommandClickEventArgs<RelatedCompany>
+    args)
     {
 
         if (args.CommandColumn.ButtonOption.Content == "Price List")
@@ -133,5 +188,91 @@
         }
 
     }
+    //Może być potrzebne do edit
+    //public void RowSelectHandler(RowSelectEventArgs<RelatedCompany> argsSelect)
+    //{
+    //    RelationId = argsSelect.Data.Id;
+    //}
+
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs selectArgs)
+    {
+        if (selectArgs.Item.Id == "Add")
+        {
+            this.IsVisible = true;
+
+        }
+    }
+    private void Cancel()
+    {
+        this.IsVisible = false;
+    }
+    private async Task OnClick()
+    {
+        this.IsVisible = false;
+        SpinnerVisible = true;
+        newCompany.Type = (CompanyType)2;
+        newCompany.Name = "";
+        newCompany.Street = "";
+        newCompany.Number = "";
+        newCompany.ApartmentNumber = "";
+        newCompany.ZipCode = "";
+        newCompany.City = "";
+
+        var laundry = (await CompService.GetAll(newCompany.TaxNumber)).ToList();
+        if (laundry == null)
+        {
+            relatedLaundryId = await CompService.Create(newCompany);
+            newRelation.CompanyId = CompanyId;
+            newRelation.LaundryId = relatedLaundryId;
+            await RelatedCompanyService.CreateRelatedCompany(newRelation);
+        }
+        else
+        {
+            int laundryId = laundry.Select(x => x.Id).FirstOrDefault();
+            newRelation.CompanyId = CompanyId;
+            newRelation.LaundryId = laundryId;
+            await RelatedCompanyService.CreateRelatedCompany(newRelation);
+        }
+
+        RelatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies(CompanyId)).ToList();
+        relatedGrid.Refresh();
+        SpinnerVisible = false;
+
+    }
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
 
 }
+<style>
+    .add {
+        min-height: 400px;
+        height: 100%;
+        position: relative;
+    }
+
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+ 
+
+    .dialogButton {
+        align-content: center;
+        text-align: center;
+    }
+
+    .e-toolbar-item .e-tbar-btn {
+        border: solid;
+    }
+
+    /*.addCompany.e-toolbar-item .e-tbar-btn {
+            background-color: orange;
+        }*/
+</style>

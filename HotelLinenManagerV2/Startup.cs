@@ -57,8 +57,8 @@ namespace HotelLinenManagerV2
             });
             services.AddTransient<INullOrEmptyChecker, NullOrEmptyChecker>();
             services.AddTransient<IPasswordHasher, PasswordHasher>();
-            services.AddTransient<IStartsWithDigit, StartsWithDigit>();
-            services.AddTransient<IZipCode, ZipCode>();
+            //services.AddTransient<IStartsWithDigit, StartsWithDigit>();
+            //services.AddTransient<IZipCode, ZipCode>();
             services.AddTransient<IGUSDataConnector, GUSDataConnector>();
             services.AddTransient<IDocNumCreator, DocNumCreator>();
             services.AddTransient<ICommandExecutor, CommandExecutor>();

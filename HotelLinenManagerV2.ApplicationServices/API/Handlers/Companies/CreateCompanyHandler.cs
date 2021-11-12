@@ -80,7 +80,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             {
                 return new CreateCompanyResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict + " Podana firma istnie już w bazie dancyh!")
+                    Error = new ErrorModel(ErrorType.Conflict)
                 };
             }
             var mappedCommand = this.mapper.Map<Company>(request);

@@ -69,17 +69,6 @@
             <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Base amount"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Size) HeaderText="Size" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Weight) HeaderText="Weight" Width="0"></GridColumn>
-            <GridColumn Field=@nameof(HotelLinen.PricePerKg) HeaderText="Price per kg" Width="0"></GridColumn>
-            @*<GridColumn  Field=Warehause.Name HeaderText="Warehause Name" Width="0">
-                    <EditTemplate>
-                        <span>Choose warehause to placed added linen</span>
-                        <SfDropDownList TItem="Warehause" TValue="int" DataSource="@Warehauses"
-                                        @bind-Value="@((context as HotelLinen).WarehauseId)">
-                            <DropDownListFieldSettings Text="Name" Value="Id">
-                            </DropDownListFieldSettings>
-                        </SfDropDownList>
-                    </EditTemplate>
-                </GridColumn>*@
         </GridColumns>
     </SfGrid>
 }
@@ -145,7 +134,7 @@
 
                 await WarehauseDetailsService.CreateDetails(detail);
 
-               // Linens = (await HotelLinenService.GetAll()).ToList();
+                // Linens = (await HotelLinenService.GetAll()).ToList();
                 hotelLinenGrid.Refresh();
             }
             if (args.Action == "Edit")

@@ -73,7 +73,13 @@ namespace BlazorApp.Services.HttpServices
                 _navigationManager.NavigateTo("logout");
                 return default;
             }
+            // return default if there is conflict 
+            //if (response.StatusCode == HttpStatusCode.Conflict)
+            //{
+            //    var answer = await response.Content.ReadFromJsonAsync<Reponse<T>>();
 
+            //    return answer.Data;
+            //}
             // throw exception on error response
             if (!response.IsSuccessStatusCode)
             {
