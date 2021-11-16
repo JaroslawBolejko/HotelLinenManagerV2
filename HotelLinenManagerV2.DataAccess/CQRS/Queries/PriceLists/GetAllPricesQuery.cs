@@ -18,6 +18,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceLists
                 .OrderByDescending(x=>x.CreationDate)
                 .Include(x=>x.Company)
                 .Include(x=>x.Laundry)
+                .Include(x=>x.Details)
                 .AsNoTracking()
                 .ToListAsync();
             if (result.Count == 0) return null;

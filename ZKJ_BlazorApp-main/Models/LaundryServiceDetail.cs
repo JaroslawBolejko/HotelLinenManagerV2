@@ -19,5 +19,6 @@ namespace BlazorApp.Models
         public decimal PricePerKg { get; set; }
         public double TotalWeight { get; set; }
         public int TaxValue { get; set; }
+               
     }
 }

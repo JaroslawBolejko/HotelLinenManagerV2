@@ -12,7 +12,9 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [Range(0, 10000)]
         public int Amount { get; set; }
+        public decimal PricePerKg { get; set; }
         public double TotalWeight { get; set; }
+        public int TaxValue { get; set; }
         public LaundryService LaundryService { get; set; }
         public HotelLinen HotelLinen { get; set; }
     }

@@ -14,6 +14,6 @@ namespace BlazorApp.Models
         public DateTime CreationDate { get; set; }
         public Company Laundry { get; set; }
         public Company Company { get; set; }
-        public List<PriceListDetail> PriceDetails { get; set; }
+        public List<PriceListDetail> Details { get; set; }
     }
 }

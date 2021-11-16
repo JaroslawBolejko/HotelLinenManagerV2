@@ -9,6 +9,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
     {
         public int? Id { get; set; }
         public int? CompanyId { get; set; }
+        public int? LaundryId { get; set; }
         public bool WouldLikeToCreate { get; set; }
         public override async Task<LaundryService> Execute(WarehauseStorageHotelLinenContext context)
         {
@@ -21,13 +22,15 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
             }
-            else if (this.CompanyId != null && this.WouldLikeToCreate == true)
+            else if (this.LaundryId!=null && this.CompanyId != null && this.WouldLikeToCreate == true)
             {
                 return await context.LaundryServices
+                    .Where(x => x.CompanyId == this.CompanyId && x.LaundryId == this.LaundryId)
+                    .OrderByDescending(x => x.RecievedDate)
+                    .ThenByDescending(x => x.Id)
                     .AsNoTracking()
-                    .OrderByDescending(x=>x.RecievedDate)
-                    .ThenByDescending(x=>x.Id)
-                    .LastOrDefaultAsync();
+                    .FirstOrDefaultAsync();
+                    
             }
             else return null;
         }

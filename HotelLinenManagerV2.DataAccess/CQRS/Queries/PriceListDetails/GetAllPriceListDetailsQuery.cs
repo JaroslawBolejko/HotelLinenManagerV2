@@ -12,11 +12,11 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceListDetails
         public int? PriceListId { get; set; }
         public override async Task<List<PriceListDetail>> Execute(WarehauseStorageHotelLinenContext context)
         {
-            if(this.PriceListId != null)
+            if (this.PriceListId != null)
             {
                 return await context.PriceListDetails
                     .Where(x => x.PriceListId == this.PriceListId)
-                    .Include(x=>x.HotelLinen)
+                    .Include(x => x.HotelLinen)
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -27,7 +27,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceListDetails
                                 .AsNoTracking()
                                 .ToListAsync();
             }
-            
+
         }
     }
 }

@@ -18,6 +18,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public decimal TotalTax { get; set; }
         public decimal TotalNetto { get; set; }
         public decimal TotalBrutto { get; set; }
+        public double TotalServiceWeight { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
         public Company Company { get; set; }
         public Company Laundry { get; set; }

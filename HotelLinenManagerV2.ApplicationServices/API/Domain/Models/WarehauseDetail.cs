@@ -12,6 +12,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public string Color { get; set; }
         public int Amount { get; set; }
         public Type HotelLinenType { get; set; }
+        public HotelLinen HotelLinen { get; set; }
 
     }
 }

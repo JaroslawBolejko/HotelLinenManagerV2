@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211116204932_AddPriceAndTaxInLaundryDetails")]
+    partial class AddPriceAndTaxInLaundryDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,9 +194,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
                     b.Property<decimal>("TotalNetto")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<double>("TotalServiceWeight")
-                        .HasColumnType("float");
 
                     b.Property<decimal>("TotalTax")
                         .HasColumnType("decimal(18,2)");

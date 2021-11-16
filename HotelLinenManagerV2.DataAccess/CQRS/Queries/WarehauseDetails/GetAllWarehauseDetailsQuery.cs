@@ -63,6 +63,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.WarehauseDetails
                 {
                     var item = await context.WarehauseDetails
                                                .Where(x => x.Id == result2[i])
+                                               .Include(x=>x.HotelLinen)
                                                .AsNoTracking()
                                                .ToListAsync();
                     if (item != null) returnList.AddRange(item);

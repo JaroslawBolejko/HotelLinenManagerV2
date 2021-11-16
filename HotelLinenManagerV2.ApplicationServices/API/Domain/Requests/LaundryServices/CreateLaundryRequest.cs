@@ -16,5 +16,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundrySer
         public decimal TotalTax { get; set; }
         public decimal TotalNetto { get; set; }
         public decimal TotalBrutto { get; set; }
+        public double TotalServiceWeight { get; set; }
     }
 }

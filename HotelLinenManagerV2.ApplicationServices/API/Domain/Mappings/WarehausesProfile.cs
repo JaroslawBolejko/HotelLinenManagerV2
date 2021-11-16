@@ -21,6 +21,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.WarehauseNumber, y => y.MapFrom(z => z.WarehauseNumber))
                 .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId));
+                //.ForMember(x => x.WarehauseDetails, y => y.MapFrom(z => z.WarehauseDetails));
+
 
             this.CreateMap<UpdateWarehauseByIdRequest, DataAccess.Entities.Warehause>()
                  .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))

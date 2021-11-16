@@ -24,6 +24,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public decimal TotalTax { get; set; }
         public decimal TotalNetto { get; set; }
         public decimal TotalBrutto { get; set; }
+        public double TotalServiceWeight { get; set; }
         public int? InvoiceId { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
         [ForeignKey("CompanyId")]
