@@ -88,7 +88,6 @@
     private Warehause Warehause { get; set; }
     private LaundryService laundry;
     private LaundryServiceDetail laundryServiceDetail;
-    private string numberToFilter;
     public bool SpinnerVisible { get; set; }
     public SfGrid<WarehauseDetail> warehauseDetailGrid { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
@@ -97,7 +96,7 @@
     private List<Object> Toolbaritems = new List<Object>() {"Edit", "Delete", "Update", "Cancel"
     , new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
     private bool IsVisible { get; set; }
-    private RelatedCompany laundryToMove = new RelatedCompany() ;
+    private RelatedCompany laundryToMove = new RelatedCompany();
     private IEnumerable<RelatedCompany> relatedCompanies;
     private List<PriceList> Prices { get; set; }
     private int PriceListId { get; set; }
@@ -174,15 +173,12 @@
             IsFinished = false,
             RecievedDate = DateTime.Now,
             IssuedDate = null,
-            //TotalTax = 1,
-            //TotalBrutto = 1,
-            //TotalNetto = 1,
             LaundryId = laundryToMove.LaundryId
 
         };
 
         int laundryServiceId = await LaundryServiceService.CreateLaundry(laundry);
-        Prices = (await PriceListService.GetAllPriceLists(laundry.CompanyId,laundry.LaundryId)).ToList();
+        Prices = (await PriceListService.GetAllPriceLists(laundry.CompanyId, laundry.LaundryId)).ToList();
         PriceDetails = Prices.Where(x => x.IsCurrent == true).Select(y => y.Details).FirstOrDefault();
 
 
@@ -197,20 +193,36 @@
                 HotelLinenId = detail.HotelLinenId,
                 Amount = detail.Amount,
                 PricePerKg = price,
-                TotalWeight = detail.Amount*detail.HotelLinen.Weight,
+                TotalWeight = detail.Amount * detail.HotelLinen.Weight,
                 TaxValue = tax
 
             };
+            //await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
+            //decimal taxInDec = (decimal)laundryServiceDetail.TaxValue / 100;
+            //decimal taxFactor = (1 + taxInDec);
+            //total.SingleBruttoValue = ((decimal)laundryServiceDetail.TotalWeight * taxFactor * laundryServiceDetail.PricePerKg);
+            //total.TotalServiceWeight += laundryServiceDetail.TotalWeight;
+            //total.TotalNetto += (laundryServiceDetail.PricePerKg * (decimal)laundryServiceDetail.TotalWeight);
+            //total.TotalBrutto += total.SingleBruttoValue;
 
             await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
-//Pomyśl czy nie przenieść za pętle bo musi  przecież obliczać dla wszystkich potestouj dla większej ilości prania
-            total.TotalServiceWeight += laundryServiceDetail.TotalWeight;
-            total.TotalBrutto += (laundryServiceDetail.PricePerKg * (decimal)laundryServiceDetail.TotalWeight);
-
-
-            //Tu musi być update na LaundryService aby obliczał mu wartości Total!!
+            decimal taxInDec = (decimal)laundryServiceDetail.TaxValue / 100;
+            decimal taxFactor = (1 + taxInDec);
+            total.SingleBruttoValue = ((decimal)laundryServiceDetail.TotalWeight * taxFactor * laundryServiceDetail.PricePerKg);
+            laundry.TotalServiceWeight += laundryServiceDetail.TotalWeight;
+            laundry.TotalNetto += (laundryServiceDetail.PricePerKg * (decimal)laundryServiceDetail.TotalWeight);
+            laundry.TotalBrutto += total.SingleBruttoValue;
 
         }
+       // laundry.TotalNetto = total.TotalNetto;
+       // laundry.TotalServiceWeight = total.TotalServiceWeight;
+      //  laundry.TotalBrutto = total.TotalBrutto;
+        laundry.TotalTax = laundry.TotalBrutto - laundry.TotalNetto;
+        laundry.Id = laundryServiceId;
+
+        await LaundryServiceService.UpdateLaundry(laundry);
+
+
         foreach (var detail in WarehauseDetails)
         {
             await WarehauseDetailsService.Delete(detail.Id);

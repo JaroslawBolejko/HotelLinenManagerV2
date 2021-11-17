@@ -18,7 +18,10 @@ namespace BlazorApp.Models
 
         public double TotalServiceWeight { get; set; }
         public decimal TotalServiceTax { get; set; }
+        public decimal TotalNetto { get; set; }
         public decimal TotalBrutto { get; set; }
+        public decimal SingleBruttoValue { get; set; }
+
 
     }
 }

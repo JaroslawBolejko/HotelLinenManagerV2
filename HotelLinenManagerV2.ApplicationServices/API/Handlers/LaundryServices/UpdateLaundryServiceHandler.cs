@@ -41,7 +41,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
                     Error = new ErrorModel(ErrorType.NotFound)
                 };
             }
-
+            //After LaundryDetails creation total valus are calculated and laundry service is updated, doc number must be reassigned
+            request.Number = details.Number;
             var mappedDetails = this.mapper.Map<DataAccess.Entities.LaundryService>(request);
             var command = new UpdateLaundryCommand()
             {

@@ -32,6 +32,7 @@ namespace BlazorApp.Models
         public Company Company { get; set; }
         public Company Laundry { get; set; }
 
+        //decimal.Round(yourValue, 2, MidpointRounding.AwayFromZero) W razie w;
 
 
     }

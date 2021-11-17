@@ -125,7 +125,7 @@
                 Linens = (await HotelLinenService.GetAll()).ToList();
 
                 detail.HotelLinenId = Linens.Select(x => x.Id).Last();
-                // detail.WarehauseId = args.Data.WarehauseId;
+                // After Linen is created it value is move to First Clean warehasue
                 detail.WarehauseId = WarehauseId;
                 detail.Amount = args.Data.Amount;
                 detail.HotelLinenName = null;
