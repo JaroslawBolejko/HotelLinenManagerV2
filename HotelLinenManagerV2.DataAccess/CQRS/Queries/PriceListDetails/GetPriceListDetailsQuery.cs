@@ -12,7 +12,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceListDetails
         public override async Task<PriceListDetail> Execute(WarehauseStorageHotelLinenContext context)
         {
             return await context.PriceListDetails
-                .Where(x => x.Id == this.Id && x.HotelLinen.CompanyId == this.CompanyId)
+                .Where(x => x.Id == this.Id && x.PriceList.CompanyId == this.CompanyId)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
 

@@ -10,28 +10,28 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
         {
             CreateMap<DataAccess.Entities.PriceListDetail, PriceListDetail>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-                .ForMember(x => x.HotelLinenId, y => y.MapFrom(z => z.HotelLinenId))
                 .ForMember(x => x.TaxValue, y => y.MapFrom(z => z.TaxValue))
                 .ForMember(x => x.PricePerKg, y => y.MapFrom(z => z.PricePerKg))
                 .ForMember(x => x.PriceListId, y => y.MapFrom(z => z.PriceListId))
-                .ForMember(x => x.HotelLinen, y => y.MapFrom(z => z.HotelLinen));
+                .ForMember(x => x.LinenType, y => y.MapFrom(z => z.LinenType));
 
-            CreateMap<CreatePriceListDetailRequest,DataAccess.Entities.PriceListDetail>()
-              .ForMember(x => x.HotelLinenId, y => y.MapFrom(z => z.HotelLinenId))
+
+            CreateMap<CreatePriceListDetailRequest, DataAccess.Entities.PriceListDetail>()
               .ForMember(x => x.PriceListId, y => y.MapFrom(z => z.PriceListId))
               .ForMember(x => x.TaxValue, y => y.MapFrom(z => z.TaxValue))
+              .ForMember(x => x.LinenType, y => y.MapFrom(z => z.LinenType))
               .ForMember(x => x.PricePerKg, y => y.MapFrom(z => z.PricePerKg));
 
-            CreateMap<UpdatePriceListDetailsRequest,DataAccess.Entities.PriceListDetail>()
+            CreateMap<UpdatePriceListDetailsRequest, DataAccess.Entities.PriceListDetail>()
               .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-              .ForMember(x => x.HotelLinenId, y => y.MapFrom(z => z.HotelLinenId))
               .ForMember(x => x.PriceListId, y => y.MapFrom(z => z.PriceListId))
               .ForMember(x => x.TaxValue, y => y.MapFrom(z => z.TaxValue))
+              .ForMember(x => x.LinenType, y => y.MapFrom(z => z.LinenType))
               .ForMember(x => x.PricePerKg, y => y.MapFrom(z => z.PricePerKg));
 
-            CreateMap<DeletePriceListDetailsRequest,DataAccess.Entities.PriceListDetail>()
+            CreateMap<DeletePriceListDetailsRequest, DataAccess.Entities.PriceListDetail>()
               .ForMember(x => x.Id, y => y.MapFrom(z => z.Id));
-          
+
         }
     }
 }

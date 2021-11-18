@@ -4,9 +4,8 @@
     {
         public decimal PricePerKg { get; set; }
         public int TaxValue { get; set; }
-        public int HotelLinenId {get;set;}
         public int PriceListId { get; set; }
-        public HotelLinen HotelLinen { get; set; }
+        public Type LinenType { get; set; }
         public PriceList PriceList { get; set; }
 
     }

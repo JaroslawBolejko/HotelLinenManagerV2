@@ -19,8 +19,7 @@
         <GridColumns>
             <GridColumn HeaderText="Price List Details" TextAlign="TextAlign.Center">
                 <GridColumns>
-                    <GridColumn Field="HotelLinen.TypeName" HeaderText="Description"></GridColumn>
-                    <GridColumn Field="HotelLinen.Description" HeaderText="Description"></GridColumn>
+                    <GridColumn Field="@nameof(PriceListDetail.LinenType)" HeaderText="Type"></GridColumn>
                     <GridColumn Field=@nameof(PriceListDetail.PricePerKg) HeaderText="Price per kg(zł)"></GridColumn>
                     <GridColumn Field=@nameof(PriceListDetail.TaxValue) HeaderText="Tax value(%)"></GridColumn>
                 </GridColumns>
@@ -42,6 +41,7 @@
     string[] pagerDropDown = new string[] { "All", "5", "10", "15", "20" };
     private int BackPageId { get; set; }
     private DialogSettings DialogParams = new DialogSettings { Width = "450px", Height = "550px" };
+    public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
 
 
     protected override async Task OnInitializedAsync()

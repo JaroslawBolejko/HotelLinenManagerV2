@@ -29,7 +29,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceListDetails
             var query = new GetAllPriceListDetailsQuery()
             {
                 PriceListId = request.PriceListId,
-                CompanyId = request.AuthenticationCompanyId
+                CompanyId = request.AuthenticationCompanyId,
+                LinenType = request.LinenType
             };
             var prices = await this.queryExecutor.Execute(query);
        

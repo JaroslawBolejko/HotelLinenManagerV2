@@ -76,13 +76,13 @@
                     <div class="dialogForm">
                         <form>
                             <label for="taxNumber">TaxNumber:</label>
-                            <input type="text" id="taxNumber" name="taxNumber" placeholder="Company Tax number..">
+                            <input @bind-value="newCompany.TaxNumber" type="text" id="taxNumber" name="taxNumber" placeholder="Company Tax number..">
 
                             <label for="email">E-mail:</label>
-                            <input type="text" id="email" name="email" placeholder="Company e-mail..">
+                            <input @bind-value="newCompany.EMail" type="text" id="email" name="email" placeholder="Company e-mail..">
 
                             <label for="telNumber">Last Name:</label>
-                            <input type="text" id="telNumber" name="telefonNumber" placeholder="Company telefon number..">
+                            <input @bind-value="newCompany.TelefonNumber" type="text" id="telNumber" name="telefonNumber" placeholder="Company telefon number..">
                         </form>
                     </div>
 
@@ -156,7 +156,7 @@
             await CompService.Delete(args.Data.Id);
         }
     }
-    //bez metody onaction nie działa gridrefresh... zostawić deleta tu chociaż może edit orzejdzie
+    //bez metody onaction nie działa gridrefresh... zostawić deleta tu chociaż może edit teżprzejdzie
     public async void OnActionRelated(ActionEventArgs<RelatedCompany> args)
     {
         //if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))

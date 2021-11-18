@@ -1,4 +1,5 @@
 ﻿using HotelLinenManagerV2.DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.DataAccess.CQRS.Commands.Warehauses
@@ -7,6 +8,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Commands.Warehauses
     {
         public override async Task<bool> Execute(WarehauseStorageHotelLinenContext context)
         {
+            
             context.ChangeTracker.Clear();
             context.Warehauses.Remove(this.Parameter);
             await context.SaveChangesAsync();

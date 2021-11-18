@@ -12,6 +12,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceLists
         {
             return await context.PriceLists
                 .Where(x => x.Id == this.Id)
+                .Include(x=>x.Details)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }

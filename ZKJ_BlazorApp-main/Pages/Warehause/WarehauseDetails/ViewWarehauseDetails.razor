@@ -184,8 +184,8 @@
 
         foreach (var detail in WarehauseDetails)
         {
-            decimal price = PriceDetails.Where(x => x.HotelLinenId == detail.HotelLinenId).Select(y => y.PricePerKg).FirstOrDefault();
-            int tax = PriceDetails.Where(x => x.HotelLinenId == detail.HotelLinenId).Select(y => y.TaxValue).FirstOrDefault();
+            decimal price = PriceDetails.Where(x => x.LinenType == detail.HotelLinen.TypeName).Select(y => y.PricePerKg).FirstOrDefault();
+            int tax = PriceDetails.Where(x => x.LinenType == detail.HotelLinen.TypeName).Select(y => y.TaxValue).FirstOrDefault();
 
             laundryServiceDetail = new LaundryServiceDetail
             {
@@ -197,14 +197,8 @@
                 TaxValue = tax
 
             };
-            //await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
-            //decimal taxInDec = (decimal)laundryServiceDetail.TaxValue / 100;
-            //decimal taxFactor = (1 + taxInDec);
-            //total.SingleBruttoValue = ((decimal)laundryServiceDetail.TotalWeight * taxFactor * laundryServiceDetail.PricePerKg);
-            //total.TotalServiceWeight += laundryServiceDetail.TotalWeight;
-            //total.TotalNetto += (laundryServiceDetail.PricePerKg * (decimal)laundryServiceDetail.TotalWeight);
-            //total.TotalBrutto += total.SingleBruttoValue;
-
+           
+            //obliczam tolatl values i aktualizuje usługęPrania
             await LaundryServiceDetailsService.CreateLaundryDetails(laundryServiceDetail);
             decimal taxInDec = (decimal)laundryServiceDetail.TaxValue / 100;
             decimal taxFactor = (1 + taxInDec);
@@ -214,9 +208,7 @@
             laundry.TotalBrutto += total.SingleBruttoValue;
 
         }
-       // laundry.TotalNetto = total.TotalNetto;
-       // laundry.TotalServiceWeight = total.TotalServiceWeight;
-      //  laundry.TotalBrutto = total.TotalBrutto;
+     
         laundry.TotalTax = laundry.TotalBrutto - laundry.TotalNetto;
         laundry.Id = laundryServiceId;
 
