@@ -3,14 +3,12 @@ using HotelLinenManagerV2.ApplicationServices.API.Domain.ErrorHandling;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Models;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies;
 using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Companies;
-using HotelLinenManagerV2.ApplicationServices.Components.GUSDataConnector;
 using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 {
@@ -18,13 +16,11 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
     {
         private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
-        private readonly IGUSDataConnector gUSDataConnector;
 
-        public GetAllCompaniesHandler(IQueryExecutor queryExecutor, IMapper mapper, IGUSDataConnector gUSDataConnector)
+        public GetAllCompaniesHandler(IQueryExecutor queryExecutor, IMapper mapper)
         {
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;
-            this.gUSDataConnector = gUSDataConnector;
         }
 
         public async Task<GetAllCompaniesResponse> Handle(GetAllCompaniesRequest request, CancellationToken cancellationToken)

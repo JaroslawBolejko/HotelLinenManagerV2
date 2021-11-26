@@ -42,8 +42,10 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Companies
                     .Include(x => x.CompanyPriceLists)
                     .AsNoTracking()
                     .ToListAsync();
-                if (result.Count == 0)
-                    return null;
+                //if (result.Count == 0)
+                //    return null;
+
+                // WTF PRzecież wszystko chodziło jak wyrzucam nulla to jest 404 i złe ja zracam pustą to hujnia bo laudnryId ma 0
                 return result;
             }
             else if (this.CompanyId != null && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(TaxNumber))

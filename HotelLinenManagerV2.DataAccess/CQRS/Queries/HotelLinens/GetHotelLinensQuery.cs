@@ -33,7 +33,6 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                     return await context.HotelLinens
                         .Where(x => x.Description == this.Description)
                         .Include(x => x.Company)
-                        .Include(y => y.PriceListDetails)
                         .AsNoTracking()
                         .ToListAsync();
                 }
@@ -46,7 +45,6 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                 return await context.HotelLinens
                          .Where(x => x.Company.Id == this.CompanyId)
                          .Include(x => x.Company)
-                         .Include(y => y.PriceListDetails)
                          .AsNoTracking()
                          .ToListAsync();
             }
@@ -67,7 +65,6 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
                     var item = await context.HotelLinens
                         .Where(x => x.Id == result2[i])
                         .Include(x => x.Company)
-                        .Include(y => y.PriceListDetails)
                         .AsNoTracking()
                         .ToListAsync();
                     if (item != null) returnList.AddRange(item);
@@ -78,7 +75,6 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.HotelLinens
             {
                 return await context.HotelLinens
                     .Include(x => x.Company)
-                    .Include(y => y.PriceListDetails)
                     .AsNoTracking()
                     .ToListAsync();
             }

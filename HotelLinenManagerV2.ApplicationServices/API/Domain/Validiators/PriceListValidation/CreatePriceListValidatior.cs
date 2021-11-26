@@ -11,14 +11,12 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.PriceLi
                 .GreaterThanOrEqualTo(0).WithMessage("ID Bielizny nie może być ujemne!")
                 .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.CompanyId)
-              .GreaterThanOrEqualTo(0).WithMessage("ID Bielizny nie może być ujemne!")
-              .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
+                .GreaterThanOrEqualTo(0).WithMessage("ID Bielizny nie może być ujemne!")
+                .NotEmpty().WithMessage("Pole {PopertyName} nie może być puste!");
             this.RuleFor(x => x.Name)
                 .NotEmpty().NotNull().WithMessage("Pole {PropertyName} nie może być puste");
-            this.RuleFor(x => x.Number)
-                .NotEmpty().NotNull().WithMessage("Pole {PropertyName} nie może być puste");
             this.RuleFor(x => x.CreationDate)
-               .NotEmpty().NotNull().WithMessage("Pole {PropertyName} nie może być puste");
+                .NotEmpty().NotNull().WithMessage("Pole {PropertyName} nie może być puste");
         }
     }
 }

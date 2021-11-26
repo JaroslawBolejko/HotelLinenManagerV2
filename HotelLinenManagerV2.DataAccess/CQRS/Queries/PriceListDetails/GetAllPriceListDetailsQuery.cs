@@ -20,21 +20,21 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.PriceListDetails
                     .AsNoTracking()
                     .ToListAsync();
             }
-            else if(this.PriceListId == null && this.CompanyId != null && this.LinenType!=null) 
+            else if (this.PriceListId == null && this.CompanyId != null && this.LinenType != null)
             {
                 return await context.PriceListDetails
-                    .Where(x => x.LinenType == this.LinenType && CompanyId==this.CompanyId)
+                    .Where(x => x.LinenType == this.LinenType && CompanyId == this.CompanyId)
                     .AsNoTracking()
                     .ToListAsync();
             }
-            else 
+            else
             {
                 return await context.PriceListDetails
                     .Where(x => x.PriceList.CompanyId == this.CompanyId)
                     .AsNoTracking()
                     .ToListAsync();
             }
-            
+
 
         }
     }

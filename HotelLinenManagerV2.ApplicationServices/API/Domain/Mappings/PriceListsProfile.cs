@@ -21,13 +21,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Details, y => y.MapFrom(z => z.Details));
 
             CreateMap<CreatePriceListRequest, DataAccess.Entities.PriceList>()
-
                 .ForMember(x => x.LaundryId, y => y.MapFrom(z => z.LaundryId))
                 .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                 .ForMember(x => x.DocName, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.DocNumber, y => y.MapFrom(z => z.Number))
                 .ForMember(x => x.IsCurrent, y => y.MapFrom(z => z.IsCurrent))
-                .ForMember(x => x.CreationDate, y => y.MapFrom(z => z.CreationDate));
+                .ForMember(x => x.CreationDate, y => y.MapFrom(z => z.CreationDate))
+                .ForMember(x => x.Details, y => y.MapFrom(z => z.Details));
+
 
 
             CreateMap<UpdatePriceListByIdRequest, DataAccess.Entities.PriceList>()

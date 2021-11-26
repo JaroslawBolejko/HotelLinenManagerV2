@@ -33,7 +33,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceListDetails
                 LinenType = request.LinenType
             };
             var prices = await this.queryExecutor.Execute(query);
-       
+
             var mappedPrices = this.mapper.Map<List<Domain.Models.PriceListDetail>>(prices);
             return new GetAllPriceListDetailsResponse()
             {

@@ -5,20 +5,20 @@ namespace BlazorApp.Models
 {
     public enum Type
     {
-        Poszwa = 1,
-        Prześcieradło = 2,
-        Poszewka = 3,
-        Podkład = 4,
-        Ręcznik = 5,
-        Stopka = 6,
-        Kołdra = 7,
-        Poduszka = 8,
-        Kapa = 9,
-        Koc = 10,
-        Zasłona = 11,
-        Firana = 12,
-        Obrus = 13,
-        Serwetka = 14
+
+        Cover = 1,
+        Sheet = 2,
+        Pillowcase = 3,
+        Underlay = 4,
+        Towel = 5,
+        Duvel = 6,
+        Pillow = 7,
+        Coverlet = 8,
+        Blanket = 9,
+        Drape = 10,
+        Curtain = 11,
+        Cloth = 12,
+        Napkin = 13
     }
     public class HotelLinen
     {

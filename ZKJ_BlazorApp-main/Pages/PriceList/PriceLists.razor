@@ -4,6 +4,7 @@
 @inject IPriceListDetailsService PriceListDetailsService
 @inject ILocalStorageService LocalStorageService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@using System.Threading.Tasks
 
 @if (SpinnerVisible == true)
 {
@@ -16,7 +17,7 @@
                     QueryCellInfo="CustomizeCell" TValue="PriceList"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="pagerDropDown"></GridPageSettings>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridEditSettings Mode="EditMode.Normal" AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
         <GridColumns>
             <GridColumn HeaderText="Price Lists" TextAlign="TextAlign.Center">
                 <GridColumns>
@@ -38,23 +39,183 @@
 }
 
 <div class="add">
-    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="300px" IsModal="true">
+    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="auto" IsModal="true">
         <DialogTemplates>
             <Header>Add Price List</Header>
             <Content>
-                <EditForm Model="newPriceList">
-                    <div class="dialogForm">
-                        <form>
-                            <label for="taxNumber">TaxNumber:</label>
-                            <input type="text" id="taxNumber" name="taxNumber" placeholder="Company Tax number..">
+                <EditForm Model="newPriceListDetails">
+                    <form>
 
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineCoverInput">Price for @TypesEnumValues[0]:</label>
+                                <input @bind-value="cover.PricePerKg" type="number" class="form-control mb-2" id="inlineCoverInput" disabled=@isCoverAdded>
                             </div>
-                        </form>
-                    </div>
-
+                            <div class="col-auto">
+                                <label for="inlineCoverTaxInput">Tax:</label>
+                                <input @bind-value="cover.TaxValue" type="number" class="form-control mb-2" id="inlineCoverTaxInput" disabled=@isCoverAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isCoverAdded @onclick="() => AddDetailtoList(cover)">@coverButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineSheetInput">Price for @TypesEnumValues[1]:</label>
+                                <input @bind-value="sheet.PricePerKg" type="number" class="form-control mb-2" id="inlineSheetInput" disabled=@isSheetAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineSheetTaxInput">Tax:</label>
+                                <input @bind-value="sheet.TaxValue" type="number" class="form-control mb-2" id="inlineSheetTaxInput" disabled=@isSheetAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isSheetAdded @onclick="() => AddDetailtoList(sheet)">@sheetButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlinePCaseInput">Price for @TypesEnumValues[2]:</label>
+                                <input @bind-value="pillowcase.PricePerKg" type="number" class="form-control mb-2" id="inlinePCaseInput" disabled=@isPillowcaseAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlinePCaseTaxInput">Tax:</label>
+                                <input @bind-value="pillowcase.TaxValue" type="number" class="form-control mb-2" id="inlinePCaseTaxInput" disabled=@isPillowcaseAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isPillowcaseAdded @onclick="() => AddDetailtoList(pillowcase)">@pillowcaseButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineUnderlayInput">Price for @TypesEnumValues[3]:</label>
+                                <input @bind-value="underlay.PricePerKg" type="number" class="form-control mb-2" id="inlineUnderlayInput" disabled=@isUnderlayAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineUnderlayTaxInput">Tax:</label>
+                                <input @bind-value="underlay.TaxValue" type="number" class="form-control mb-2" id="inlineUnderlayTaxInput" disabled=@isUnderlayAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isUnderlayAdded @onclick="() => AddDetailtoList(underlay)">@underlayButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineTowelInput">Price for @TypesEnumValues[4]:</label>
+                                <input @bind-value="towel.PricePerKg" type="number" class="form-control mb-2" id="inlineTowelInput" disabled=@isTowelAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineTowelTaxInput">Tax:</label>
+                                <input @bind-value="towel.TaxValue" type="number" class="form-control mb-2" id="inlineTowelTaxInput" disabled=@isTowelAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isTowelAdded @onclick="() => AddDetailtoList(towel)">@towelButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineDuvelInput">Price for @TypesEnumValues[5]:</label>
+                                <input @bind-value="duvel.PricePerKg" type="number" class="form-control mb-2" id="inlineDuvelInput" disabled=@isDuvelAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineDuvelTaxInput">Tax:</label>
+                                <input @bind-value="duvel.TaxValue" type="number" class="form-control mb-2" id="inlineDuvelTaxInput" disabled=@isDuvelAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isDuvelAdded @onclick="() => AddDetailtoList(duvel)">@duvelButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlinePillowInput">Price for @TypesEnumValues[6]:</label>
+                                <input @bind-value="pillow.PricePerKg" type="number" class="form-control mb-2" id="inlinePillowInput" disabled=@isPillowAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlinePillowTaxInput">Tax:</label>
+                                <input @bind-value="pillow.TaxValue" type="number" class="form-control mb-2" id="inlinePillowTaxInput" disabled=@isPillowAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isPillowAdded @onclick="() => AddDetailtoList(pillow)">@pillowButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineCoverletInput">Price for @TypesEnumValues[7]:</label>
+                                <input @bind-value="coverlet.PricePerKg" type="number" class="form-control mb-2" id="inlineCoverletInput" disabled=@isCoverletAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineCoverletTaxInput">Tax:</label>
+                                <input @bind-value="coverlet.TaxValue" type="number" class="form-control mb-2" id="inlineCoverletTaxInput" disabled=@isCoverletAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isCoverletAdded @onclick="() => AddDetailtoList(coverlet)">@coverletButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineBlanketInput">Price for @TypesEnumValues[8]:</label>
+                                <input @bind-value="blanket.PricePerKg" type="number" class="form-control mb-2" id="inlineBlanketInput" disabled=@isBlanketAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineBlanketTaxInput">Tax:</label>
+                                <input @bind-value="blanket.TaxValue" type="number" class="form-control mb-2" id="inlineBlanketTaxInput" disabled=@isBlanketAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isBlanketAdded @onclick="() => AddDetailtoList(blanket)">@blanketButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineDrapeInput">Price for @TypesEnumValues[9]:</label>
+                                <input @bind-value="drape.PricePerKg" type="number" class="form-control mb-2" id="inlineDrapeInput"  disabled=@isDrapeAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineDrapeTaxInput">Tax:</label>
+                                <input @bind-value="drape.TaxValue" type="number" class="form-control mb-2" id="inlineDrapeTaxInput" disabled=@isDrapeAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isDrapeAdded @onclick="() => AddDetailtoList(drape)">@drapeButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineCurtainInput">Price for @TypesEnumValues[10]:</label>
+                                <input @bind-value="curtain.PricePerKg" type="number" class="form-control mb-2" id="inlineCurtainInput" disabled=@isCurtainAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineCurtainTaxInput">Tax:</label>
+                                <input @bind-value="curtain.TaxValue" type="number" class="form-control mb-2" id="inlineCurtainTaxInput" disabled=@isCurtainAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isCurtainAdded @onclick="() => AddDetailtoList(curtain)">@curtainButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineClothInput">Price for @TypesEnumValues[11]:</label>
+                                <input @bind-value="cloth.PricePerKg" type="number" class="form-control mb-2" id="inlineClothInput" disabled=@isClothAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineClothTaxInput">Tax:</label>
+                                <input @bind-value="cloth.TaxValue" type="number" class="form-control mb-2" id="inlineClothTaxInput" disabled=@isClothAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isClothAdded @onclick="() => AddDetailtoList(cloth)">@clothButton</button>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <label for="inlineNapkinInput">Price for @TypesEnumValues[12]:</label>
+                                <input @bind-value="napkin.PricePerKg" type="number" class="form-control mb-2" id="inlineNapkinInput" disabled=@isNapkinAdded>
+                            </div>
+                            <div class="col-auto">
+                                <label for="inlineNapkinTaxInput">Tax:</label>
+                                <input @bind-value="napkin.TaxValue" type="number" class="form-control mb-2" id="inlineNapkinTaxInput" disabled=@isNapkinAdded>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary mb-2" disabled=@isNapkinAdded @onclick="() => AddDetailtoList(napkin)">@napkinButton</button>
+                            </div>
+                        </div>
+                    </form>
                 </EditForm>
             </Content>
         </DialogTemplates>
@@ -65,11 +226,13 @@
     </SfDialog>
 </div>
 
+
+
 @code {
     private List<Models.PriceList> PriceIndex { get; set; }
     private int CompanyId { get; set; }
     private SfGrid<Models.PriceList> priceListGrid { get; set; }
-    private List<Object> Toolbaritems = new List<Object>() {new ItemModel(){ Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Company",
+    private List<Object> Toolbaritems = new List<Object>() {new ItemModel(){ Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Price List",
         TooltipText = "Add", Id = "Add"},"Edit", "Delete", "Update", "Cancel",
     new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
         Text = "Back", TooltipText = "Back", Id = "Back" } };
@@ -77,11 +240,56 @@
     public bool SpinnerVisible { get; set; }
     [Parameter]
     public string Id { get; set; }
-    private int LaundryId { get; set; }
     private bool IsVisible { get; set; }
-    private PriceListDetails newPriceList = new PriceListDetails();
     public string[] TypesEnumValues = Enum.GetNames(typeof(Models.Type));
 
+    private PriceList newPriceList;
+    private PriceListDetail newPriceListDetail;
+    private List<PriceListDetail> newPriceListDetails = new List<PriceListDetail>();
+
+    private int CreatedPriceListId { get; set; }
+
+    private PriceListDetail cover = new PriceListDetail();
+    private PriceListDetail sheet = new PriceListDetail();
+    private PriceListDetail pillowcase = new PriceListDetail();
+    private PriceListDetail underlay = new PriceListDetail();
+    private PriceListDetail towel = new PriceListDetail();
+    private PriceListDetail duvel = new PriceListDetail();
+    private PriceListDetail pillow = new PriceListDetail();
+    private PriceListDetail coverlet = new PriceListDetail();
+    private PriceListDetail blanket = new PriceListDetail();
+    private PriceListDetail drape = new PriceListDetail();
+    private PriceListDetail curtain = new PriceListDetail();
+    private PriceListDetail cloth = new PriceListDetail();
+    private PriceListDetail napkin = new PriceListDetail();
+
+    bool isCoverAdded = false;
+    bool isSheetAdded = false;
+    bool isPillowcaseAdded = false;
+    bool isUnderlayAdded = false;
+    bool isTowelAdded = false;
+    bool isDuvelAdded = false;
+    bool isPillowAdded = false;
+    bool isCoverletAdded = false;
+    bool isBlanketAdded = false;
+    bool isDrapeAdded = false;
+    bool isCurtainAdded = false;
+    bool isClothAdded = false;
+    bool isNapkinAdded = false;
+
+    string coverButton = "Add";
+    string sheetButton = "Add";
+    string pillowcaseButton = "Add";
+    string underlayButton = "Add";
+    string towelButton = "Add";
+    string duvelButton = "Add";
+    string pillowButton = "Add";
+    string coverletButton = "Add";
+    string blanketButton = "Add";
+    string drapeButton = "Add";
+    string curtainButton = "Add";
+    string clothButton = "Add";
+    string napkinButton = "Add";
 
 
 
@@ -91,6 +299,19 @@
         CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
         PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId, int.Parse(Id))).ToList();
         SpinnerVisible = false;
+        cover.LinenType = (Models.Type)1;
+        sheet.LinenType = (Models.Type)2;
+        pillowcase.LinenType = (Models.Type)3;
+        underlay.LinenType = (Models.Type)4;
+        towel.LinenType = (Models.Type)5;
+        duvel.LinenType = (Models.Type)6;
+        pillow.LinenType = (Models.Type)7;
+        coverlet.LinenType = (Models.Type)8;
+        blanket.LinenType = (Models.Type)9;
+        drape.LinenType = (Models.Type)10;
+        curtain.LinenType = (Models.Type)11;
+        cloth.LinenType = (Models.Type)12;
+        napkin.LinenType = (Models.Type)13;
     }
 
     public async void ActionBeginHandler(ActionEventArgs<PriceList> args)
@@ -98,14 +319,10 @@
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
 
-            if (args.Action == "Add")
-            {
-                await PriceListService.CreatePriceList(args.Data);
-                priceListGrid.Refresh();
-            }
             if (args.Action == "Edit")
             {
                 await PriceListService.UpdatePriceList(args.Data);
+                PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId, int.Parse(Id))).ToList();
                 priceListGrid.Refresh();
             }
 
@@ -113,6 +330,9 @@
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
         {
             await PriceListService.Delete(args.Data.Id);
+            PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId, int.Parse(Id))).ToList();
+            priceListGrid.Refresh();
+
         }
 
     }
@@ -121,10 +341,11 @@
 
         if (args.CommandColumn.ButtonOption.Content == "Show Details")
         {
-            LaundryId = args.RowData.Id;
-            await LocalStorageService.SetItem<int>("laundryId", LaundryId);
+            int laundryId;
+            laundryId = args.RowData.LaundryId;
+            await LocalStorageService.SetItem<int>("laundryId", laundryId);
 
-            navigationManager.NavigateTo($"/priceListDetails/{LaundryId}");
+            navigationManager.NavigateTo($"/priceListDetails/{args.RowData.Id}");
         }
 
     }
@@ -133,7 +354,9 @@
     {
         if (args.Item.Id == "Add")
         {
+
             IsVisible = true;
+
         }
 
         if (args.Item.Id == "Back")
@@ -159,14 +382,132 @@
         }
 
     }
+
     private void Cancel()
     {
         this.IsVisible = false;
     }
+
+
+    private void AddDetailtoList(PriceListDetail listDetail)
+    {
+        if (listDetail == cover)
+        {
+            isCoverAdded = true;
+            coverButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == sheet)
+        {
+
+            isSheetAdded = true;
+            sheetButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == pillowcase)
+        {
+
+            isPillowcaseAdded = true;
+            pillowcaseButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == underlay)
+        {
+
+            isUnderlayAdded = true;
+            underlayButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == towel)
+        {
+
+            isTowelAdded = true;
+            towelButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == duvel)
+        {
+
+            isDuvelAdded = true;
+            duvelButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == pillow)
+        {
+
+            isPillowAdded = true;
+            pillowButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == coverlet)
+        {
+
+            isCoverletAdded = true;
+            coverletButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == blanket)
+        {
+
+            isBlanketAdded = true;
+            blanketButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == drape)
+        {
+
+            isDrapeAdded = true;
+            drapeButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == curtain)
+        {
+
+            isCurtainAdded = true;
+            curtainButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == cloth)
+        {
+
+            isClothAdded = true;
+            clothButton = "Added";
+            StateHasChanged();
+        }
+        else if (listDetail == napkin)
+        {
+
+            isNapkinAdded = true;
+            napkinButton = "Added";
+            StateHasChanged();
+        }
+
+
+        newPriceListDetails.Add(listDetail);
+    }
+
     private async Task OnClick()
     {
 
+        newPriceList = new PriceList()
+        {
+            Name = "Cennik",
+            Number = "0/0/0000",
+            LaundryId = int.Parse(Id),
+            CompanyId = CompanyId,
+            IsCurrent = false,
+            CreationDate = DateTime.Now,
+            Details = newPriceListDetails
+        };
+        await PriceListService.CreatePriceList(newPriceList);
+        PriceIndex = (await PriceListService.GetAllPriceLists(CompanyId, int.Parse(Id))).ToList();
+        priceListGrid.Refresh();
+
+        this.IsVisible = false;
+
     }
+
+
 }
 <style>
     .add {
@@ -197,5 +538,9 @@
     .back.e-toolbar-item .e-tbar-btn {
         border: solid;
         background-color: orange;
+    }
+
+    .form-row .btn {
+       margin-top: 28px;
     }
 </style>

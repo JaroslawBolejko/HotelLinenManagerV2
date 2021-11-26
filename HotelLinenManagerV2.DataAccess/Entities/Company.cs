@@ -6,8 +6,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public enum CompanyType
     {
-        Hotel=0,
-        Laundry=1
+        Hotel = 0,
+        Laundry = 1
     }
     public class Company : EntityBase
     {

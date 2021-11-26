@@ -11,6 +11,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public int? LaundryId { get; set; }
         public int? CompanyId { get; set; }
         public bool IsCurrent { get; set; }
+        [Column(TypeName = "date")]
         public DateTime CreationDate { get; set; }
         [ForeignKey("LaundryId")]
         public virtual Company Laundry { get; set; }

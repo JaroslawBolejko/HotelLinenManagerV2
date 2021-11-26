@@ -28,7 +28,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceListDetails
             this.queryExecutor = queryExecutor;
             this.mapper = mapper;
         }
-        public async  Task<UpdatePriceListDetailsResponse> Handle(UpdatePriceListDetailsRequest request, CancellationToken cancellationToken)
+        public async Task<UpdatePriceListDetailsResponse> Handle(UpdatePriceListDetailsRequest request, CancellationToken cancellationToken)
         {
             var query = new GetPriceListDetailsQuery()
             {

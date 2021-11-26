@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211123112335_HotelLinenInPriceListDetailDeletetd")]
+    partial class HotelLinenInPriceListDetailDeletetd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,7 +257,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DocName")
                         .HasColumnType("nvarchar(max)");
@@ -285,6 +287,9 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("HotelLinenId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LinenType")
                         .HasColumnType("int");
 
@@ -298,6 +303,8 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HotelLinenId");
 
                     b.HasIndex("PriceListId");
 
@@ -501,6 +508,10 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceListDetail", b =>
                 {
+                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", null)
+                        .WithMany("PriceListDetails")
+                        .HasForeignKey("HotelLinenId");
+
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.PriceList", "PriceList")
                         .WithMany("Details")
                         .HasForeignKey("PriceListId")
@@ -589,6 +600,8 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.HotelLinen", b =>
                 {
+                    b.Navigation("PriceListDetails");
+
                     b.Navigation("WarehauseDetails");
                 });
 

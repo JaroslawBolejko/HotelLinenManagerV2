@@ -6,11 +6,11 @@ namespace BlazorApp.Models
     public enum WarehauseType
     {
         [Display(Name = "Magazyn Czystej Bielizny")]
-        Magazyn_Czystej_Bielizny = 0,
+        Clean_Linen_Warehause = 0,
         [Display(Name = "Magazyn Brudnej Bielizny")]
-        Magazyn_Brudnej_Bielizny = 1,
+        Dirty_Linen_Warehause = 1,
         [Display(Name = "Inne Pomieszczenie")]
-        Inne_Pomieszczenie = 2
+        Other_room = 2
     }
     public class Warehause
     {

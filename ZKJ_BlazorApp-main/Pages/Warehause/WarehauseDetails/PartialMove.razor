@@ -14,14 +14,14 @@
             <EditForm Model="warehauseDetails">
 
                 <div class="form-group">
-
+                    
                     <input type="hidden" @bind-value="@warehauseDetails.Id" />
 
                     <label for="Amount" class="control-label">Amount</label>
-                    <input for="Amount" class="form-control" @bind-value="@newDet.AmountToMove" />
+                    <input id="Amount" class="form-control" @bind-value="@newDet.AmountToMove" />
 
                     <label for="WarehauseId" class="control-label">Warehause</label>
-                    <CustomInputSelect id="WarehauseType" @bind-Value="@newDet.WarehauseToMove" class="form-control">
+                    <CustomInputSelect id="WarehauseId" @bind-Value="@newDet.WarehauseToMove" class="form-control">
                         @if (warehauses != null)
                         {
                             @foreach (var warehause in warehauses)

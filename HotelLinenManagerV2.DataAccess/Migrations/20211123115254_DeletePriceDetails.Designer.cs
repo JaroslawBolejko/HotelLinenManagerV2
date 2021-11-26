@@ -4,14 +4,16 @@ using HotelLinenManagerV2.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelLinenManagerV2.DataAccess.Migrations
 {
     [DbContext(typeof(WarehauseStorageHotelLinenContext))]
-    partial class WarehauseStorageHotelLinenContextModelSnapshot : ModelSnapshot
+    [Migration("20211123115254_DeletePriceDetails")]
+    partial class DeletePriceDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,7 +257,7 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DocName")
                         .HasColumnType("nvarchar(max)");
@@ -276,32 +278,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.HasIndex("LaundryId");
 
                     b.ToTable("PriceLists");
-                });
-
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceListDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LinenType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PriceListId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PricePerKg")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TaxValue")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PriceListId");
-
-                    b.ToTable("PriceListDetails");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.RelatedCompany", b =>
@@ -499,17 +475,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
                     b.Navigation("Laundry");
                 });
 
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceListDetail", b =>
-                {
-                    b.HasOne("HotelLinenManagerV2.DataAccess.Entities.PriceList", "PriceList")
-                        .WithMany("Details")
-                        .HasForeignKey("PriceListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PriceList");
-                });
-
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.RelatedCompany", b =>
                 {
                     b.HasOne("HotelLinenManagerV2.DataAccess.Entities.Company", "Company")
@@ -600,11 +565,6 @@ namespace HotelLinenManagerV2.DataAccess.Migrations
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.LaundryService", b =>
                 {
                     b.Navigation("LaundryServiceDetails");
-                });
-
-            modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.PriceList", b =>
-                {
-                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("HotelLinenManagerV2.DataAccess.Entities.Warehause", b =>
