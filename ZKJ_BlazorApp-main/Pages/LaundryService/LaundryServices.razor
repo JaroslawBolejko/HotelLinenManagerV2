@@ -20,7 +20,42 @@
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
-
+        <GridTemplates>
+            <DetailTemplate>
+                @{
+                    var service = (context as LaundryService);
+                    <table class="detailtable">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Total Netto: </b></span> @service.TotalNetto
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Total Brutto: </b></span> @service.TotalBrutto
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Total Tax: </b></span> @service.TotalTax
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Total Weight: </b></span> @service.TotalServiceWeight
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="font-weight: 500;"><b>Total Brutto: </b></span> @service.TotalBrutto
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </DetailTemplate>
+        </GridTemplates>
         <GridColumns>
             <GridColumn IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.Name) HeaderText="Service Name"></GridColumn>
