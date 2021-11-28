@@ -37,8 +37,7 @@ namespace BlazorApp.Models
         public string Size { get; set; }
         [Range(0,100)]
         public double Weight { get; set; }
-        [Range(0,1000)]
-        public decimal PricePerKg { get; set; }
+        public bool IsUsed { get; set; }
         [Required]
         public int CompanyId { get; set; }
         public Company Company { get; set; }

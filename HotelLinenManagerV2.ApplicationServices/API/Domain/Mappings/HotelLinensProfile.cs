@@ -12,6 +12,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                  .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                  .ForMember(x => x.Description, y => y.MapFrom(z => z.Description))
                  .ForMember(x => x.Color, y => y.MapFrom(z => z.Color))
+                 .ForMember(x => x.Weight, y => y.MapFrom(z => z.Weight))
+                 .ForMember(x => x.Size, y => y.MapFrom(z => z.Size))
+                 .ForMember(x => x.IsUsed, y => y.MapFrom(z => z.IsUsed))
+                 .ForMember(x => x.WarehauseDetails, y => y.MapFrom(z => z.WarehauseDetails))
                  .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                  .ForMember(x => x.Company, y => y.MapFrom(z => z.Company))
                  .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount));
@@ -19,13 +23,19 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
             this.CreateMap<CreateHotelLinenRequest, DataAccess.Entities.HotelLinen>()
                  .ForMember(x => x.Description, y => y.MapFrom(z => z.Description))
                  .ForMember(x => x.Color, y => y.MapFrom(z => z.Color))
+                 .ForMember(x => x.Weight, y => y.MapFrom(z => z.Weight))
+                 .ForMember(x => x.Size, y => y.MapFrom(z => z.Size))
+                 .ForMember(x => x.IsUsed, y => y.MapFrom(z => z.IsUsed))
                  .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                  .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount));
 
             this.CreateMap<UpdateHotelLinenByIdRequest, DataAccess.Entities.HotelLinen>()
                  .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
-                 .ForMember(x => x.Description, y => y.MapFrom(z => z.Description))
+                .ForMember(x => x.Description, y => y.MapFrom(z => z.Description))
                  .ForMember(x => x.Color, y => y.MapFrom(z => z.Color))
+                 .ForMember(x => x.Weight, y => y.MapFrom(z => z.Weight))
+                 .ForMember(x => x.Size, y => y.MapFrom(z => z.Size))
+                 .ForMember(x => x.IsUsed, y => y.MapFrom(z => z.IsUsed))
                  .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                  .ForMember(x => x.Amount, y => y.MapFrom(z => z.Amount));
 

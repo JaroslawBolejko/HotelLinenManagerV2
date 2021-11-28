@@ -42,11 +42,6 @@
                                     <span style="font-weight: 500;"><b>Weight: </b></span> @linen.Weight (kg)
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <span style="font-weight: 500;"><b>Price per kilogram: </b></span> @linen.PricePerKg (zł)
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 }
@@ -67,6 +62,7 @@
             <GridColumn Field=@nameof(HotelLinen.Description) HeaderText="Description"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Color) HeaderText="Color"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Amount) HeaderText="Base amount"></GridColumn>
+            <GridColumn Field=@nameof(HotelLinen.IsUsed) HeaderText="Is Used"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Size) HeaderText="Size" Width="0"></GridColumn>
             <GridColumn Field=@nameof(HotelLinen.Weight) HeaderText="Weight" Width="0"></GridColumn>
         </GridColumns>

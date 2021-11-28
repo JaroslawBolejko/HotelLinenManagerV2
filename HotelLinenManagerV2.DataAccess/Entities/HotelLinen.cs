@@ -33,8 +33,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Column(TypeName = "varchar(10)")]
         public double Weight { get; set; }
         [Required]
-        [Column(TypeName = "varchar(10)")]
-        public decimal PricePerKg { get; set; }
+        public bool IsUsed { get; set; }
         [Required]
         [MaxLength(100)]
         public string Description { get; set; }
