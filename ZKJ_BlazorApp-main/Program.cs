@@ -3,6 +3,7 @@ using BlazorApp.Services.Authentications;
 using BlazorApp.Services.Companies;
 using BlazorApp.Services.HotelLinens;
 using BlazorApp.Services.HttpServices;
+using BlazorApp.Services.Invoices;
 using BlazorApp.Services.LaundryServiceDetails;
 using BlazorApp.Services.LaundryServices;
 using BlazorApp.Services.LocalStorages;
@@ -37,6 +38,7 @@ namespace BlazorApp
                 .AddScoped<IPriceListService, PriceListService>()
                 .AddScoped<IPriceListDetailsService, PriceListDetailsService>()
                 .AddScoped<IRelatedCompaniesService, RelatedCompaniesService>()
+                .AddScoped<IInvoiceService, InvoiceService>()
                 .AddScoped<IWarehauseService, WarehauseService>()
                 .AddScoped<IHotelLinenService, HotelLinenService>()
                 .AddScoped<IWarehauseDetailsService, WarehauseDetailsService>()

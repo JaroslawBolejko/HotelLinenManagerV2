@@ -19,6 +19,8 @@ namespace BlazorApp.Models
         public decimal PricePerKg { get; set; }
         public double TotalWeight { get; set; }
         public int TaxValue { get; set; }
+        public LaundryService LaundryService { get; set; }
+        public HotelLinen HotelLinen { get; set; }
 
 
     }

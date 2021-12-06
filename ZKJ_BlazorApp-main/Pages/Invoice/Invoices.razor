@@ -1,0 +1,115 @@
+﻿@page "/invoices"
+@attribute [Authorize]
+@inject IInvoiceService InvoiceService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
+<h3>Invoices</h3>
+
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
+
+@if (InvoicesList != null)
+{
+    <SfGrid DataSource="@InvoicesList" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell"
+                    OnActionBegin="ActionBeginHandler" TValue="Invoice"></GridEvents>
+        <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
+        <GridFilterSettings Mode="FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+        <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridColumns>
+            <GridColumn IsPrimaryKey="true" Field=@nameof(Invoice.Id) HeaderText="ID" Visible="false"></GridColumn>
+            <GridColumn Field=@nameof(Invoice.Name) HeaderText="Name"></GridColumn>
+            <GridColumn Field=@nameof(Invoice.Number) HeaderText="Number"></GridColumn>
+            <GridColumn Field=@nameof(Invoice.DateOfInvoice) Format="d" HeaderText="Date of Invoice" Type="ColumnType.Date"></GridColumn>
+            <GridColumn Field=@nameof(Invoice.PaymentDate) Format="d" HeaderText="Payment Date" Type="ColumnType.Date"></GridColumn>
+            <GridColumn Field=@nameof(Invoice.TotalCost) HeaderText="Total Cost"></GridColumn>
+            <GridColumn Field="@nameof(Invoice.IsPaid)" EditType="EditType.BooleanEdit" HeaderText="Is Paid">
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
+
+@code {
+    private bool SpinnerVisible { get; set; }
+    private IEnumerable<Invoice> InvoicesList { get; set; }
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
+        new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
+    public int Id { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        SpinnerVisible = true;
+        InvoicesList = await InvoiceService.GetAllInvoices();
+        SpinnerVisible = false;
+    }
+
+    public void RowSelectHandler(RowSelectEventArgs<Invoice> args)
+    {
+        Id = args.Data.Id;
+    }
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "View")
+        {
+            if (Id == 0)
+            {
+                navigationManager.NavigateTo($"/");
+            }
+            else
+            {
+                //  navigationManager.NavigateTo($"//{Id}");
+
+            }
+        }
+
+    }
+
+    public async void ActionBeginHandler(ActionEventArgs<Invoice> args)
+    {
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+
+            if (args.Action == "Edit")
+            {
+            }
+
+        }
+        if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+        }
+    }
+
+
+    public void CustomizeCell(QueryCellInfoEventArgs<Invoice> args)
+    {
+        if (args.Column.Field == "IsPaid")
+        {
+            if (args.Data.IsPaid == true)
+            {
+                args.Cell.AddClass(new string[] { "true" });
+            }
+            else
+            {
+                args.Cell.AddClass(new string[] { "false" });
+
+            }
+        }
+    }
+}
+<style>
+    .true {
+        background-color: lawngreen;
+    }
+
+    .false {
+        background-color: orangered;
+    }
+
+    .e-toolbar-item .e-tbar-btn {
+        border: solid;
+    }
+</style>

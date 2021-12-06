@@ -115,7 +115,7 @@
         relatedCompanies = await RelatedCompanyService.GetAllRelatedCompanies(Warehause.CompanyId);
         laundryToMove.LaundryId = relatedCompanies.Select(x => x.LaundryId).FirstOrDefault();
 
-        if (Warehause != null && Warehause.WarehauseType.ToString() == "Magazyn_Brudnej_Bielizny")
+        if (Warehause != null && Warehause.WarehauseType.ToString() == "Dirty_Linen_Warehause")
         {
             Toolbaritems.Remove("Add");
             Toolbaritems.Add(new ItemModel()

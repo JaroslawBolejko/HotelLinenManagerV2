@@ -28,27 +28,27 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <span style="font-weight: 500;"><b>Total Netto: </b></span> @service.TotalNetto
+                                    <span style="font-weight: 500;"><b>Total Netto: </b></span> @service.TotalNetto (zł)
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span style="font-weight: 500;"><b>Total Brutto: </b></span> @service.TotalBrutto
+                                    <span style="font-weight: 500;"><b>Total Brutto: </b></span> @service.TotalBrutto (zł)
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span style="font-weight: 500;"><b>Total Tax: </b></span> @service.TotalTax
+                                    <span style="font-weight: 500;"><b>Total Tax: </b></span> @service.TotalTax (zł)
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span style="font-weight: 500;"><b>Total Weight: </b></span> @service.TotalServiceWeight
+                                    <span style="font-weight: 500;"><b>Total Weight: </b></span> @service.TotalServiceWeight (kg)
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <span style="font-weight: 500;"><b>Total Brutto: </b></span> @service.TotalBrutto
+                                    <span style="font-weight: 500;"><b>Total Brutto: </b></span> @service.TotalBrutto (zł)
                                 </td>
                             </tr>
                         </tbody>
@@ -58,7 +58,7 @@
         </GridTemplates>
         <GridColumns>
             <GridColumn IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
-            <GridColumn Field=@nameof(LaundryService.Name) HeaderText="Service Name"></GridColumn>
+            <GridColumn Field=Laundry.Name HeaderText="Laundry Name"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date">
@@ -93,7 +93,7 @@
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
-        new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
+        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
 
     public int Id { get; set; }
 
@@ -169,6 +169,10 @@
 
     .false {
         background-color: orangered;
+    }
+
+    .specyfic.e-toolbar-item .e-tbar-btn {
+        background-color: orange;
     }
 
     .e-toolbar-item .e-tbar-btn {
