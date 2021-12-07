@@ -51,17 +51,18 @@
     {
         Id = args.Data.Id;
     }
+
     public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Id == "View")
         {
             if (Id == 0)
             {
-                navigationManager.NavigateTo($"/");
+                navigationManager.NavigateTo("/invoices");
             }
             else
             {
-                //  navigationManager.NavigateTo($"//{Id}");
+                navigationManager.NavigateTo($"/invoiceDetails/{Id}");
 
             }
         }
@@ -75,11 +76,13 @@
 
             if (args.Action == "Edit")
             {
+                await InvoiceService.UpdateInvoice(args.Data);
             }
 
         }
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
         {
+            // tu gdy się klika powinna wyskoczyć informacja aby wykasować fakture najpierw wykasuj Laundry service, kótry dotyczy faktury
         }
     }
 
