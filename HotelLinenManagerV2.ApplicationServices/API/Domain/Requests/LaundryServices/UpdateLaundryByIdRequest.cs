@@ -13,6 +13,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.LaundrySer
         public string Number { get; set; }
         public DateTime RecievedDate { get; set; }
         public DateTime? IssuedDate { get; set; }
+        public int? InvoiceId { get; set; }
         public bool IsFinished { get; set; }
         public decimal TotalTax { get; set; }
         public decimal TotalNetto { get; set; }

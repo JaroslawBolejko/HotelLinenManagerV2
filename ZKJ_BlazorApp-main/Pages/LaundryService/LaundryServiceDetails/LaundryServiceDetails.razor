@@ -4,6 +4,7 @@
 @inject IWarehauseDetailsService WarehauseDetailsService
 @inject IWarehauseService WarehauseService
 @inject ILaundryServiceService LaundryServiceService
+@inject IInvoiceService InvoiceService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 <h3>Laundry Service Details</h3>
@@ -57,7 +58,7 @@
 
 
     <div class="dialog">
-        <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="300px" IsModal="true">
+        <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="auto" IsModal="true">
             <DialogTemplates>
                 <Header>Invoice</Header>
                 <Content>
@@ -66,7 +67,7 @@
             </DialogTemplates>
             <DialogButtons>
                 <DialogButton CssClass="dialogButton" Content="Create an Invoice" IsPrimary="true" OnClick="@CreateAnInvoice" />
-                <DialogButton CssClass="dialogButton" Content="Cancel" OnClick="@Cancel" />
+                <DialogButton CssClass="dialogButton" Content="No,I will do that later" OnClick="@Cancel" />
             </DialogButtons>
         </SfDialog>
     </div>
@@ -84,8 +85,11 @@
     private LaundryService LaundryService { get; set; }
     private int warehauseItemAmount;
     private int warehauseDetailID;
+    private int invoiceID;
+
     public int DetailId { get; set; }
     public bool IsVisible { get; set; }
+
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
         new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Close the service", TooltipText = "Close", Id = "Close" },
         new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
@@ -169,18 +173,10 @@
     {
         if (args.Item.Id == "Close")
         {
-            if (DetailId == 0)
-            {
-                navigationManager.NavigateTo($"/viewLaudryServiceDetails/{Id}");
-            }
-            else
-            {
-                // wysakuje okienka z zapytaniem czy chce fakture jak ce to tworze fakture z tymi danymi jak nie to
-                // wyrzucam informacje ze posciel przeniesiona do hotelu faktura odłożona na później
-                this.IsVisible = true;
+            // wysakuje okienka z zapytaniem czy chce fakture jak ce to tworze fakture z tymi danymi jak nie to
+            // wyrzucam informacje ze posciel przeniesiona do hotelu faktura odłożona na później
+            this.IsVisible = true;
 
-
-            }
         }
         if (args.Item.Id == "Back")
         {
@@ -188,8 +184,9 @@
         }
 
     }
-    private void Cancel()
+    private async Task Cancel()
     {
+        await CloseTheService();
         this.IsVisible = false;
     }
     private void HandleValidSubmit()
@@ -198,6 +195,25 @@
     }
     private async Task CreateAnInvoice()
     {
+        List<LaundryService> listOfServices = new List<LaundryService>();
+        listOfServices.Add(LaundryService);
+        Invoice newInvoice = new Invoice()
+        {
+            Name = "Faktura Vat",
+            Number = null,
+            DateOfInvoice = DateTime.Now,
+            PaymentDate = DateTime.Now.AddDays(10),
+            TotalCost = LaundryService.TotalBrutto,
+            IsPaid = false,
+            LaundryServices = listOfServices
+
+        };
+        
+
+        invoiceID = await InvoiceService.CreateInvoice(newInvoice);
+        LaundryService.InvoiceId = invoiceID;
+    ///    await LaundryServiceService.UpdateLaundry(LaundryService);
+        await CloseTheService();
 
     }
 
@@ -218,6 +234,7 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
+
     .specyfic.e-toolbar-item .e-tbar-btn {
         background-color: orange;
     }

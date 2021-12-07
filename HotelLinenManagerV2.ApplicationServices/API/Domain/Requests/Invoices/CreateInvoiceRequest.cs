@@ -1,6 +1,8 @@
 ﻿using HotelLinenManagerV2.ApplicationServices.API.Domain.Responses.Invoices;
+using HotelLinenManagerV2.DataAccess.Entities;
 using MediatR;
 using System;
+using System.Collections.Generic;
 
 namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Invoices
 {
@@ -12,5 +14,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Invoices
         public DateTime PaymentDate { get; set; }
         public decimal TotalCost { get; set; }
         public bool IsPaid { get; set; }
+        public List<LaundryService> LaundryServices { get; set; }
     }
 }

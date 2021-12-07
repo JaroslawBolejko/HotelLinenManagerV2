@@ -28,6 +28,7 @@ namespace BlazorApp.Models
         public decimal TotalNetto { get; set; }
         public decimal TotalBrutto { get; set; }
         public double TotalServiceWeight { get; set; }
+        public int? InvoiceId { get; set; }
         public List<LaundryServiceDetail> LaundryServiceDetails { get; set; }
         public Company Company { get; set; }
         public Company Laundry { get; set; }
