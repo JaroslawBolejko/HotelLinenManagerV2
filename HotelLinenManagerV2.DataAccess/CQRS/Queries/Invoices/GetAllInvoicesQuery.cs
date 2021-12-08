@@ -16,15 +16,19 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Invoices
         {
             if(UserRole=="UserLaundry")
             {
-                return await context.Invoices.Where(x => x.LaundryServices.Select(y => y.LaundryId).FirstOrDefault() == this.CompanyId)
+                return await context.Invoices.Where(y => y.LaundryId == this.CompanyId)
                     .Include(x => x.LaundryServices)
+                    .Include(x => x.Company)
+                    .Include(x => x.Laundry)
                     .AsNoTracking()
                     .ToListAsync();
             }
             else
             {
-                return await context.Invoices.Where(x => x.LaundryServices.Select(y => y.CompanyId).FirstOrDefault() == this.CompanyId)
+                return await context.Invoices.Where(y => y.CompanyId == this.CompanyId)
                .Include(x => x.LaundryServices)
+               .Include(x => x.Company)
+               .Include(x => x.Laundry)
                .AsNoTracking()
                .ToListAsync();
             }

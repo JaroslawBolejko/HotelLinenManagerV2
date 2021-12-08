@@ -14,6 +14,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Invoices
         public DateTime PaymentDate { get; set; }
         public decimal TotalCost { get; set; }
         public bool IsPaid { get; set; }
+        public int CompanyId { get; set; }
+        public int LaundryId { get; set; }
         public List<LaundryService> LaundryServices { get; set; }
     }
 }

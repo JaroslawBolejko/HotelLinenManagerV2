@@ -19,6 +19,8 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Invoices
             {
                 return await context.Invoices.Where(x => x.Id == this.Id)
                     .Include(x => x.LaundryServices)
+                    .Include(x => x.Company)
+                    .Include(x => x.Laundry)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
             }
@@ -26,30 +28,36 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Invoices
             {
                 return await context.Invoices.Where(x => x.Number == this.Number)
                     .Include(x => x.LaundryServices)
+                    .Include(x => x.Company)
+                    .Include(x => x.Laundry)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
             }
             else if (this.WouldLikeToCreate == true && this.CompanyId!=null && this.LaundryId!=null)
             {
-                var invoiceId = await context.LaundryServices
+                //var invoiceId = await context.LaundryServices
+                //    .Where(y => y.CompanyId == this.CompanyId && y.LaundryId == this.LaundryId)
+                //    .OrderByDescending(x => x.Id)
+                //    .Select(z=>z.InvoiceId)
+                //    .Skip(1)
+                //    .FirstOrDefaultAsync();
+
+                //if(invoiceId!=null)
+                //{
+                //    return await context.Invoices
+                //        .Where(x => x.Id == invoiceId)
+                //        .AsNoTracking()
+                //        .FirstOrDefaultAsync();
+                //}
+                //else
+                //{
+                //    return null;
+
+                //}
+                return await context.Invoices
                     .Where(y => y.CompanyId == this.CompanyId && y.LaundryId == this.LaundryId)
                     .OrderByDescending(x => x.Id)
-                    .Select(z=>z.InvoiceId)
-                    .Skip(1)
                     .FirstOrDefaultAsync();
-
-                if(invoiceId!=null)
-                {
-                    return await context.Invoices
-                        .Where(x => x.Id == invoiceId)
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync();
-                }
-                else
-                {
-                    return null;
-
-                }
 
             }
             else return null;

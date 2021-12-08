@@ -1,6 +1,8 @@
 ﻿@page "/invoices"
 @attribute [Authorize]
 @inject IInvoiceService InvoiceService
+@inject ILaundryServiceService ServiceLaundry
+@inject ILocalStorageService LocalStorageService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 <h3>Invoices</h3>
@@ -12,7 +14,7 @@
 
 @if (InvoicesList != null)
 {
-    <SfGrid DataSource="@InvoicesList" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+    <SfGrid DataSource="@InvoicesList" AllowPaging="true" AllowSorting="true" AllowTextWrap="true" AllowFiltering="true" Toolbar="Toolbaritems">
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell"
                     OnActionBegin="ActionBeginHandler" TValue="Invoice"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
@@ -22,11 +24,12 @@
             <GridColumn IsPrimaryKey="true" Field=@nameof(Invoice.Id) HeaderText="ID" Visible="false"></GridColumn>
             <GridColumn Field=@nameof(Invoice.Name) HeaderText="Name"></GridColumn>
             <GridColumn Field=@nameof(Invoice.Number) HeaderText="Number"></GridColumn>
+            <GridColumn Field=Laundry.Name HeaderText="Invoice Issuer"></GridColumn>
+            <GridColumn Field=Company.Name HeaderText="Invoice Recipient"></GridColumn>
             <GridColumn Field=@nameof(Invoice.DateOfInvoice) Format="d" HeaderText="Date of Invoice" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(Invoice.PaymentDate) Format="d" HeaderText="Payment Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(Invoice.TotalCost) HeaderText="Total Cost"></GridColumn>
-            <GridColumn Field="@nameof(Invoice.IsPaid)" EditType="EditType.BooleanEdit" HeaderText="Is Paid">
-            </GridColumn>
+            <GridColumn Field="@nameof(Invoice.IsPaid)" EditType="EditType.BooleanEdit" HeaderText="Is Paid"></GridColumn>
         </GridColumns>
     </SfGrid>
 }
@@ -38,12 +41,30 @@
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
         new ItemModel() {CssClass="specyfic" , Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
     public int Id { get; set; }
+    private User User { get; set; }
+    private int invoiceId;
+
 
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         InvoicesList = await InvoiceService.GetAllInvoices();
+        User = await LocalStorageService.GetItem<User>("userData");
+        if (User.Permission.ToString() == "UserLaundry")
+        {
+            //tu żeby Add był po lewej na maxa trzebabyłoby zaincjalizować dwie wersje tool bara zależne od ifa
+            Toolbaritems.Add(new ItemModel()
+            {
+
+                Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left),
+                Text = "Add Invoice",
+                TooltipText = "Add",
+                Id = "Add"
+            });
+        }
+
+
         SpinnerVisible = false;
     }
 
@@ -52,7 +73,7 @@
         Id = args.Data.Id;
     }
 
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Id == "View")
         {
@@ -65,6 +86,24 @@
                 navigationManager.NavigateTo($"/invoiceDetails/{Id}");
 
             }
+        }
+        if (args.Item.Id == "Add")
+        {
+            // tworze nową fakture zwrotnie z posta dostaje Id i te id przypisuje do linka
+            //Invoice newInvoice = new Invoice()
+            //{
+            //    Name = "Faktura Vat",
+            //    Number = null,
+            //    DateOfInvoice = DateTime.Now,
+            //    PaymentDate = DateTime.Now.AddDays(10),
+            //    //TotalCost = LaundryService.TotalBrutto total kost podobnie zaktualizuje sie po dodaniu wszystkich servisów,
+            //    IsPaid = false,
+            //   // LaundryServices = listOfServices tego wogle na tym etapie nie brać pod uwage te sie zaktualizuje na następnej stronie
+            //};
+
+            //invoiceId = await InvoiceService.CreateInvoice(newInvoice);
+            navigationManager.NavigateTo($"/addInvoice");
+
         }
 
     }
@@ -111,9 +150,11 @@
     .false {
         background-color: orangered;
     }
+
     .specyfic.e-toolbar-item .e-tbar-btn {
         background-color: orange;
     }
+
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }

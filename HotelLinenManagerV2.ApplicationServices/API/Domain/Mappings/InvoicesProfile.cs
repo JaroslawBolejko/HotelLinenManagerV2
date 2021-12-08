@@ -16,6 +16,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.PaymentDate, y => y.MapFrom(z => z.PaymentDate))
                 .ForMember(x => x.TotalCost, y => y.MapFrom(z => z.TotalCost))
                 .ForMember(x => x.IsPaid, y => y.MapFrom(z => z.IsPaid))
+                .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
+                .ForMember(x => x.LaundryId, y => y.MapFrom(z => z.LaundryId))
                 .ForMember(x => x.LaundryServices, y => y.MapFrom(z => z.LaundryServices));
 
             CreateMap<CreateInvoiceRequest, DataAccess.Entities.Invoice>()
@@ -24,6 +26,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.DateOfInvoice, y => y.MapFrom(z => z.DateOfInvoice))
                 .ForMember(x => x.PaymentDate, y => y.MapFrom(z => z.PaymentDate))
                 .ForMember(x => x.TotalCost, y => y.MapFrom(z => z.TotalCost))
+                .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
+                .ForMember(x => x.LaundryId, y => y.MapFrom(z => z.LaundryId))
                 .ForMember(x => x.IsPaid, y => y.MapFrom(z => z.IsPaid));
 
             CreateMap<UpdateInvoiceByIdRequest, DataAccess.Entities.Invoice>()
@@ -33,6 +37,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.DateOfInvoice, y => y.MapFrom(z => z.DateOfInvoice))
                 .ForMember(x => x.PaymentDate, y => y.MapFrom(z => z.PaymentDate))
                 .ForMember(x => x.TotalCost, y => y.MapFrom(z => z.TotalCost))
+                .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
+                .ForMember(x => x.LaundryId, y => y.MapFrom(z => z.LaundryId))
                 .ForMember(x => x.IsPaid, y => y.MapFrom(z => z.IsPaid));
 
             CreateMap<DeleteInvoiceByIdRequest, DataAccess.Entities.Invoice>()

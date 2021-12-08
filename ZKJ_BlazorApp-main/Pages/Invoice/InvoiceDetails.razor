@@ -15,8 +15,7 @@
 @if (Details != null)
 {
     <SfGrid DataSource="@Details" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
-        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" QueryCellInfo="CustomizeCell"
-                    OnActionBegin="ActionBeginHandler" TValue="LaundryService"></GridEvents>
+        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="LaundryService"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
@@ -60,7 +59,7 @@
         </GridColumns>
     </SfGrid>
 }
-<br/>
+<br />
 
 
 @code {
@@ -79,7 +78,7 @@
     {
         SpinnerVisible = true;
         // tu trzeba żeby pobrał tylko, te które dotyczą faktury
-        Details = (await ServiceLaundry.GetAllLaundry()).Where(x=>x.InvoiceId == int.Parse(Id)).ToList();
+        Details = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == int.Parse(Id)).ToList();
         SpinnerVisible = false;
     }
 
@@ -116,20 +115,14 @@
     }
 
 
-    public void CustomizeCell(QueryCellInfoEventArgs<LaundryService> args)
-    {
-        if (args.Column.Field == "IsPaid")
-        {
-            if (args.Data.IsFinished == true)
-            {
-                args.Cell.AddClass(new string[] { "true" });
-            }
-            else
-            {
-                args.Cell.AddClass(new string[] { "false" });
 
-            }
-        }
-
-    }
 }
+<style>
+    .specyfic.e-toolbar-item .e-tbar-btn {
+        background-color: orange;
+    }
+
+    .e-toolbar-item .e-tbar-btn {
+        border: solid;
+    }
+</style>

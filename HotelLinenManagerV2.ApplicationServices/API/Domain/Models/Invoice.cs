@@ -12,6 +12,10 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Models
         public DateTime PaymentDate { get; set; }
         public decimal TotalCost { get; set; }
         public bool IsPaid { get; set; }
+        public int CompanyId { get; set; }
+        public int LaundryId { get; set; }
         public List<LaundryService> LaundryServices { get; set; }
+        public Company Company { get; set; }
+        public Company Laundry { get; set; }
     }
 }

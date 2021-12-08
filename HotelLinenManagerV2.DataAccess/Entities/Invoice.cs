@@ -7,7 +7,9 @@ namespace HotelLinenManagerV2.DataAccess.Entities
 {
     public class Invoice : EntityBase
     {
-        
+        public int? CompanyId { get; set; }
+        public int? LaundryId { get; set; }
+
         [MaxLength(50)]
         public string Name { get; set; } = "Faktura VAT";
         [Required]
@@ -18,10 +20,13 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [Column(TypeName = "date")]
         public DateTime PaymentDate { get; set; }
-        [Required]
         public decimal TotalCost { get; set; }
         [Required]
         public bool IsPaid { get; set; }
         public List<LaundryService> LaundryServices { get; set; }
+        [ForeignKey("CompanyId")]
+        public virtual Company Company { get; set; }
+        [ForeignKey("LaundryId")]
+        public virtual Company Laundry { get; set; }
     }
 }
