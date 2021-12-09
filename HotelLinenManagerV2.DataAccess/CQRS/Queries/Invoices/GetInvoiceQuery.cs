@@ -35,25 +35,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Invoices
             }
             else if (this.WouldLikeToCreate == true && this.CompanyId!=null && this.LaundryId!=null)
             {
-                //var invoiceId = await context.LaundryServices
-                //    .Where(y => y.CompanyId == this.CompanyId && y.LaundryId == this.LaundryId)
-                //    .OrderByDescending(x => x.Id)
-                //    .Select(z=>z.InvoiceId)
-                //    .Skip(1)
-                //    .FirstOrDefaultAsync();
-
-                //if(invoiceId!=null)
-                //{
-                //    return await context.Invoices
-                //        .Where(x => x.Id == invoiceId)
-                //        .AsNoTracking()
-                //        .FirstOrDefaultAsync();
-                //}
-                //else
-                //{
-                //    return null;
-
-                //}
+              
                 return await context.Invoices
                     .Where(y => y.CompanyId == this.CompanyId && y.LaundryId == this.LaundryId)
                     .OrderByDescending(x => x.Id)

@@ -35,7 +35,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
             var query = new GetInvoiceQuery()
             {
                 Number = request.Number,
-                CompanyId = request.AuthenticationCompanyId,
+                CompanyId = request.CompanyId,
                 LaundryId = request.LaundryId,
                 WouldLikeToCreate = true
             };

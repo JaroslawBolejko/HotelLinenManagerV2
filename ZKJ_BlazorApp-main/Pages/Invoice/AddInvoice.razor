@@ -1,7 +1,90 @@
-﻿@page "/addInvoice" 
+﻿@page "/addInvoice/{InvoiceId}"
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject IRelatedCompaniesService RelatedCompanyService
+@inject ILocalStorageService LocalStorageService
+@using Syncfusion.Blazor.Lists
+
 
 <h3>AddInvoice</h3>
 
+<div class="dialog">
+    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="400" IsModal="true">
+        <DialogTemplates>
+            <Header>Choose Company to issue an invoice</Header>
+            <Content>
+
+                @*<SfListBox Value="@newCompany" DataSource="@RelatedCompanies" TItem="RelatedCompany" TValue="RelatedCompany">
+                        <ListBoxSelectionSettings ShowCheckbox="true" Mode="Syncfusion.Blazor.DropDowns.SelectionMode.Single"></ListBoxSelectionSettings>
+                        <ListBoxFieldSettings Text="Company.Name" Value="Id"></ListBoxFieldSettings>
+                    </SfListBox>*@
+
+                <SfListView @ref="@sfList" DataSource="@relatedCompanies" ShowCheckBox="true">
+                    <ListViewFieldSettings TValue="RelatedCompany" Id="Id" Text="Company.Name"></ListViewFieldSettings>
+                </SfListView>
+
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton CssClass="dialogButton" Content="Submit" IsPrimary="true" @onclick="@OnSelect" />
+            <DialogButton CssClass="dialogButton" Content="Cancel" OnClick="@Cancel" />
+        </DialogButtons>
+    </SfDialog>
+</div>
+
 @code {
+    [Parameter]
+    public string InvoiceId { get; set; }
+    private bool IsVisible { get; set; }
+    private bool SpinnerVisible { get; set; }
+    public bool IsChecked { get; set; }
+    public bool IsDisabled { get; set; }
+    public int CompanyId { get; set; }
+    private string[] newCompanies = new string[] { };
+    private RelatedCompany newCompany = new RelatedCompany();
+
+
+    SfListView<RelatedCompany> sfList;
+
+    List<RelatedCompany> selectedItems = new List<RelatedCompany>();
+
+    List<RelatedCompany> relatedCompanies = new List<RelatedCompany>();
+
+
+    async void OnSelect()
+    {
+        var items = await sfList.GetCheckedItemsAsync();
+        if (items.Data != null)
+        {
+            selectedItems = items.Data;
+            CompanyId = items.Data.Select(x => x.CompanyId).FirstOrDefault();
+            this.StateHasChanged();
+        }
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsVisible = true;
+        CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
+        relatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies()).ToList();
+    }
+
+    void Cancel()
+    {
+        navigationManager.NavigateTo("/invoices");
+
+    }
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
 
 }
+<style>
+    .dialog {
+        min-height: 400px;
+        height: 100%;
+        position: relative;
+    }
+</style>

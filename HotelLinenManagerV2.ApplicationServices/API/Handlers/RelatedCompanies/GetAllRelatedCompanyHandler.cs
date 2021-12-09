@@ -27,11 +27,21 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.RelatedCompanies
 
         public async Task<GetAllRelatedCompaniesResponse> Handle(GetAllRelatedCompaniesRequest request, CancellationToken cancellationToken)
         {
-            var query = new GetAllRelatedCompaniesQuery()
+            var query = new GetAllRelatedCompaniesQuery();
+
+            if (request.AuthenticationRole.ToString() == "UserLaundry")
             {
-                CompanyId = request.AuthenticationCompanyId,
-                LaundryId = request.LaundryId
-            };
+
+                query.LaundryId = request.AuthenticationCompanyId;
+                
+            }
+            else
+            {
+
+                query.CompanyId = request.AuthenticationCompanyId;
+                
+            }
+           
             var users = await this.queryExecutor.Execute(query);
             var mappedRelatedComp = this.mapper.Map<List<RelatedCompany>>(users);
             var response = new GetAllRelatedCompaniesResponse()

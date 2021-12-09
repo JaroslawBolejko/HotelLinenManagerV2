@@ -3,7 +3,9 @@
 @inject IInvoiceService InvoiceService
 @inject ILaundryServiceService ServiceLaundry
 @inject ILocalStorageService LocalStorageService
+@inject IRelatedCompaniesService RelatedCompanyService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@using Syncfusion.Blazor.Lists
 
 <h3>Invoices</h3>
 
@@ -33,6 +35,22 @@
         </GridColumns>
     </SfGrid>
 }
+<div class="dialog">
+    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="400" IsModal="true">
+        <DialogTemplates>
+            <Header>Choose Company to issue an invoice</Header>
+            <Content>
+                <SfListView @ref="@sfList" DataSource="@relatedCompanies" ShowCheckBox="true">
+                    <ListViewFieldSettings TValue="RelatedCompany" Id="Id" Text="Company.Name"></ListViewFieldSettings>
+                </SfListView>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton  Content="Submit" IsPrimary="true" @onclick="@OnSelect" />
+            <DialogButton  Content="Cancel" OnClick="@Cancel" />
+        </DialogButtons>
+    </SfDialog>
+</div>
 
 @code {
     private bool SpinnerVisible { get; set; }
@@ -43,6 +61,10 @@
     public int Id { get; set; }
     private User User { get; set; }
     private int invoiceId;
+    private int CompanyId { get; set; }
+    private bool IsVisible { get; set; }
+    SfListView<RelatedCompany> sfList;
+    List<RelatedCompany> relatedCompanies = new List<RelatedCompany>();
 
 
 
@@ -51,6 +73,8 @@
         SpinnerVisible = true;
         InvoicesList = await InvoiceService.GetAllInvoices();
         User = await LocalStorageService.GetItem<User>("userData");
+        relatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies()).ToList();
+
         if (User.Permission.ToString() == "UserLaundry")
         {
             //tu żeby Add był po lewej na maxa trzebabyłoby zaincjalizować dwie wersje tool bara zależne od ifa
@@ -68,12 +92,45 @@
         SpinnerVisible = false;
     }
 
+    private async Task OnSelect()
+    {
+        var items = await sfList.GetCheckedItemsAsync();
+        if (items.Data != null)
+        {
+            CompanyId = items.Data.Select(x => x.CompanyId).FirstOrDefault();
+
+            ////  tworze nową fakture zwrotnie z posta dostaje Id i te id przypisuje do linka
+            Invoice newInvoice = new Invoice()
+            {
+                Name = "Faktura Vat",
+                Number = null,
+                DateOfInvoice = DateTime.Now,
+                PaymentDate = DateTime.Now.AddDays(10),
+                IsPaid = false,
+                CompanyId = this.CompanyId,
+                LaundryId = User.CompanyId
+            };
+
+            invoiceId = await InvoiceService.CreateInvoice(newInvoice);
+
+            navigationManager.NavigateTo($"/addInvoice/{invoiceId}");
+
+
+            this.StateHasChanged();
+        }
+    }
+
+    void Cancel()
+    {
+        IsVisible = false;
+    }
+
     public void RowSelectHandler(RowSelectEventArgs<Invoice> args)
     {
         Id = args.Data.Id;
     }
 
-    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Id == "View")
         {
@@ -89,20 +146,8 @@
         }
         if (args.Item.Id == "Add")
         {
-            // tworze nową fakture zwrotnie z posta dostaje Id i te id przypisuje do linka
-            //Invoice newInvoice = new Invoice()
-            //{
-            //    Name = "Faktura Vat",
-            //    Number = null,
-            //    DateOfInvoice = DateTime.Now,
-            //    PaymentDate = DateTime.Now.AddDays(10),
-            //    //TotalCost = LaundryService.TotalBrutto total kost podobnie zaktualizuje sie po dodaniu wszystkich servisów,
-            //    IsPaid = false,
-            //   // LaundryServices = listOfServices tego wogle na tym etapie nie brać pod uwage te sie zaktualizuje na następnej stronie
-            //};
 
-            //invoiceId = await InvoiceService.CreateInvoice(newInvoice);
-            navigationManager.NavigateTo($"/addInvoice");
+            IsVisible = true;
 
         }
 
@@ -157,5 +202,10 @@
 
     .e-toolbar-item .e-tbar-btn {
         border: solid;
+    }
+    .dialog {
+        min-height: 400px;
+        height: 100%;
+        position: relative;
     }
 </style>
