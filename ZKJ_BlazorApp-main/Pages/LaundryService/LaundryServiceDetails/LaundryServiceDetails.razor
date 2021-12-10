@@ -76,8 +76,8 @@
 
 @code {
 
-    [Parameter]
-    public string Id { get; set; }
+        [Parameter]
+        public string Id { get; set; }
     public bool SpinnerVisible { get; set; }
     private IEnumerable<LaundryServiceDetail> LaundryDetails { get; set; }
     private WarehauseDetail cleanLaundry;
@@ -85,7 +85,7 @@
     private LaundryService LaundryService { get; set; }
     private int warehauseItemAmount;
     private int warehauseDetailID;
-    private int invoiceID;
+    private Invoice Invoice { get; set; }
 
     public int DetailId { get; set; }
     public bool IsVisible { get; set; }
@@ -208,11 +208,11 @@
             LaundryServices = listOfServices
 
         };
-        
 
-        invoiceID = await InvoiceService.CreateInvoice(newInvoice);
-        LaundryService.InvoiceId = invoiceID;
-    ///    await LaundryServiceService.UpdateLaundry(LaundryService);
+
+        Invoice = await InvoiceService.CreateInvoice(newInvoice);
+        LaundryService.InvoiceId = Invoice.Id;
+        ///    await LaundryServiceService.UpdateLaundry(LaundryService);
         await CloseTheService();
 
     }

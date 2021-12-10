@@ -30,7 +30,7 @@
             <GridColumn Field=Company.Name HeaderText="Invoice Recipient"></GridColumn>
             <GridColumn Field=@nameof(Invoice.DateOfInvoice) Format="d" HeaderText="Date of Invoice" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(Invoice.PaymentDate) Format="d" HeaderText="Payment Date" Type="ColumnType.Date"></GridColumn>
-            <GridColumn Field=@nameof(Invoice.TotalCost) HeaderText="Total Cost"></GridColumn>
+            <GridColumn Field=@nameof(Invoice.TotalCost) HeaderText="Total Cost (Brutto)"></GridColumn>
             <GridColumn Field="@nameof(Invoice.IsPaid)" EditType="EditType.BooleanEdit" HeaderText="Is Paid"></GridColumn>
         </GridColumns>
     </SfGrid>
@@ -60,7 +60,7 @@
         new ItemModel() {CssClass="specyfic" , Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
     public int Id { get; set; }
     private User User { get; set; }
-    private int invoiceId;
+    private Invoice Invoice { get; set; }
     private int CompanyId { get; set; }
     private bool IsVisible { get; set; }
     SfListView<RelatedCompany> sfList;
@@ -111,12 +111,15 @@
                 LaundryId = User.CompanyId
             };
 
-            invoiceId = await InvoiceService.CreateInvoice(newInvoice);
-
-            navigationManager.NavigateTo($"/addInvoice/{invoiceId}");
-
-
+            Invoice = await InvoiceService.CreateInvoice(newInvoice);
             this.StateHasChanged();
+
+            IsVisible = false;
+
+            await LocalStorageService.SetItem("invoice", Invoice);
+            navigationManager.NavigateTo($"/addInvoice/{Invoice.Id}");
+
+
         }
     }
 

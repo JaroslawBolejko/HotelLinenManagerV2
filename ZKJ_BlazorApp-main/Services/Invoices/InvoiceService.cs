@@ -14,10 +14,10 @@ namespace BlazorApp.Services.Invoices
             this.httpService = httpService;
         }
 
-        public async Task<int> CreateInvoice(Invoice invoice)
+        public async Task<Invoice> CreateInvoice(Invoice invoice)
         {
             var result = await this.httpService.Post<Invoice>($"/invoices", invoice);
-            return result.Id;
+            return result;
         }
 
         public async Task<bool> Delete(int id)

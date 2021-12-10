@@ -25,6 +25,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
 
         public async Task<GetAllInvoicesResponse> Handle(GetAllInvoicesRequest request, CancellationToken cancellationToken)
         {
+
             var query = new GetAllInvoicesQuery()
             {
               CompanyId = request.AuthenticationCompanyId,

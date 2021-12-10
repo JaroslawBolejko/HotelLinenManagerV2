@@ -9,7 +9,7 @@ namespace BlazorApp.Services.Invoices
         Task<IEnumerable<Invoice>> GetAllInvoices();
       //  Task<IEnumerable<Invoice>> GetInvoiceByNumber(string number);
         Task<Invoice> GetInvoiceById(int id);
-        Task<int> CreateInvoice(Invoice invoice);
+        Task<Invoice> CreateInvoice(Invoice invoice);
         Task<int> UpdateInvoice(Invoice invoice);
         Task<bool> Delete(int id);
     }
