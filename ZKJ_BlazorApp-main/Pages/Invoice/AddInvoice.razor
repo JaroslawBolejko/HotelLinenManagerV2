@@ -4,9 +4,11 @@
 @inject IInvoiceService InvoiceService
 @inject ILocalStorageService LocalStorageService
 @using System.Threading;
+@using Syncfusion.Blazor.Grids
 
 
 <h3>AddInvoice</h3>
+
 @if (SpinnerVisible == true)
 {
     <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
@@ -14,23 +16,27 @@
 
 @if (Laundries != null)
 {
-    <SfGrid @ref="laundryGrid" DataSource="@Laundries" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
-        <GridEvents OnToolbarClick="ToolbarClickHandler" CommandClicked="OnCommandClicked" TValue="LaundryService"></GridEvents>
+    <SfGrid @ref="laundryGrid" DataSource="@Laundries" AllowSelection="true" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+        <GridEvents OnToolbarClick="ToolbarClickHandler" CommandClicked="OnCommandClicked" RowSelected="GetSelectedRecords" TValue="LaundryService"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridSelectionSettings  Type="Syncfusion.Blazor.Grids.SelectionType.Multiple"></GridSelectionSettings>
         <GridColumns>
             <GridColumn IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
             <GridColumn Field=Company.Name HeaderText="Client Name"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Laundry Service Number"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date"></GridColumn>
-            <GridColumn HeaderText="Actions" Width="150">
-                <GridCommandColumns>
-                    <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
-                                                               { Content = "Add To Invoice", CssClass = "e-flat" })"></GridCommandColumn>
+            <GridColumn Type="ColumnType.CheckBox" HeaderText="Add To Invoice"></GridColumn>
+
+            @*<GridColumn HeaderText="Actions" Width="150">
+                    <GridCommandColumns>
+                        <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
+                                                                   { Content = "Add To Invoice", CssClass = "e-flat" })"></GridCommandColumn>
+
                 </GridCommandColumns>
-            </GridColumn>
+                </GridColumn>*@
         </GridColumns>
     </SfGrid>
 }
@@ -54,7 +60,16 @@
 
     //private string buttonTitle = "Add To Invoice";
 
-protected override async Task OnInitializedAsync()
+    public List<LaundryService> SelectedLaundryServices { get; set; }
+    public List<int> SelectedLaundryServicesID { get; set; }
+    // SfGrid<LaundryService> Grid;
+    public string SelectedValue;
+    // LaundryService[] TotalValue = new LaundryService[]{};
+    int[] TotalValue = new int[]{};
+
+
+
+    protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         Laundries = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == 0).ToList();
@@ -128,12 +143,73 @@ protected override async Task OnInitializedAsync()
 
         if (args.Item.Id == "Finish")
         {
-            Invoice.TotalCost = totalCost;
-            await InvoiceService.UpdateInvoice(Invoice);
-            navigationManager.NavigateTo("/invoices");
+            //Invoice.TotalCost = totalCost;
+            //await InvoiceService.UpdateInvoice(Invoice);
+            //navigationManager.NavigateTo("/invoices");
+
+            await AddToInvoice();
 
         }
 
+    }
+
+    public async Task GetSelectedRecords(RowSelectEventArgs<LaundryService> args)
+    {
+        //if (Grid != null)
+        //{
+        //    SelectedLaundryServices = await this.Grid.GetSelectedRecordsAsync();
+
+        //}
+
+        //if (Grid != null)
+        //{
+        //    SelectedLaundryServicesID.Add(args.Data.Id);
+
+        //}
+
+        if(laundryGrid != null)
+        {
+            SelectedLaundryServices = await this.laundryGrid.GetSelectedRecordsAsync();
+            //  SelectedLaundryServicesID = SelectedLaundryServices.Select(x => x.Id).ToList();
+
+
+            // TotalValue = SelectedLaundryServicesID.ToArray();
+            // SelectedValue = "";
+            // foreach (var data in SelectedLaundryServices)
+            // {
+            //    SelectedValue = SelectedValue + " " + data;
+
+            // }
+
+
+            StateHasChanged();
+        }
+
+    }
+
+    public async Task AddToInvoice()
+    {
+        // LaundryService laundryService = new LaundryService();
+        // laundryService = args.RowData;
+        int invoiceId = int.Parse(InvoiceId);
+        //laundryService.InvoiceId = int.Parse(InvoiceId);
+
+
+        foreach (var data in SelectedLaundryServices)
+        {
+            data.InvoiceId = invoiceId;
+            await ServiceLaundry.UpdateLaundry(data);
+            totalCost += data.TotalBrutto;
+
+
+        }
+        Invoice.TotalCost = totalCost;
+        await InvoiceService.UpdateInvoice(Invoice);
+        navigationManager.NavigateTo("/invoices");
+        //addLaundries.Add(laundryService);
+
+        //Laundries = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == 0).ToList();
+        //laundryGrid.Refresh();
     }
 }
 <style>
