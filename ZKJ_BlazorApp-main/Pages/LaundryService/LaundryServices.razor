@@ -89,15 +89,13 @@
 
 @code{
     public List<Models.LaundryService> Laundries { get; set; }
-
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
-        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
-
+        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
+            Text = "View Details", TooltipText = "View", Id = "View" } };
     public int Id { get; set; }
-
     private bool SpinnerVisible { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;

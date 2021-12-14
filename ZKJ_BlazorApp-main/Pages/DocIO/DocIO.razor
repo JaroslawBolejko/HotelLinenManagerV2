@@ -6,20 +6,16 @@
 @inject Microsoft.JSInterop.IJSRuntime JS
 @using System.Linq
 @using System.IO
-@using Syncfusion.Blazor.Buttons
-@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.DocIO
 @using Syncfusion.DocIO.DLS
 
 
-<h2>Syncfusion DocIO library (Essential DocIO)</h2>
-<p>Syncfusion Blazor DocIO library (Essential DocIO) used to create, read, edit, and convert DocIO files in your applications without Microsoft Office dependencies.</p>
+
 <button class="btn btn-primary" @onclick="@CreateWord">Create Word</button>
-<button class="btn btn-primary" @onclick="@CreateMerge">Create Merge</button>
 
 
 @code{
-
+    private bool SpinnerVisible { get; set; }
     private List<LaundryServiceDetail> LaundryDetails { get; set; }
     private LaundryService LaundryService { get; set; }
     [Parameter]
@@ -27,70 +23,17 @@
     private User User { get; set; }
     private User UserValues { get; set; }
 
-    //string[] fieldValues = new string[3];
 
 
     protected override async Task OnInitializedAsync()
     {
-        // loading = true;
+        SpinnerVisible = true;
         LaundryDetails = (await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id))).ToList();
         LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
-        User = await LocalStorageService.GetItem<User>("userData");
-        UserValues = await UserService.GetMe();
-        //laundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
-        //loading = false;
+        SpinnerVisible = false;
     }
-    public void CreateMerge()
-    {
-        //// Creates an instance of a WordDocument
-        //WordDocument document = new WordDocument();
-        //// Adds one section and one paragraph to the document
-        //document.EnsureMinimal();
-        //// Sets page margins to the last section of the document
-        //document.LastSection.PageSetup.Margins.All = 72;
-        //// Appends text to the last paragraph.
-        //document.LastParagraph.AppendText("Id: ");
-        //// Appends merge field to the last paragraph.
-        //document.LastParagraph.AppendField("Id", FieldType.FieldMergeField);
-        //document.LastParagraph.AppendText("\nFirstName: ");
-        //document.LastParagraph.AppendField("FirstName", FieldType.FieldMergeField);
-        //document.LastParagraph.AppendText("\nLastName: ");
-        //document.LastParagraph.AppendField("LastName", FieldType.FieldMergeField);
 
-        ////Saves and closes the WordDocument instance.
-        //MemoryStream stream = new MemoryStream();
-        //document.Save(stream, FormatType.Docx);
-        ////Closes the Word document
-        //document.Close();
-
-        //JS.SaveAs("Merge.docx", stream.ToArray());
-
-        /////////////////////////////////////////////
-
-        string basePath = @"wwwroot/";
-        string dataPath = basePath + @"data/docio/merge.docx";
-        string newPath = @"C:\FileStream\merge.docx";
-
-        FileStream fileStreamPath = new FileStream(newPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        WordDocument document = new WordDocument(fileStreamPath, FormatType.Doc);
-
-        string[] fieldNames = new string[] { "Id", "FirstName", "LastName" };
-        string[] fieldValues = new string[] { UserValues.Id.ToString(), UserValues.FirstName.ToString(), UserValues.LastName.ToString() };
-
-
-        //Performs the mail merge
-        document.MailMerge.Execute(fieldNames, fieldValues);
-        //Saves and closes the WordDocument instance
-        MemoryStream stream = new MemoryStream();
-        document.Save(stream, FormatType.Docx);
-        //Closes the Word document
-        document.Close();
-        stream.Position = 0;
-
-        JS.SaveAs("Merge.docx", stream.ToArray());
-
-
-    }
+    
 
     public void CreateWord()
     {
@@ -107,7 +50,7 @@
         //Create Paragraph styles
         WParagraphStyle style = document.AddParagraphStyle("Normal") as WParagraphStyle;
         style.CharacterFormat.FontName = "Calibri";
-        style.CharacterFormat.FontSize = 11f;
+        style.CharacterFormat.FontSize = 12f;
         style.ParagraphFormat.BeforeSpacing = 0;
         style.ParagraphFormat.AfterSpacing = 8;
         style.ParagraphFormat.LineSpacing = 13.8f;
@@ -115,24 +58,28 @@
         style = document.AddParagraphStyle("Heading 1") as WParagraphStyle;
         style.ApplyBaseStyle("Normal");
 
-        style.CharacterFormat.FontName = "Calibri Light";
-        style.CharacterFormat.FontSize = 16f;
-        style.CharacterFormat.TextColor = Syncfusion.Drawing.Color.FromArgb(3, 160, 98);
+        style.CharacterFormat.FontName = "Calibri";
+        style.CharacterFormat.FontSize = 12f;
+        style.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Black;
         style.ParagraphFormat.BeforeSpacing = 12;
         style.ParagraphFormat.AfterSpacing = 0;
         style.ParagraphFormat.Keep = true;
         style.ParagraphFormat.KeepFollow = true;
         style.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
-        IWParagraph paragraph = section.HeadersFooters.Header.AddParagraph();
+        IWParagraph paragraph = section.AddParagraph();
 
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
 
-        WTextRange textRange = paragraph.AppendText($"{User.Company.Name}\n" +
-            $"{User.Company.Street} {User.Company.Number}\n" +
-            $"{User.Company.ZipCode} {User.Company.City}\n" +
-            $"Tel.: {User.Company.TelefonNumber}\n" +
-            $"NIP: {User.Company.TaxNumber}") as WTextRange;
+    
+
+        WTextRange textRange = paragraph.AppendText($"{LaundryService.Company.Name}\n" +
+           $"{LaundryService.Company.Street} {LaundryService.Company.Number}\n" +
+           $"{LaundryService.Company.ZipCode} {LaundryService.Company.City}\n" +
+           $"Tel.: {LaundryService.Company.TelefonNumber}\n" +
+           $"NIP: {LaundryService.Company.TaxNumber}") as WTextRange;
+
+
         paragraph.ParagraphFormat.LineSpacing = 8;
         textRange.CharacterFormat.FontSize = 12f;
         textRange.CharacterFormat.FontName = "Calibri";
@@ -147,14 +94,17 @@
            $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.ZipCode} {LaundryService.Laundry.City}\n" +
            $"\t\t\t\t\t\t\t\t\t\tTel.: {LaundryService.Laundry.TelefonNumber}\n" +
            $"\t\t\t\t\t\t\t\t\t\tNIP: {LaundryService.Laundry.TaxNumber}") as WTextRange;
+
         paragraph.ParagraphFormat.LineSpacing = 8;
 
 
         //Appends paragraph
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Heading 1");
+        paragraph.ParagraphFormat.SpaceBeforeAuto = true;
+        paragraph.ParagraphFormat.SpaceAfterAuto = true;
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
-        textRange = paragraph.AppendText($"Dokument Usługi prania nr {LaundryService.Number} ") as WTextRange;
+        textRange = paragraph.AppendText($"Dokument Usługi Prania nr {LaundryService.Number} ") as WTextRange;
         textRange.CharacterFormat.FontSize = 18f;
         textRange.CharacterFormat.FontName = "Calibri";
 
@@ -232,7 +182,7 @@
         stream.Position = 0;
 
         //Download the Word document in the browser
-        JS.SaveAs("Sample.docx", stream.ToArray());
+        JS.SaveAs($"Dokument_{LaundryService.Number}.docx", stream.ToArray());
     }
 
 

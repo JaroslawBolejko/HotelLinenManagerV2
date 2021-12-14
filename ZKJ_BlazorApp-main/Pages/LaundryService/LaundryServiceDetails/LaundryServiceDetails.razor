@@ -76,8 +76,8 @@
 
 @code {
 
-        [Parameter]
-        public string Id { get; set; }
+    [Parameter]
+    public string Id { get; set; }
     public bool SpinnerVisible { get; set; }
     private IEnumerable<LaundryServiceDetail> LaundryDetails { get; set; }
     private WarehauseDetail cleanLaundry;
@@ -92,7 +92,8 @@
 
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
         new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Close the service", TooltipText = "Close", Id = "Close" },
-        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
+        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" },
+     new ItemModel() { Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Create Document", TooltipText = "Create Document", Id = "Document" }};
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     protected override async Task OnInitializedAsync()
@@ -102,11 +103,7 @@
         LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         SpinnerVisible = false;
     }
-    protected void NavigateToDocument()
-    {
-        navigationManager.NavigateTo($"/docio/sales-invoice/{Id}");
-    }
-
+ 
     protected async Task CloseTheService()
     {
         //Jest na sztywno wpisany czysty 1 ale, trzeba to zmienić dając wybór w okienie dialogowym gdzie co ma iść.
@@ -173,14 +170,18 @@
     {
         if (args.Item.Id == "Close")
         {
-            // wysakuje okienka z zapytaniem czy chce fakture jak ce to tworze fakture z tymi danymi jak nie to
-            // wyrzucam informacje ze posciel przeniesiona do hotelu faktura odłożona na później
+           
             this.IsVisible = true;
 
         }
         if (args.Item.Id == "Back")
         {
             navigationManager.NavigateTo("/laundryservices");
+        }
+        if(args.Item.Id == "Document")
+        {
+            navigationManager.NavigateTo($"/docio/sales-invoice/{Id}");
+
         }
 
     }
@@ -212,7 +213,6 @@
 
         Invoice = await InvoiceService.CreateInvoice(newInvoice);
         LaundryService.InvoiceId = Invoice.Id;
-        ///    await LaundryServiceService.UpdateLaundry(LaundryService);
         await CloseTheService();
 
     }

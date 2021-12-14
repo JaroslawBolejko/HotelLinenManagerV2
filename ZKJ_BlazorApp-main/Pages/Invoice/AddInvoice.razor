@@ -3,7 +3,6 @@
 @inject ILaundryServiceService ServiceLaundry
 @inject IInvoiceService InvoiceService
 @inject ILocalStorageService LocalStorageService
-@using System.Threading;
 @using Syncfusion.Blazor.Grids
 
 
@@ -17,11 +16,11 @@
 @if (Laundries != null)
 {
     <SfGrid @ref="laundryGrid" DataSource="@Laundries" AllowSelection="true" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
-        <GridEvents OnToolbarClick="ToolbarClickHandler" CommandClicked="OnCommandClicked" RowSelected="GetSelectedRecords" TValue="LaundryService"></GridEvents>
+        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="GetSelectedRecords" TValue="LaundryService"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings AllowEditing="true" AllowDeleting="true"></GridEditSettings>
-        <GridSelectionSettings  Type="Syncfusion.Blazor.Grids.SelectionType.Multiple"></GridSelectionSettings>
+        <GridSelectionSettings Type="Syncfusion.Blazor.Grids.SelectionType.Multiple"></GridSelectionSettings>
         <GridColumns>
             <GridColumn IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
             <GridColumn Field=Company.Name HeaderText="Client Name"></GridColumn>
@@ -29,14 +28,6 @@
             <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Type="ColumnType.CheckBox" HeaderText="Add To Invoice"></GridColumn>
-
-            @*<GridColumn HeaderText="Actions" Width="150">
-                    <GridCommandColumns>
-                        <GridCommandColumn ButtonOption="@(new CommandButtonOptions()
-                                                                   { Content = "Add To Invoice", CssClass = "e-flat" })"></GridCommandColumn>
-
-                </GridCommandColumns>
-                </GridColumn>*@
         </GridColumns>
     </SfGrid>
 }
@@ -46,56 +37,27 @@
     public string InvoiceId { get; set; }
     private bool SpinnerVisible { get; set; }
     private List<LaundryService> Laundries { get; set; }
-    private List<LaundryService> addLaundries = new List<LaundryService>();
-    private List<Invoice> Invoices { get; set; }
     private Invoice Invoice { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-    private int laundryServiceId;
     private decimal totalCost;
     private SfGrid<LaundryService> laundryGrid { get; set; }
-    private List<Object> Toolbaritems = new List<Object>() { new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
-        Text = "Add all", TooltipText = "Add all", Id = "AddAll" }, new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
-        Text = "Cancel/Back", TooltipText = "Cancel/Back", Id = "Cancel" }, new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
-        Text = "Finish/Create", TooltipText = "Finish/Create", Id = "Finish" }};
-
-    //private string buttonTitle = "Add To Invoice";
+    private List<Object> Toolbaritems = new List<Object>() { new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left),
+        Text = "Add all", TooltipText = "Add all", Id = "AddAll" }, new ItemModel() {Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left),
+        Text = "Create from Selected", TooltipText = "Finish/Create", Id = "Finish" },
+        new ItemModel() {CssClass="specyfic" ,Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
+        Text = "Cancel/Back", TooltipText = "Cancel/Back", Id = "Cancel" }};
 
     public List<LaundryService> SelectedLaundryServices { get; set; }
-    public List<int> SelectedLaundryServicesID { get; set; }
-    // SfGrid<LaundryService> Grid;
-    public string SelectedValue;
-    // LaundryService[] TotalValue = new LaundryService[]{};
-    int[] TotalValue = new int[]{};
-
-
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         Laundries = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == 0).ToList();
-        Invoices = (await InvoiceService.GetAllInvoices()).ToList();
         Invoice = await LocalStorageService.GetItem<Invoice>("invoice");
         SpinnerVisible = false;
     }
 
-    public async Task OnCommandClicked(CommandClickEventArgs<LaundryService> args)
-    {
 
-        if (args.CommandColumn.ButtonOption.Content == "Add To Invoice")
-        {
-            LaundryService laundryService = new LaundryService();
-            laundryService = args.RowData;
-            laundryService.InvoiceId = int.Parse(InvoiceId);
-            await ServiceLaundry.UpdateLaundry(laundryService);
-            totalCost += laundryService.TotalBrutto;
-            addLaundries.Add(laundryService);
-
-            Laundries = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == 0).ToList();
-            laundryGrid.Refresh();
-
-        }
-
-    }
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
 
@@ -114,74 +76,30 @@
             await InvoiceService.UpdateInvoice(Invoice);
             navigationManager.NavigateTo("/invoices");
         }
-        //Add All Services to Invoice - wszystkie Laundriese updatujemy i obliczamy Totalcost
-        //Cancel and Back - wtedy cofa się do invoices i kasuje ta fakture, kótra była tworzona
-        //Finish/Create - obliczamy total cost Updejtujemy Invoica i cofamy się do invoices
-
 
 
         if (args.Item.Id == "Cancel")
         {
-            if (addLaundries.Count == 0)
-            {
-                await InvoiceService.Delete(int.Parse(InvoiceId));
 
-            }
-            else
-            {
-                foreach (var laundry in addLaundries)
-                {
-                    await ServiceLaundry.Delete(laundry.Id);
-
-                }
-                await InvoiceService.Delete(int.Parse(InvoiceId));
-
-            }
+            await InvoiceService.Delete(int.Parse(InvoiceId));
             navigationManager.NavigateTo("/invoices");
 
         }
 
         if (args.Item.Id == "Finish")
         {
-            //Invoice.TotalCost = totalCost;
-            //await InvoiceService.UpdateInvoice(Invoice);
-            //navigationManager.NavigateTo("/invoices");
-
             await AddToInvoice();
-
         }
 
     }
 
     public async Task GetSelectedRecords(RowSelectEventArgs<LaundryService> args)
     {
-        //if (Grid != null)
-        //{
-        //    SelectedLaundryServices = await this.Grid.GetSelectedRecordsAsync();
 
-        //}
 
-        //if (Grid != null)
-        //{
-        //    SelectedLaundryServicesID.Add(args.Data.Id);
-
-        //}
-
-        if(laundryGrid != null)
+        if (laundryGrid != null)
         {
             SelectedLaundryServices = await this.laundryGrid.GetSelectedRecordsAsync();
-            //  SelectedLaundryServicesID = SelectedLaundryServices.Select(x => x.Id).ToList();
-
-
-            // TotalValue = SelectedLaundryServicesID.ToArray();
-            // SelectedValue = "";
-            // foreach (var data in SelectedLaundryServices)
-            // {
-            //    SelectedValue = SelectedValue + " " + data;
-
-            // }
-
-
             StateHasChanged();
         }
 
@@ -189,11 +107,8 @@
 
     public async Task AddToInvoice()
     {
-        // LaundryService laundryService = new LaundryService();
-        // laundryService = args.RowData;
-        int invoiceId = int.Parse(InvoiceId);
-        //laundryService.InvoiceId = int.Parse(InvoiceId);
 
+        int invoiceId = int.Parse(InvoiceId);
 
         foreach (var data in SelectedLaundryServices)
         {
@@ -201,19 +116,19 @@
             await ServiceLaundry.UpdateLaundry(data);
             totalCost += data.TotalBrutto;
 
-
         }
         Invoice.TotalCost = totalCost;
         await InvoiceService.UpdateInvoice(Invoice);
         navigationManager.NavigateTo("/invoices");
-        //addLaundries.Add(laundryService);
 
-        //Laundries = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == 0).ToList();
-        //laundryGrid.Refresh();
     }
 }
 <style>
     .e-toolbar-item .e-tbar-btn {
         border: solid;
+    }
+
+    .specyfic.e-toolbar-item .e-tbar-btn {
+        background-color: orange;
     }
 </style>
