@@ -83,11 +83,8 @@
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
-        // tu trzeba żeby pobrał tylko, te które dotyczą faktury
         Details = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == int.Parse(Id)).ToList();
         Invoice = await InvoiceService.GetInvoiceById(int.Parse(Id));
-
-        //LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         SpinnerVisible = false;
     }
 
@@ -138,20 +135,13 @@
         //Set page size of the section
         section.PageSetup.PageSize = new Syncfusion.Drawing.SizeF(612, 792);
 
-
         //Create Paragraph styles
         WParagraphStyle style = document.AddParagraphStyle("Normal") as WParagraphStyle;
         style.CharacterFormat.FontName = "Calibri";
         style.CharacterFormat.FontSize = 12f;
-        //style.ParagraphFormat.BeforeSpacing = 0;
-        //style.ParagraphFormat.AfterSpacing = 8;
-        //style.ParagraphFormat.LineSpacing = 13.8f;
-
         style = document.AddParagraphStyle("Heading 1") as WParagraphStyle;
         style.ApplyBaseStyle("Normal");
-
         style.CharacterFormat.FontName = "Calibri";
-        style.CharacterFormat.FontSize = 12f;
         style.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Black;
         style.ParagraphFormat.BeforeSpacing = 12;
         style.ParagraphFormat.AfterSpacing = 0;
@@ -175,12 +165,6 @@
            $"Tel.: {Invoice.Company.TelefonNumber}\n" +
            $"NIP: {Invoice.Company.TaxNumber}") as WTextRange;
 
-
-        textRange.CharacterFormat.FontSize = 12f;
-        textRange.CharacterFormat.FontName = "Calibri";
-        textRange.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Black;
-        textRange.CharacterFormat.NumberSpacing.Equals(1);
-        // Adres po prawej
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
@@ -193,6 +177,7 @@
 
 
         //Appends paragraph
+
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Heading 1");
         paragraph.ParagraphFormat.SpaceBeforeAuto = true;
@@ -297,9 +282,9 @@
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
         //paragraph.ParagraphFormat.SpaceBeforeAuto = true;
-        textRange = paragraph.AppendText($"\n\nTotal to pay: {Invoice.TotalCost} (zł)\n"
+        textRange = paragraph.AppendText($"\n\nTotal to pay: {Invoice.TotalCost} zł\n"
         + $"Payment date: {Invoice.PaymentDate.ToShortDateString()}\n"
-        + "Payment method: bank transfer\n"
+        + "Payment method: Bank transfer\n"
         + $"Account number: {Invoice.Laundry.BankAccountNumber}") as WTextRange;
 
         paragraph = section.AddParagraph();
@@ -308,6 +293,20 @@
         //paragraph.ParagraphFormat.SpaceBeforeAuto = true;
         textRange = paragraph.AppendText("\n\n..............." + "\t\t\t\t\t\t\t\t..............." +
         "\nRecipient signature" + "\t\t\t\t\t\t\tIssuer signature") as WTextRange;
+
+
+        section.PageSetup.PageStartingNumber = 1;
+        section.PageSetup.RestartPageNumbering = true;
+        section.PageSetup.PageNumberStyle = PageNumberStyle.Arabic;
+        //Adds a footer paragraph text to the document
+        IWParagraph paragraphFoot = section.HeadersFooters.Footer.AddParagraph();
+        paragraphFoot.ParagraphFormat.Tabs.AddTab(523f, TabJustification.Right, TabLeader.NoLeader);
+        //Adds text for the footer paragraph
+        paragraphFoot.AppendText("Copyright Jarosław Bolejko");
+        //Adds page number field to the document
+        paragraphFoot.AppendText("\tPage ");
+        paragraphFoot.AppendField("Page", FieldType.FieldPage);
+
 
         //Saves the Word document to MemoryStream
         MemoryStream stream = new MemoryStream();
