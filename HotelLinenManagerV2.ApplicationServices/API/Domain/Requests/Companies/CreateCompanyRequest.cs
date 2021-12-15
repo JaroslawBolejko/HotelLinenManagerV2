@@ -16,6 +16,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
         public string City { get; set; }
         public string Email { get; set; }
         public string TelefonNumber { get; set; }
+        public string BankAccountNumber { get; set; }
+
 
     }
 }

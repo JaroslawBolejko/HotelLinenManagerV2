@@ -95,8 +95,6 @@
            $"\t\t\t\t\t\t\t\t\t\tTel.: {LaundryService.Laundry.TelefonNumber}\n" +
            $"\t\t\t\t\t\t\t\t\t\tNIP: {LaundryService.Laundry.TaxNumber}") as WTextRange;
 
-        paragraph.ParagraphFormat.LineSpacing = 8;
-
 
         //Appends paragraph
         paragraph = section.AddParagraph();
@@ -182,7 +180,7 @@
         stream.Position = 0;
 
         //Download the Word document in the browser
-        JS.SaveAs($"Dokument_{LaundryService.Number}.docx", stream.ToArray());
+        JS.SaveAs($"Document_{LaundryService.Number}.docx", stream.ToArray());
     }
 
 

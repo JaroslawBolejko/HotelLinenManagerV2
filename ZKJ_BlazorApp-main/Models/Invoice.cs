@@ -9,7 +9,7 @@ namespace BlazorApp.Models
         public string Name { get; set; }
         public string Number { get; set; }
         public DateTime DateOfInvoice { get; set; }
-        public DateTime? PaymentDate { get; set; }
+        public DateTime PaymentDate { get; set; }
         public decimal? TotalCost { get; set; }
         public bool IsPaid { get; set; }
         public int CompanyId { get; set; }

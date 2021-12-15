@@ -20,6 +20,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .Where(x => x.Number == this.Number)
                     .Include(x => x.Company)
                     .Include(x => x.Laundry)
+                    .Include(x=>x.LaundryServiceDetails)
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -32,6 +33,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .ThenByDescending(x => x.Id)
                     .Include(x => x.Company)
                     .Include(x => x.Laundry)
+                    .Include(x => x.LaundryServiceDetails)
                     .AsNoTracking()
                     .ToListAsync();
             }
@@ -43,6 +45,7 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.LaundryServices
                     .ThenByDescending(x => x.Id)
                     .Include(x => x.Company)
                     .Include(x => x.Laundry)
+                    .Include(x => x.LaundryServiceDetails)
                     .AsNoTracking()
                     .ToListAsync();
             }

@@ -3,7 +3,11 @@
 @inject IInvoiceService InvoiceService
 @inject ILaundryServiceService ServiceLaundry
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
-
+@inject Microsoft.JSInterop.IJSRuntime JS
+@using System.Linq
+@using System.IO
+@using Syncfusion.DocIO
+@using Syncfusion.DocIO.DLS
 
 <h3>InvoiceDetails</h3>
 
@@ -70,8 +74,10 @@
     public int RowId { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     private List<Object> Toolbaritems = new List<Object>() {"Add" ,"Edit", "Delete", "Update", "Cancel",
+         new ItemModel(){CssClass = "specyfic",
+            Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),Text = "Download Document", TooltipText = "Download", Id = "Download"},
         new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
-
+    private Invoice Invoice { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -79,6 +85,9 @@
         SpinnerVisible = true;
         // tu trzeba żeby pobrał tylko, te które dotyczą faktury
         Details = (await ServiceLaundry.GetAllLaundry()).Where(x => x.InvoiceId == int.Parse(Id)).ToList();
+        Invoice = await InvoiceService.GetInvoiceById(int.Parse(Id));
+
+        //LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         SpinnerVisible = false;
     }
 
@@ -93,6 +102,10 @@
 
             navigationManager.NavigateTo($"/invoices");
 
+        }
+        if (args.Item.Id == "Download")
+        {
+            DownloadInvoice();
         }
 
     }
@@ -112,6 +125,199 @@
         {
             await ServiceLaundry.Delete(args.Data.Id);
         }
+    }
+
+    public void DownloadInvoice()
+    {
+        //Creating a new document
+        WordDocument document = new WordDocument();
+        //Adding a new section to the document
+        WSection section = document.AddSection() as WSection;
+        //Set Margin of the section
+        section.PageSetup.Margins.All = 72;
+        //Set page size of the section
+        section.PageSetup.PageSize = new Syncfusion.Drawing.SizeF(612, 792);
+
+
+        //Create Paragraph styles
+        WParagraphStyle style = document.AddParagraphStyle("Normal") as WParagraphStyle;
+        style.CharacterFormat.FontName = "Calibri";
+        style.CharacterFormat.FontSize = 12f;
+        //style.ParagraphFormat.BeforeSpacing = 0;
+        //style.ParagraphFormat.AfterSpacing = 8;
+        //style.ParagraphFormat.LineSpacing = 13.8f;
+
+        style = document.AddParagraphStyle("Heading 1") as WParagraphStyle;
+        style.ApplyBaseStyle("Normal");
+
+        style.CharacterFormat.FontName = "Calibri";
+        style.CharacterFormat.FontSize = 12f;
+        style.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Black;
+        style.ParagraphFormat.BeforeSpacing = 12;
+        style.ParagraphFormat.AfterSpacing = 0;
+        style.ParagraphFormat.Keep = true;
+        style.ParagraphFormat.KeepFollow = true;
+        style.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
+
+        IWParagraph paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Normal");
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Right;
+        WTextRange textRange = paragraph.AppendText($"Invoiced for the day {Invoice.DateOfInvoice.ToShortDateString()}, {Invoice.Laundry.City}") as WTextRange;
+        paragraph.ParagraphFormat.SpaceBeforeAuto = true;
+        paragraph.ParagraphFormat.SpaceAfterAuto = true;
+
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Normal");
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
+        textRange = paragraph.AppendText($"Recipient:\n" + $"{Invoice.Company.Name}\n" +
+           $"{Invoice.Company.Street} {Invoice.Company.Number}\n" +
+           $"{Invoice.Company.ZipCode} {Invoice.Company.City}\n" +
+           $"Tel.: {Invoice.Company.TelefonNumber}\n" +
+           $"NIP: {Invoice.Company.TaxNumber}") as WTextRange;
+
+
+        textRange.CharacterFormat.FontSize = 12f;
+        textRange.CharacterFormat.FontName = "Calibri";
+        textRange.CharacterFormat.TextColor = Syncfusion.Drawing.Color.Black;
+        textRange.CharacterFormat.NumberSpacing.Equals(1);
+        // Adres po prawej
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Normal");
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
+        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\tIssuer:\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.Name}\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.Street} {Invoice.Laundry.Number}\n" +
+           $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.ZipCode} {Invoice.Laundry.City}\n" +
+           $"\t\t\t\t\t\t\t\t\t\tTel.: {Invoice.Laundry.TelefonNumber}\n" +
+           $"\t\t\t\t\t\t\t\t\t\tNIP: {Invoice.Laundry.TaxNumber}") as WTextRange;
+
+
+        //Appends paragraph
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Heading 1");
+        paragraph.ParagraphFormat.SpaceBeforeAuto = true;
+        paragraph.ParagraphFormat.SpaceAfterAuto = true;
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange = paragraph.AppendText($"{Invoice.Name} nr {Invoice.Number} ") as WTextRange;
+        textRange.CharacterFormat.FontSize = 18f;
+        textRange.CharacterFormat.FontName = "Calibri";
+
+        int tableSize = Details.Count;
+
+        IWTable table = section.AddTable();
+        table.TableFormat.HorizontalAlignment = RowAlignment.Center;
+        //Creates the specified number of rows and columns
+        table.ResetCells(tableSize + 1, 6);
+        //Accesses the instance of the cell (first row, first cell)
+        WTableCell firstCell = table.Rows[0].Cells[0];
+        //Specifies the width of the cell
+        firstCell.Width = 30;
+        //Adds a paragraph into the cell; a cell must have atleast 1 paragraph
+        paragraph = firstCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        IWTextRange textRange3 = paragraph.AppendText("L.P");
+        textRange3.CharacterFormat.Bold = true;
+        //Accesses the instance of cell (first row, second cell)
+        WTableCell secondCell = table.Rows[0].Cells[1];
+        secondCell.Width = 180;
+        paragraph = secondCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Service Name and Number");
+        textRange3.CharacterFormat.Bold = true;
+        WTableCell thirdCell = table.Rows[0].Cells[2];
+        thirdCell.Width = 60;
+        paragraph = thirdCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Netto Value (zł)");
+        textRange3.CharacterFormat.Bold = true;
+        WTableCell fourthCell = table.Rows[0].Cells[3];
+        fourthCell.Width = 60;
+        paragraph = fourthCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Tax Value (%)");
+        textRange3.CharacterFormat.Bold = true;
+        WTableCell fifthCell = table.Rows[0].Cells[4];
+        fifthCell.Width = 60;
+        paragraph = fifthCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Total Tax (zł)");
+        textRange3.CharacterFormat.Bold = true;
+        WTableCell sixthCell = table.Rows[0].Cells[5];
+        sixthCell.Width = 60;
+        paragraph = sixthCell.AddParagraph();
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange3 = paragraph.AppendText("Brutto Value (zł)");
+        textRange3.CharacterFormat.Bold = true;
+
+
+        for (int i = 1; i <= tableSize; i++)
+        {
+
+            firstCell = table.Rows[i].Cells[0];
+            firstCell.Width = 30;
+            firstCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = firstCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{i}");
+            secondCell = table.Rows[i].Cells[1];
+            secondCell.Width = 180;
+            secondCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = secondCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{Details[i - 1].Name} nr.{Details[i - 1].Number}");
+            thirdCell = table.Rows[i].Cells[2];
+            thirdCell.Width = 60;
+            thirdCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = thirdCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{Details[i - 1].TotalNetto}");
+            fourthCell = table.Rows[i].Cells[3];
+            fourthCell.Width = 60;
+            fourthCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = fourthCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{Details[i - 1].LaundryServiceDetails.Select(x => x.TaxValue).FirstOrDefault()}");
+            fifthCell = table.Rows[i].Cells[4];
+            fifthCell.Width = 60;
+            fifthCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = fifthCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{Details[i - 1].TotalTax}");
+            sixthCell = table.Rows[i].Cells[5];
+            sixthCell.Width = 60;
+            sixthCell.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
+            paragraph = sixthCell.AddParagraph();
+            paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+            textRange3 = paragraph.AppendText($"{Details[i - 1].TotalBrutto}");
+
+        }
+
+
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Normal");
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
+        //paragraph.ParagraphFormat.SpaceBeforeAuto = true;
+        textRange = paragraph.AppendText($"\n\nTotal to pay: {Invoice.TotalCost} (zł)\n"
+        + $"Payment date: {Invoice.PaymentDate.ToShortDateString()}\n"
+        + "Payment method: bank transfer\n"
+        + $"Account number: {Invoice.Laundry.BankAccountNumber}") as WTextRange;
+
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Normal");
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
+        //paragraph.ParagraphFormat.SpaceBeforeAuto = true;
+        textRange = paragraph.AppendText("\n\n..............." + "\t\t\t\t\t\t\t\t..............." +
+        "\nRecipient signature" + "\t\t\t\t\t\t\tIssuer signature") as WTextRange;
+
+        //Saves the Word document to MemoryStream
+        MemoryStream stream = new MemoryStream();
+        document.Save(stream, FormatType.Docx);
+        //Closes the Word document
+        document.Close();
+        stream.Position = 0;
+
+        //Download the Word document in the browser
+        JS.SaveAs($"Invoice_{Invoice.Number}.docx", stream.ToArray());
     }
 
 

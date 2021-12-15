@@ -5,7 +5,12 @@
 @inject ILocalStorageService LocalStorageService
 @inject IRelatedCompaniesService RelatedCompanyService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject Microsoft.JSInterop.IJSRuntime JS
 @using Syncfusion.Blazor.Lists
+@using System.Linq
+@using System.IO
+@using Syncfusion.DocIO
+@using Syncfusion.DocIO.DLS
 
 <h3>Invoices</h3>
 
@@ -46,8 +51,8 @@
             </Content>
         </DialogTemplates>
         <DialogButtons>
-            <DialogButton  Content="Submit" IsPrimary="true" @onclick="@OnSelect" />
-            <DialogButton  Content="Cancel" OnClick="@Cancel" />
+            <DialogButton Content="Submit" IsPrimary="true" @onclick="@OnSelect" />
+            <DialogButton Content="Cancel" OnClick="@Cancel" />
         </DialogButtons>
     </SfDialog>
 </div>
@@ -56,8 +61,9 @@
     private bool SpinnerVisible { get; set; }
     private IEnumerable<Invoice> InvoicesList { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
-    private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
-        new ItemModel() {CssClass="specyfic" , Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "View Details", TooltipText = "View", Id = "View" } };
+    private List<Object> Toolbaritems = new List<Object>() {new ItemModel(){PrefixIcon="e-add", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left),Text = "Add Invoice",
+                TooltipText = "Add", Id = "Add"},"Edit", "Delete", "Update", "Cancel", new ItemModel(){CssClass = "specyfic",
+            Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),Text = "View Details", TooltipText = "View", Id = "View"}};
     public int Id { get; set; }
     private User User { get; set; }
     private Invoice Invoice { get; set; }
@@ -75,17 +81,10 @@
         User = await LocalStorageService.GetItem<User>("userData");
         relatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies()).ToList();
 
-        if (User.Permission.ToString() == "UserLaundry")
+        if (User.Permission.ToString() != "UserLaundry")
         {
             //tu żeby Add był po lewej na maxa trzebabyłoby zaincjalizować dwie wersje tool bara zależne od ifa
-            Toolbaritems.Add(new ItemModel()
-            {
-
-                Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left),
-                Text = "Add Invoice",
-                TooltipText = "Add",
-                Id = "Add"
-            });
+            Toolbaritems.RemoveAt(0);
         }
 
 
@@ -153,7 +152,7 @@
             IsVisible = true;
 
         }
-
+      
     }
 
     public async void ActionBeginHandler(ActionEventArgs<Invoice> args)
@@ -189,6 +188,8 @@
             }
         }
     }
+
+}
 }
 <style>
     .true {
@@ -206,6 +207,7 @@
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }
+
     .dialog {
         min-height: 400px;
         height: 100%;

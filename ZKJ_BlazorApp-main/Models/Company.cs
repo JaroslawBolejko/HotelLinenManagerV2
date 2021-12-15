@@ -23,11 +23,11 @@ namespace BlazorApp.Models
         public string City { get; set; }
         public string EMail { get; set; }
         public string TelefonNumber { get; set; }
+        public string BankAccountNumber { get; set; }
         public List<PriceList> CompanyPriceLists { get; set; }
-
         public List<PriceList> LaundryPriceLists { get; set; }
         public List<RelatedCompany> RelatedCompanies { get; set; }
-        
+
 
     }
 }

@@ -21,7 +21,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.EMail))
                 .ForMember(x => x.CompanyPriceLists, y => y.MapFrom(z => z.CompanyPriceLists))
                 .ForMember(x => x.LaundryPriceLists, y => y.MapFrom(z => z.LaundryPriceLists))
-                .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
+                .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber))
+                .ForMember(x => x.BankAccountNumber, y => y.MapFrom(z => z.BankAccountNumber));
 
             this.CreateMap<CreateCompanyRequest,DataAccess.Entities.Company>()
                 .ForMember(x => x.Type, y => y.MapFrom(z => z.Type))
@@ -33,6 +34,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.TaxNumber, y => y.MapFrom(z => z.TaxNumber))
                 .ForMember(x => x.ApartmentNumber, y => y.MapFrom(z => z.ApartmentNumber))
                 .ForMember(x => x.EMail, y => y.MapFrom(z => z.Email))
+                .ForMember(x => x.BankAccountNumber, y => y.MapFrom(z => z.BankAccountNumber))
                 .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
 
             this.CreateMap<UpdateCompanyByIdRequest, DataAccess.Entities.Company>()
@@ -46,6 +48,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.TaxNumber, y => y.MapFrom(z => z.TaxNumber))
                 .ForMember(x => x.ApartmentNumber, y => y.MapFrom(z => z.ApartmentNumber))
                 .ForMember(x => x.EMail, y => y.MapFrom(z => z.Email))
+                .ForMember(x => x.BankAccountNumber, y => y.MapFrom(z => z.BankAccountNumber))
                 .ForMember(x => x.TelefonNumber, y => y.MapFrom(z => z.TelefonNumber));
 
             this.CreateMap<DeleteCompanyByIdRequest, DataAccess.Entities.Company>()

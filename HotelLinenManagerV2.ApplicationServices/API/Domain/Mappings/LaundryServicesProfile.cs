@@ -22,6 +22,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                .ForMember(x => x.TotalNetto, y => y.MapFrom(z => z.TotalNetto))
                .ForMember(x => x.TotalTax, y => y.MapFrom(z => z.TotalTax))
                .ForMember(x => x.InvoiceId, y => y.MapFrom(z => z.InvoiceId))
+               .ForMember(x => x.LaundryServiceDetails, y => y.MapFrom(z => z.LaundryServiceDetails))
                .ForMember(x=>x.Company,y=>y.MapFrom(z=>z.Company))
                .ForMember(x=>x.Laundry,y=>y.MapFrom(z=>z.Laundry));
 

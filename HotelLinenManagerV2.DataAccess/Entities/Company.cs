@@ -36,6 +36,8 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         public string EMail {get;set;}
         [MaxLength(20)]
         public string TelefonNumber { get; set;}
+        [MaxLength(28)]
+        public string BankAccountNumber { get; set; }
         public List<Warehause> Warehauses { get; set; }
         public List<User> Users { get; set; }
         [InverseProperty("Company")]
