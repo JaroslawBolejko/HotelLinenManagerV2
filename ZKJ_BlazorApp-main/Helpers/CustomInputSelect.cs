@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 
-namespace BlazorApp.Pages
+namespace BlazorApp.Helpers
+
 {
     public class CustomInputSelect<TValue> : InputSelect<TValue>
     {

@@ -31,7 +31,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             {
                 return new DeleteCompanyByIdResponse()
                 {
-                    Error = new ErrorModel(ErrorType.UnsupportedMethod)
+                    Error = new ErrorModel(ErrorType.Forbidden)
                 };
             }
 

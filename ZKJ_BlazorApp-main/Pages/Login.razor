@@ -8,7 +8,7 @@
         Please fill username and password
     </div>
     <div class="card">
-        <h4 class="card-header">Blazor WebAssembly</h4>
+        <h4 class="card-header">Hotel Linen Manager</h4>
         <div class="card-body">
             <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
@@ -23,14 +23,17 @@
                     <ValidationMessage For="@(() => model.Password)" />
                 </div>
                 <button class="btn btn-primary">
-                    @if (loading) {
+                    @if (loading)
+                    {
                         <span class="spinner-border spinner-border-sm mr-1"></span>
                     }
                     Login
                 </button>
-                @if (!string.IsNullOrEmpty(error)) {
+                @if (!string.IsNullOrEmpty(error))
+                {
                     <div class="alert alert-danger mt-3 mb-0">@error</div>
                 }
+                <button type="button" class="btn btn-secondary" @onclick="() => Register()">Register</button>
             </EditForm>
         </div>
     </div>
@@ -67,6 +70,10 @@
         }
     }
 
+    private void Register()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
     private class Model
     {
         [Required]

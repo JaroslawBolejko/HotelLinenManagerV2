@@ -6,10 +6,6 @@ using HotelLinenManagerV2.DataAccess.CQRS;
 using HotelLinenManagerV2.DataAccess.CQRS.Commands.Invoices;
 using HotelLinenManagerV2.DataAccess.CQRS.Queries.Invoices;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,6 +26,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
 
         public async Task<UpdateInvoiceByIdResponse> Handle(UpdateInvoiceByIdRequest request, CancellationToken cancellationToken)
         {
+
             var query = new GetInvoiceQuery()
             {
                 Id = request.Id

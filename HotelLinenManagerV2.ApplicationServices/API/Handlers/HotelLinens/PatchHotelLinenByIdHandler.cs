@@ -32,7 +32,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
             {
                 return new PatchHotelLinenByIdResponse
                 {
-                    Error = new ErrorModel(ErrorType.Unauthorized)
+                    Error = new ErrorModel(ErrorType.Forbidden)
                 };
             }
             var query = new GetHotelLinenQuery()

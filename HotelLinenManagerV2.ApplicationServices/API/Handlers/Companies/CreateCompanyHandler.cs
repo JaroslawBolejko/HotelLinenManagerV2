@@ -42,7 +42,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             {
                 return new CreateCompanyResponse()
                 {
-                    Error = new ErrorModel(ErrorType.UnsupportedMethod)
+                    Error = new ErrorModel(ErrorType.Forbidden)
                 };
             }
             try

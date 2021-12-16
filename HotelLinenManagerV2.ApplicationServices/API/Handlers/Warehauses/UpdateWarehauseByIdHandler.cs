@@ -31,7 +31,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             {
                 return new UpdateWarehauseByIdResponse
                 {
-                    Error = new ErrorModel(ErrorType.Unauthorized)
+                    Error = new ErrorModel(ErrorType.Forbidden)
                 };
             }
 

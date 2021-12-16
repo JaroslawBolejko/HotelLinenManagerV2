@@ -74,9 +74,9 @@
     public int RowId { get; set; }
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
     private List<Object> Toolbaritems = new List<Object>() {"Add" ,"Edit", "Delete", "Update", "Cancel",
-         new ItemModel(){CssClass = "specyfic",
+         new ItemModel(){CssClass = "download",
             Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),Text = "Download Document", TooltipText = "Download", Id = "Download"},
-        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
+        new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
     private Invoice Invoice { get; set; }
 
 
@@ -159,21 +159,24 @@
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        textRange = paragraph.AppendText($"Recipient:\n" + $"{Invoice.Company.Name}\n" +
-           $"{Invoice.Company.Street} {Invoice.Company.Number}\n" +
-           $"{Invoice.Company.ZipCode} {Invoice.Company.City}\n" +
-           $"Tel.: {Invoice.Company.TelefonNumber}\n" +
-           $"NIP: {Invoice.Company.TaxNumber}") as WTextRange;
+        textRange = paragraph.AppendText("Recipient:\n") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"{Invoice.Company.Name}\n" +
+       $"{Invoice.Company.Street} {Invoice.Company.Number}\n" +
+       $"{Invoice.Company.ZipCode} {Invoice.Company.City}\n" +
+       $"Tel.: {Invoice.Company.TelefonNumber}\n" +
+       $"NIP: {Invoice.Company.TaxNumber}") as WTextRange;
 
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\tIssuer:\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.Name}\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.Street} {Invoice.Laundry.Number}\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.ZipCode} {Invoice.Laundry.City}\n" +
-           $"\t\t\t\t\t\t\t\t\t\tTel.: {Invoice.Laundry.TelefonNumber}\n" +
-           $"\t\t\t\t\t\t\t\t\t\tNIP: {Invoice.Laundry.TaxNumber}") as WTextRange;
+        textRange = paragraph.AppendText("\t\t\t\t\t\t\t\t\t\tIssuer:\n") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.Name}\n" +
+       $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.Street} {Invoice.Laundry.Number}\n" +
+       $"\t\t\t\t\t\t\t\t\t\t{Invoice.Laundry.ZipCode} {Invoice.Laundry.City}\n" +
+       $"\t\t\t\t\t\t\t\t\t\tTel.: {Invoice.Laundry.TelefonNumber}\n" +
+       $"\t\t\t\t\t\t\t\t\t\tNIP: {Invoice.Laundry.TaxNumber}") as WTextRange;
 
 
         //Appends paragraph
@@ -279,18 +282,28 @@
 
 
         paragraph = section.AddParagraph();
+        paragraph.AppendBreak(BreakType.LineBreak);
+        paragraph.AppendBreak(BreakType.LineBreak);
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        //paragraph.ParagraphFormat.SpaceBeforeAuto = true;
-        textRange = paragraph.AppendText($"\n\nTotal to pay: {Invoice.TotalCost} zł\n"
-        + $"Payment date: {Invoice.PaymentDate.ToShortDateString()}\n"
-        + "Payment method: Bank transfer\n"
-        + $"Account number: {Invoice.Laundry.BankAccountNumber}") as WTextRange;
+        textRange = paragraph.AppendText("Total payment:") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"\t{Invoice.TotalCost} zł") as WTextRange;
+        textRange = paragraph.AppendText("\nPayment Date:") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"\t{Invoice.PaymentDate.ToShortDateString()}") as WTextRange;
+        textRange = paragraph.AppendText("\nPayment method:") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"\tBank Transfer") as WTextRange;
+        textRange = paragraph.AppendText("\nAccount number:") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"\t{Invoice.Laundry.BankAccountNumber}") as WTextRange;
 
         paragraph = section.AddParagraph();
+        paragraph.AppendBreak(BreakType.LineBreak);
+        paragraph.AppendBreak(BreakType.LineBreak);
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        //paragraph.ParagraphFormat.SpaceBeforeAuto = true;
         textRange = paragraph.AppendText("\n\n..............." + "\t\t\t\t\t\t\t\t..............." +
         "\nRecipient signature" + "\t\t\t\t\t\t\tIssuer signature") as WTextRange;
 
@@ -323,8 +336,12 @@
 
 }
 <style>
-    .specyfic.e-toolbar-item .e-tbar-btn {
-        background-color: orange;
+    .back.e-toolbar-item .e-tbar-btn {
+        background-color: #6c757d;
+    }
+
+    .download.e-toolbar-item .e-tbar-btn {
+        background-color: #007bff;
     }
 
     .e-toolbar-item .e-tbar-btn {

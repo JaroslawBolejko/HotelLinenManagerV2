@@ -28,7 +28,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
             {
                 return new GetHotelLinenByIdResponse
                 {
-                    Error = new ErrorModel(ErrorType.Unauthorized)
+                    Error = new ErrorModel(ErrorType.Forbidden)
                 };
             }
 

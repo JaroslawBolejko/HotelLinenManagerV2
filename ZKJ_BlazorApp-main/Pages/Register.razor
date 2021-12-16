@@ -1,0 +1,35 @@
+﻿@page "/register"
+
+<h3>Register</h3>
+
+
+
+<EditForm Model="@company" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+
+    <label for="taxNumber">Tax Number: </label>
+    <InputText Id="taxNumber" @bind-Value="@company.TaxNumber"></InputText>
+
+   
+
+    <button type="submit" @onclick="() => CheckIfExists()">Submit</button>
+</EditForm>
+
+
+@code {
+    private Models.Company company = new Models.Company();
+
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+
+    private async Task CheckIfExists()
+        {
+
+        }
+
+}

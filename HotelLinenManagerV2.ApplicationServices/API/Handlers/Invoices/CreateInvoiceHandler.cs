@@ -32,6 +32,16 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
 
         public async Task<CreateInvoiceResponse> Handle(CreateInvoiceRequest request, CancellationToken cancellationToken)
         {
+
+            if (request.AuthenticationRole == "UserHotel" || request.AuthenticationRole == "UserAdmin")
+            {
+                return new CreateInvoiceResponse
+                {
+                    Error = new ErrorModel(ErrorType.Forbidden)
+                };
+
+            }
+
             var query = new GetInvoiceQuery()
             {
                 Number = request.Number,

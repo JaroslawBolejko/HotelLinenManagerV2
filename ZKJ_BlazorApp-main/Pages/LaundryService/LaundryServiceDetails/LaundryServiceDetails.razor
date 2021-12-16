@@ -96,9 +96,9 @@
     public bool IsVisible { get; set; }
 
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
-        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Create Document", TooltipText = "Create Document", Id = "Document"},
-        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Close the service", TooltipText = "Close", Id = "Close" },
-        new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" }};
+        new ItemModel() {CssClass="download", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Create Document", TooltipText = "Create Document", Id = "Document"},
+        new ItemModel() {CssClass="close", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Close the service", TooltipText = "Close", Id = "Close" },
+        new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" }};
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
     protected override async Task OnInitializedAsync()
@@ -257,23 +257,26 @@
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        textRange = paragraph.AppendText($"Client:\n" + $"{LaundryService.Company.Name}\n" +
-           $"{LaundryService.Company.Street} {LaundryService.Company.Number}\n" +
-           $"{LaundryService.Company.ZipCode} {LaundryService.Company.City}\n" +
-           $"Tel.: {LaundryService.Company.TelefonNumber}\n" +
-           $"NIP: {LaundryService.Company.TaxNumber}") as WTextRange;
+        textRange = paragraph.AppendText("Client:\n") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"{LaundryService.Company.Name}\n" +
+       $"{LaundryService.Company.Street} {LaundryService.Company.Number}\n" +
+       $"{LaundryService.Company.ZipCode} {LaundryService.Company.City}\n" +
+       $"Tel.: {LaundryService.Company.TelefonNumber}\n" +
+       $"NIP: {LaundryService.Company.TaxNumber}") as WTextRange;
 
 
         // Adres po prawej
         paragraph = section.AddParagraph();
         paragraph.ApplyStyle("Normal");
         paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Left;
-        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\tLaundry:\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.Name}\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.Street} {LaundryService.Laundry.Number}\n" +
-           $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.ZipCode} {LaundryService.Laundry.City}\n" +
-           $"\t\t\t\t\t\t\t\t\t\tTel.: {LaundryService.Laundry.TelefonNumber}\n" +
-           $"\t\t\t\t\t\t\t\t\t\tNIP: {LaundryService.Laundry.TaxNumber}") as WTextRange;
+        textRange = paragraph.AppendText("\t\t\t\t\t\t\t\t\t\tLaundry:\n") as WTextRange;
+        textRange.CharacterFormat.Bold = true;
+        textRange = paragraph.AppendText($"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.Name}\n" +
+       $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.Street} {LaundryService.Laundry.Number}\n" +
+       $"\t\t\t\t\t\t\t\t\t\t{LaundryService.Laundry.ZipCode} {LaundryService.Laundry.City}\n" +
+       $"\t\t\t\t\t\t\t\t\t\tTel.: {LaundryService.Laundry.TelefonNumber}\n" +
+       $"\t\t\t\t\t\t\t\t\t\tNIP: {LaundryService.Laundry.TaxNumber}") as WTextRange;
 
 
         //Appends paragraph
@@ -388,11 +391,19 @@
 
 
         }
-     
-
         paragraph = section.AddParagraph();
         paragraph.AppendBreak(BreakType.LineBreak);
-        paragraph.AppendBreak(BreakType.LineBreak);
+
+        paragraph = section.AddParagraph();
+        paragraph.ApplyStyle("Heading 1");
+        paragraph.ParagraphFormat.SpaceBeforeAuto = true;
+        paragraph.ParagraphFormat.SpaceAfterAuto = true;
+        paragraph.ParagraphFormat.HorizontalAlignment = HorizontalAlignment.Center;
+        textRange = paragraph.AppendText("Summary:") as WTextRange;
+        textRange.CharacterFormat.FontSize = 18f;
+        textRange.CharacterFormat.FontName = "Calibri";
+
+
 
         IWTable summary = section.AddTable();
         summary.TableFormat.HorizontalAlignment = RowAlignment.Center;
@@ -487,10 +498,15 @@
         box-sizing: border-box;
     }
 
-    .specyfic.e-toolbar-item .e-tbar-btn {
-        background-color: orange;
+    .close.e-toolbar-item .e-tbar-btn {
+        background-color: #ffc107;
     }
-
+    .back.e-toolbar-item .e-tbar-btn {
+        background-color: #6c757d;
+    }
+    .download.e-toolbar-item .e-tbar-btn {
+        background-color: #007bff;
+    }
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }

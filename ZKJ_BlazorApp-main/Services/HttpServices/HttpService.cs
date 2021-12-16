@@ -73,14 +73,22 @@ namespace BlazorApp.Services.HttpServices
                 _navigationManager.NavigateTo("logout");
                 return default;
             }
-            // return default if there is conflict 
-            //if (response.StatusCode == HttpStatusCode.Conflict)
-            //{
-            //    var answer = await response.Content.ReadFromJsonAsync<Reponse<T>>();
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                _navigationManager.NavigateTo("409Conflict");
+                return default;
+            }
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                _navigationManager.NavigateTo("404NotFound");
+                return default;
+            }
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                _navigationManager.NavigateTo("403Forbidden");
+                return default;
+            }
 
-            //    return answer.Data;
-            //}
-            // throw exception on error response
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
