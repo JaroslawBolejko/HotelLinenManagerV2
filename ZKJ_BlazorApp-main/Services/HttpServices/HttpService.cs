@@ -88,7 +88,7 @@ namespace BlazorApp.Services.HttpServices
                 _navigationManager.NavigateTo("403Forbidden");
                 return default;
             }
-
+            /// tu podzia³æ ¿eby wy³¹czyæ z tego kodu sytuacje powy¿ej aby nie wy¿uca³o b³êdu
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();

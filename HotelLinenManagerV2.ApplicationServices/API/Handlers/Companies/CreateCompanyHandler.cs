@@ -38,13 +38,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
 
         public async Task<CreateCompanyResponse> Handle(CreateCompanyRequest request, CancellationToken cancellationToken)
         {
-            if (request.AuthenticationRole != "AdminHotel")
-            {
-                return new CreateCompanyResponse()
-                {
-                    Error = new ErrorModel(ErrorType.Forbidden)
-                };
-            }
+            //if (request.AuthenticationRole != "AdminHotel")
+            //{
+            //    return new CreateCompanyResponse()
+            //    {
+            //        Error = new ErrorModel(ErrorType.Forbidden)
+            //    };
+            //}
             try
             {
                 bool isEmpty = nullOrEmptyChecker.IsEmptyOrNull(request.Name, request.City, request.Street);

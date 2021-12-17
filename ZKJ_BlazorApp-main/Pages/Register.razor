@@ -1,35 +1,187 @@
 ﻿@page "/register"
+@inject ICompanyService CompService
+@inject IUserService UserService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+
 
 <h3>Register</h3>
 
+@if (SpinnerVisible == true)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model="@company">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="taxNumber" class="control-label">Your Company Tax Number: </label>
+                    <InputText class="form-control" Id="taxNumber" disabled=@IsTaxAdded @bind-Value="@company.TaxNumber"></InputText>
+                </div>
+                <button type="button" class="btn btn-primary" @onclick="() => CheckIfExists()">
+                    Submit
+                </button>
+            </EditForm>
+        </div>
+    </div>
+</div>
 
 
-<EditForm Model="@company" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    
+@if (IsVisibleCompanyForm)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <EditForm Model="@company">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
 
-    <label for="taxNumber">Tax Number: </label>
-    <InputText Id="taxNumber" @bind-Value="@company.TaxNumber"></InputText>
+                    <div class="form-group">
+                        <label for="companyType" class="control-label">Company type:</label>
+                        <InputSelect id="companyType" @bind-Value="@company.Type" class="form-control">
+                            @foreach (var type in Enum.GetValues(typeof(CompanyType)))
+                                {
+                                <option value="@type">@type</option>
+                                }
+                        </InputSelect>
+                        <label for="email" class="control-label">Company E-mail:</label>
+                        <InputText class="form-control" @bind-Value="company.EMail" id="email" />
 
-   
+                        <label for="telNumber" class="control-label">Telefon Number:</label>
+                        <InputText class="form-control" @bind-Value="company.TelefonNumber" id="telNumber" />
 
-    <button type="submit" @onclick="() => CheckIfExists()">Submit</button>
-</EditForm>
+                        <label for="account" class="control-label">Bank Account Number:</label>
+                        <InputText class="form-control" @bind-Value="company.BankAccountNumber" id="account" />
+                    </div>
+                    @*<button type="button" class="btn btn-primary" @onclick="() => CheckIfExists()">Submit</button>*@
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    if (IsVisibleUserForm)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <EditForm Model="@newUser">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="form-group">
+                            <label for="FirstName" class="control-label">First Name</label>
+                            <InputText id="FirstName" class="form-control" @bind-Value="@newUser.FirstName" />
+
+                            <label for="LastName" class="control-label">Last Name</label>
+                            <InputText id="LastName" class="form-control" @bind-Value="@newUser.LastName" />
+
+                            <label for="Email" class="control-label">Email</label>
+                            <InputText id="Email" class="form-control" @bind-Value="@newUser.Email" placeholder="email" />
+                            <ValidationMessage For="@(() => newUser.Email)" />
+
+
+                            <label for="Password" class="control-label">Password</label>
+                            <InputText type="password" id="Password" class="form-control" @bind-Value="@newUser.Password" placeholder="password" />
+
+                            <label for="confirmPassword" class="control-label">Confirm Password</label>
+                            <InputText type="password" id="confirmPassword" class="form-control" @bind-Value="@newUser.ConfirmPassword" placeholder="confirmPasword" />
+                            <ValidationMessage For="@(() => newUser.ConfirmPassword)" />
+
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" @onclick="() => Create()">Save</button>
+                            <button type="button" class="btn btn-secondary" @onclick="() => Cancel()">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    }
+
+
+}
 
 
 @code {
     private Models.Company company = new Models.Company();
+    private int createdCompanyId;
+
+    private Models.User user = new Models.User();
+    private Models.Move newUser = new Models.Move();
+    private bool IsVisibleCompanyForm { get; set; } = false;
+    private bool IsVisibleUserForm { get; set; } = false;
+    private bool IsTaxAdded { get; set; } = false;
+    private bool SpinnerVisible { get; set; }
 
 
-    private void HandleValidSubmit()
-    {
-        Console.WriteLine("OnValidSubmit");
-    }
 
     private async Task CheckIfExists()
+    {
+        SpinnerVisible = true;
+        var result = (await CompService.GetAll(company.TaxNumber)).ToList();
+        SpinnerVisible = false;
+        if (result.Count != 0)
         {
+            IsVisibleCompanyForm = false;
+            IsVisibleUserForm = true;
 
         }
+        else
+        {
+            IsVisibleCompanyForm = true;
+            IsTaxAdded = true;
+            IsVisibleUserForm = true;
+
+
+        }
+    }
+    private async Task Create()
+    {
+        company.Name = "";
+        company.Street = "";
+        company.Number = "";
+        company.ApartmentNumber = "";
+        company.ZipCode = "";
+        company.City = "";
+
+        createdCompanyId = await CompService.Create(company);
+
+        if (IsVisibleCompanyForm)
+        {
+            user.Permission = (Role)0;
+        }
+        else
+        {
+            if (company.Type == (CompanyType)0)
+            {
+                user.Permission = (Role)1;
+
+            }
+            if (company.Type == (CompanyType)1)
+            {
+                user.Permission = (Role)2;
+
+            }
+        }
+        user.FirstName = newUser.FirstName;
+        user.LastName = newUser.LastName;
+        user.Username = newUser.Email;
+        user.CompanyId = createdCompanyId;
+        user.Email = newUser.Email;
+        user.PhotoPath = "images/human1.png";
+        user.Password = newUser.Password;
+        user.Workplace = (PlaceOfWork)company.Type;
+        await UserService.CreateUser(user);
+
+
+        //dialog z potwierdzniem i informacją żeby się zalogować
+    }
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/login");
+    }
 
 }
+

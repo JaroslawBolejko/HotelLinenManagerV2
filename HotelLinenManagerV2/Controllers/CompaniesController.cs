@@ -17,7 +17,7 @@ namespace HotelLinenManagerV2.Controllers
         {
             logger.LogInformation("We are in Company");
         } 
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllCompanies([FromQuery] GetAllCompaniesRequest request)
@@ -35,7 +35,7 @@ namespace HotelLinenManagerV2.Controllers
             };
             return await this.HandleRequest<GetCompanyByIdRequest, GetCompanyByIdResponse>(request);
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyRequest request)

@@ -10,17 +10,27 @@ namespace BlazorApp.Models
         [Required]
         public int WarehauseToMove { get; set; }
         [Required]
-        public int HotelLinenToMove { get; set; }
-        [Required]
         [Range(0, 10000, ErrorMessage = "Wartość nie może być ujemna lub większa od 10000")]
         public int AmountToMove { get; set; }
-        public int WarehauseDetailId { get; set; }
 
-        public double TotalServiceWeight { get; set; }
-        public decimal TotalServiceTax { get; set; }
-        public decimal TotalNetto { get; set; }
-        public decimal TotalBrutto { get; set; }
         public decimal SingleBruttoValue { get; set; }
+
+     
+        [Required]
+        [MaxLength(100)]
+        public string FirstName { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string LastName { get; set; }      
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string Email { get; set; }
+        public string PhotoPath { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Password { get; set; }
+        [Compare(nameof(Move.Password), ErrorMessage = "The password confirmation does not match")]
+        public string ConfirmPassword { get; set; }
 
 
     }

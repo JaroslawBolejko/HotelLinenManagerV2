@@ -53,9 +53,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
             request.Password = auth[0];
             request.Salt = auth[1];
 
-            if (request.Workplace.Equals("Laundry"))
-                request.Permission = (Role)2;
-            request.Permission = (Role)1;
+            //if (request.Workplace.Equals("Laundry"))
+            //    request.Permission = (Role)2;
+            //request.Permission = (Role)1;
 
 
             var mappedUser = this.mapper.Map<User>(request);
