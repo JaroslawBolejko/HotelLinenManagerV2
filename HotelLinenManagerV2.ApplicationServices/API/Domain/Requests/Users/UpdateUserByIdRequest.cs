@@ -16,5 +16,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
         public string Username { get; set; }
         public string Email { get; set; }
         public string Salt { get; set; }
+        public string PhotoPath { get; set; }
+
     }
 }
