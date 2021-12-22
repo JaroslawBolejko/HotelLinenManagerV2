@@ -75,21 +75,26 @@ namespace BlazorApp.Services.HttpServices
             }
             if (response.StatusCode == HttpStatusCode.Conflict)
             {
-                _navigationManager.NavigateTo("409Conflict");
+                _navigationManager.NavigateTo("409Conflict", forceLoad: true);
                 return default;
             }
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                _navigationManager.NavigateTo("404NotFound");
+                _navigationManager.NavigateTo("404NotFound", forceLoad: true);
                 return default;
             }
             if (response.StatusCode == HttpStatusCode.Forbidden)
             {
-                _navigationManager.NavigateTo("403Forbidden");
+                _navigationManager.NavigateTo("403Forbidden", forceLoad: true);
                 return default;
             }
-            /// tu podzia³æ ¿eby wy³¹czyæ z tego kodu sytuacje powy¿ej aby nie wy¿uca³o b³êdu
-            if (!response.IsSuccessStatusCode)
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                _navigationManager.NavigateTo("400BadRequest", forceLoad: true);
+                return default;
+            }
+
+            if (!response.IsSuccessStatusCode )   
             {
                 var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
                 throw new Exception(error["message"]);

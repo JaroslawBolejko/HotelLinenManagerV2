@@ -91,13 +91,15 @@ namespace HotelLinenManagerV2
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            
+            
             app.UseCors();
             app.UseEndpoints(endpoints =>
             {
              endpoints.MapControllers();
             });
             app.Run(async (context) => {
-                await context.Response.WriteAsync("The requested page is unavailable!");
+                await context.Response.WriteAsync("Requested page is unavailable!");
             });
         }
     }
