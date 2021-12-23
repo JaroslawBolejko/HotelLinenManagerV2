@@ -29,6 +29,13 @@ namespace HotelLinenManagerV2.DataAccess.CQRS.Queries.Users
                  && x.CompanyId == this.CompanyId);
                       
             }
+            if (!string.IsNullOrEmpty(this.Username))
+            {
+                return await context.Users
+                                    .Include(x => x.Company)
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(x => x.Username == this.Username);
+            }
 
            if(this.Id!=null)
             {

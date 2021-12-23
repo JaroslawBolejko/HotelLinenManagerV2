@@ -46,7 +46,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             {
                 return new CreateWarehauseResponse()
                 {
-                    Error = new ErrorModel(ErrorType.Conflict + " Magazyn o podanym numerze już istnieje")
+                    Error = new ErrorModel(ErrorType.Conflict)
                 };
             }
 

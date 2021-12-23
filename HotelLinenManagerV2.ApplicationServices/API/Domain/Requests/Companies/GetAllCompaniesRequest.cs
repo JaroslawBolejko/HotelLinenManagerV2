@@ -7,5 +7,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Companies
     {
         public string Name { get; set; }
         public string TaxNumber { get; set; }
+        public int? CompanyId { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
             {
                 Name = request.Name,
                 TaxNumber = request.TaxNumber,
-                CompanyId = request.AuthenticationCompanyId
+                CompanyId = request.CompanyId
             };
             var companiesFromDb = await this.queryExecutor.Execute(query);
             if (companiesFromDb == null)

@@ -108,6 +108,10 @@
         LaundryDetails = (await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id))).ToList();
         LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         User = await LocalStorageService.GetItem<User>("userData");
+        if(LaundryService.IsFinished == true)
+        {
+            Toolbaritems.RemoveAt(5);
+        }
         SpinnerVisible = false;
     }
 
@@ -507,7 +511,6 @@
     }
 
     .close.e-toolbar-item .e-tbar-btn {
-      /*  background-color: #ffc107;*/
         background-color: orange;
     }
 

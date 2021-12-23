@@ -6,9 +6,12 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     public enum WarehauseType : byte
     {
 
-        Clean_Linen_Warehause = 0,
-        Dirty_Linen_Warehause = 1,
-        Other_room = 2
+        //Clean_Linen_Warehause = 0,
+        Magazyn_Czystej_Pocieli = 0,
+        //Dirty_Linen_Warehause = 1,
+        Magazyn_Brudnej_Pościeli = 1,
+        //Other_room = 2
+        Inne_pomieszczenie = 2
 
     }
 

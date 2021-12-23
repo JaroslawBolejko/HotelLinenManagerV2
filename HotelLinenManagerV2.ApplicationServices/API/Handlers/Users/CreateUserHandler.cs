@@ -36,7 +36,8 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Users
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                CompanyId = request.CompanyId
+                CompanyId = request.CompanyId,
+                Username = request.Username
             };
 
             var user = await this.queryExecutor.Execute(query);

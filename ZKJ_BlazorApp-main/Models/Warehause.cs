@@ -5,12 +5,16 @@ namespace BlazorApp.Models
 {
     public enum WarehauseType : byte
     {
+   
+        //Clean_Linen_Warehause = 0,
         [Display(Name = "Magazyn Czystej Bielizny")]
-        Clean_Linen_Warehause = 0,
+        Magazyn_Czystej_Pocieli = 0,
+        //Dirty_Linen_Warehause = 1,
         [Display(Name = "Magazyn Brudnej Bielizny")]
-        Dirty_Linen_Warehause = 1,
+        Magazyn_Brudnej_Pościeli = 1,
+        //Other_room = 2
         [Display(Name = "Inne Pomieszczenie")]
-        Other_room = 2
+        Inne_pomieszczenie = 2
     }
     public class Warehause
     {

@@ -115,7 +115,7 @@
         relatedCompanies = await RelatedCompanyService.GetAllRelatedCompanies(Warehause.CompanyId);
         laundryToMove.LaundryId = relatedCompanies.Select(x => x.LaundryId).FirstOrDefault();
 
-        if (Warehause != null && Warehause.WarehauseType.ToString() == "Dirty_Linen_Warehause")
+        if (Warehause != null && Warehause.WarehauseType == (WarehauseType)1)
         {
             Toolbaritems.Remove("Add");
             Toolbaritems.Add(new ItemModel()
@@ -227,14 +227,6 @@
 
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
-
-            //if (args.Action == "Add")
-            //{
-            //    args.Data.WarehauseId = int.Parse(Id);
-            //    await WarehauseDetailsService.CreateDetails(args.Data);
-            //    WarehauseDetails = (await WarehauseDetailsService.GetAllDetails()).ToList();
-            //    warehauseDetailGrid.Refresh();
-            //}
 
             if (args.Action == "Edit")
             {
