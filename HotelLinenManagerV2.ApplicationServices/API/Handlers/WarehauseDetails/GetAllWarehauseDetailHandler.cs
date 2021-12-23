@@ -37,13 +37,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.WarehauseDetails
             var details = await this.queryExecutor.Execute(query);
             var mappedDetails = this.mapper.Map<List<WarehauseDetail>>(details);
 
-            if (mappedDetails == null)
-            {
-                return new GetAllDetailsResponse()
-                {
-                    Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
-                };
-            }
+            //if (mappedDetails == null)
+            //{
+            //    return new GetAllDetailsResponse()
+            //    {
+            //        Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
+            //    };
+            //}
             return new GetAllDetailsResponse()
             {
                 Data = mappedDetails

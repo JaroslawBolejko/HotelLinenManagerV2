@@ -40,13 +40,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
             };
             var getWarehauses = await this.queryExecutor.Execute(query);
 
-            if(getWarehauses==null)
-            {
-                return new GetAllWarehausesResponse()
-                {
-                    Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
-                };
-            }
+            //if(getWarehauses==null)
+            //{
+            //    return new GetAllWarehausesResponse()
+            //    {
+            //        Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
+            //    };
+            //}
 
             var mappedWarehase = this.mapper.Map<List<Warehause>>(getWarehauses);
 

@@ -37,13 +37,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.HotelLinens
                 Id = request.Id
             };
             var hotelLinen = await this.queryExecutor.Execute(query);
-            if (hotelLinen == null)
-            {
-                return new GetHotelLinenByIdResponse
-                {
-                    Error = new ErrorModel(ErrorType.NotFound)
-                };
-            }
+            //if (hotelLinen == null)
+            //{
+            //    return new GetHotelLinenByIdResponse
+            //    {
+            //        Error = new ErrorModel(ErrorType.NotFound)
+            //    };
+            //}
 
             var mappedHotelLinen = this.mapper.Map<HotelLinen>(hotelLinen);
             var response = new GetHotelLinenByIdResponse()

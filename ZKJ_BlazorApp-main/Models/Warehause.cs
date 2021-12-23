@@ -8,7 +8,7 @@ namespace BlazorApp.Models
    
         //Clean_Linen_Warehause = 0,
         [Display(Name = "Magazyn Czystej Bielizny")]
-        Magazyn_Czystej_Pocieli = 0,
+        Magazyn_Czystej_Pościeli = 0,
         //Dirty_Linen_Warehause = 1,
         [Display(Name = "Magazyn Brudnej Bielizny")]
         Magazyn_Brudnej_Pościeli = 1,

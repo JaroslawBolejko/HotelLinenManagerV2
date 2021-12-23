@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations
 @inject IAuthenticationService AuthenticationService
+@inject IUserService UserService
 @inject NavigationManager NavigationManager
 
 <div class="col-md-6 offset-md-3 mt-5">
@@ -34,15 +35,44 @@
                     <div class="alert alert-danger mt-3 mb-0">@error</div>
                 }
                 <button type="button" class="btn btn-secondary" @onclick="() => Register()">Register</button>
+                @*<button type="button" class="btn btn-secondary" @onclick="() => ChangePassword()">Change Password</button>*@
             </EditForm>
         </div>
     </div>
 </div>
 
+@*@if (IsVisible == true)
+{
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <EditForm Model="@model">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group">
+                        <label for="username" class="control-label">Username: </label>
+                        <InputText class="form-control" Id="username" @bind-Value="@model.Username"></InputText>
+                    </div>
+                    <button type="button" class="btn btn-primary" @onclick="() => NavigateToChangePassword()">
+                        Submit
+                    </button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}*@
+
+
+
 @code {
     private Model model = new Model();
     private bool loading;
     private string error;
+    private bool IsVisible { get; set; }
+    private int userId;
+    private Models.User user = new Models.User();
 
     protected override void OnInitialized()
     {
@@ -74,6 +104,17 @@
     {
         NavigationManager.NavigateTo("/register");
     }
+    private void ChangePassword()
+    {
+        IsVisible = true;
+    }
+    private async Task NavigateToChangePassword()
+    {
+        user = (await UserService.GetAll(model.Username)).ToList().FirstOrDefault();
+        NavigationManager.NavigateTo($"changePassword/{user.Id}");
+
+    }
+
     private class Model
     {
         [Required]

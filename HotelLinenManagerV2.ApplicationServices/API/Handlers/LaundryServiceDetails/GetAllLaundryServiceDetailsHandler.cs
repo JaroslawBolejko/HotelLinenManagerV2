@@ -33,13 +33,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.LaundryServiceDet
             var details = await this.queryExecutor.Execute(query);
             var mappedDetails = this.mapper.Map<List<LaundryServiceDetail>>(details);
 
-            if (mappedDetails == null)
-            {
-                return new GetAllLaundryDetailsResponse()
-                {
-                    Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
-                };
-            }
+            //if (mappedDetails == null)
+            //{
+            //    return new GetAllLaundryDetailsResponse()
+            //    {
+            //        Error = new Domain.ErrorHandling.ErrorModel(ErrorType.NotFound)
+            //    };
+            //}
             return new GetAllLaundryDetailsResponse()
             {
                 Data = mappedDetails

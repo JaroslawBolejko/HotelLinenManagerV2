@@ -34,13 +34,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Invoices
                                         
             var invoice = await this.queryExecutor.Execute(query);
 
-            if (invoice == null)
-            {
-                return new GetAllInvoicesResponse
-                {
-                    Error = new ErrorModel(ErrorType.NotFound)
-                };
-            }
+            //if (invoice == null)
+            //{
+            //    return new GetAllInvoicesResponse
+            //    {
+            //        Error = new ErrorModel(ErrorType.NotFound)
+            //    };
+            //}
             var mappedInvoices = this.mapper.Map<List<Invoice>>(invoice);
             return new GetAllInvoicesResponse()
             {

@@ -7,7 +7,7 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     {
 
         //Clean_Linen_Warehause = 0,
-        Magazyn_Czystej_Pocieli = 0,
+        Magazyn_Czystej_Pościeli = 0,
         //Dirty_Linen_Warehause = 1,
         Magazyn_Brudnej_Pościeli = 1,
         //Other_room = 2

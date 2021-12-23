@@ -98,7 +98,7 @@
 
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
         new ItemModel() {CssClass="download", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Create Document", TooltipText = "Create Document", Id = "Document"},
-        new ItemModel() {CssClass="close", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Close the service", TooltipText = "Close", Id = "Close" },
+        new ItemModel() {CssClass="closeService", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Close the service", TooltipText = "Close", Id = "Close" },
         new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" }};
     string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
 
@@ -510,7 +510,7 @@
         box-sizing: border-box;
     }
 
-    .close.e-toolbar-item .e-tbar-btn {
+    .closeService.e-toolbar-item .e-tbar-btn {
         background-color: orange;
     }
 

@@ -16,11 +16,11 @@
 
 @if (Linens != null)
 {
-    <SfGrid @ref="hotelLinenGrid" DataSource="@Linens" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+    <SfGrid ID="Grid" @ref="hotelLinenGrid" DataSource="@Linens" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
         <GridEvents OnActionBegin="ActionBeginHandler" TValue="HotelLinen"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true" Dialog="DialogParams">
             <HeaderTemplate>
                 <span>@GetDialogHeader(context as HotelLinen)</span>
             </HeaderTemplate>
@@ -82,6 +82,8 @@
     public List<Warehause> Warehauses { get; set; }
     public int WarehauseId { get; set; }
     public int CompanyId { get; set; }
+    private DialogSettings DialogParams = new DialogSettings { Width = "300", Height = "700", EnableResize = true };
+
 
 
 
@@ -89,9 +91,8 @@
     {
         SpinnerVisible = true;
         Linens = (await HotelLinenService.GetAll()).ToList();
-        // Warehauses = (await WarehauseService.GetAll()).ToList();
         CompanyId = (await LocalStorageService.GetItem<User>("userData")).CompanyId;
-        WarehauseId = (await WarehauseService.GetAll()).Where(x => x.WarehauseType == 0).Select(x => x.Id).First();
+        WarehauseId = (await WarehauseService.GetAll()).Where(x => x.WarehauseType == 0).Select(x => x.Id).FirstOrDefault();
         SpinnerVisible = false;
 
     }
@@ -146,6 +147,9 @@
     }
 }
 <style>
+    div#Grid_dialogEdit_wrapper {
+        max-height: none !important;
+    }
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }

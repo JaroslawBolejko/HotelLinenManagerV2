@@ -1,6 +1,7 @@
 ﻿@page "/Users"
 @attribute [Authorize]
 @inject IUserService UserService
+@inject ILocalStorageService LocalStorageService
 @inject ICompanyService CompanyService
 
 
@@ -30,10 +31,10 @@
                 </div>
                 <div class="card-footer text-center">
                     <a href="/edituserme" class="btn btn-warning">Edit</a>
-                    @if (UserMe.Permission.ToString() == "AdminHotel")
+                    @*@if (UserMe.Permission.ToString() == "AdminHotel")
                     {
                         <a class="btn btn-danger" @onclick="() => Delete(UserMe.Id)">Delete</a>
-                    }
+                    }*@
                     <a href="/" class="btn btn-secondary">Back</a>
                 </div>
             </div>
@@ -49,7 +50,8 @@
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
-        UserMe = await UserService.GetMe();
+        //UserMe = await UserService.GetMe();
+        UserMe = await LocalStorageService.GetItem<User>("userData");
         SpinnerVisible = false;
     }
 

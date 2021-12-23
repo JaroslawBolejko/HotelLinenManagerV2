@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @inject IWarehauseService WarehauseService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject ILocalStorageService LocalService
 @using System;
 @using System.ComponentModel.DataAnnotations;
 @using System.Linq;
@@ -16,11 +17,11 @@
 
 @if (WarehauseList != null)
 {
-    <SfGrid @ref="warehauseGrid" DataSource="@WarehauseList" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
+    <SfGrid ID="Grid" @ref="warehauseGrid" DataSource="@WarehauseList" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="Toolbaritems">
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" OnActionBegin="ActionBeginHandler" TValue="Warehause"></GridEvents>
         <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown"></GridPageSettings>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
-        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
+        <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true" Dialog="DialogParams">
             <HeaderTemplate>
                 <span>@GetDialogHeader(context as Warehause)</span>
             </HeaderTemplate>
@@ -58,11 +59,14 @@
     public SfGrid<Warehause> warehauseGrid { get; set; }
     public int Id { get; set; }
     public string[] WarehauseTypesEnumValues = Enum.GetNames(typeof(Models.WarehauseType));
+    private User User { get; set; }
+    private DialogSettings DialogParams = new DialogSettings { Width = "300", Height = "400", EnableResize = true };
 
     protected override async Task OnInitializedAsync()
     {
         SpinnerVisible = true;
         WarehauseList = (await WarehauseService.GetAll()).ToList();
+        User = await LocalService.GetItem<User>("userData");
         SpinnerVisible = false;
 
     }
@@ -113,7 +117,7 @@
         {
             if (args.Action == "Add")
             {
-                args.Data.CompanyId = WarehauseList.Select(x => x.CompanyId).First();
+                args.Data.CompanyId = User.CompanyId;
                 await WarehauseService.CreateWarehause(args.Data);
                 WarehauseList = (await WarehauseService.GetAll()).ToList();
                 warehauseGrid.Refresh();
@@ -140,6 +144,9 @@
     
     .specyfic.e-toolbar-item .e-tbar-btn {
         background-color: orange;
+    }
+    div#Grid_dialogEdit_wrapper {
+        max-height: none !important;
     }
 </style>
  

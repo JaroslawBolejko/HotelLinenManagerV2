@@ -31,6 +31,13 @@ namespace BlazorApp.Services.Users
         {
             return await _httpService.Get<IEnumerable<User>>("/Users");
         }
+
+        public async Task<IEnumerable<User>> GetAll(string username)
+        {
+            return await _httpService.Get<IEnumerable<User>>($"/Users?Username={username}");
+
+        }
+
         public async Task<User> GetMe()
         {
             return await _httpService.Get<User>("/Users/me");

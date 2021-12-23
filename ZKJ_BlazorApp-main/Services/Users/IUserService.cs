@@ -7,6 +7,7 @@
     public interface IUserService
     {
         Task<IEnumerable<User>> GetAll();
+        Task<IEnumerable<User>> GetAll(string username);
         Task<User> GetMe();
         Task<User> GetUserById(int id);
         Task<int> CreateUser(User user);
