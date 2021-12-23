@@ -165,7 +165,7 @@
                         <div class="form-row align-items-center">
                             <div class="col-auto">
                                 <label for="inlineDrapeInput">Price for @TypesEnumValues[9]:</label>
-                                <input @bind-value="drape.PricePerKg" type="number" class="form-control mb-2" id="inlineDrapeInput"  disabled=@isDrapeAdded>
+                                <input @bind-value="drape.PricePerKg" type="number" class="form-control mb-2" id="inlineDrapeInput" disabled=@isDrapeAdded>
                             </div>
                             <div class="col-auto">
                                 <label for="inlineDrapeTaxInput">Tax:</label>
@@ -535,10 +535,12 @@
 
     .back.e-toolbar-item .e-tbar-btn {
         border: solid;
-        background-color: orange;
+        background-color: #6c757d;
+        color: white;
+        border-color: black;
     }
 
     .form-row .btn {
-       margin-top: 28px;
+        margin-top: 28px;
     }
 </style>

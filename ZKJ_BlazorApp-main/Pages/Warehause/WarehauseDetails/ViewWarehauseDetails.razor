@@ -94,7 +94,7 @@
     public int DetailId { get; set; }
     public string[] AvailableLinens { get; set; }
     private List<Object> Toolbaritems = new List<Object>() {"Edit", "Delete", "Update", "Cancel"
-    , new ItemModel() {CssClass="specyfic", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
+    , new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Back", TooltipText = "Back", Id = "Back" } };
     private bool IsVisible { get; set; }
     private RelatedCompany laundryToMove = new RelatedCompany();
     private IEnumerable<RelatedCompany> relatedCompanies;
@@ -268,6 +268,11 @@
 
     .specyfic.e-toolbar-item .e-tbar-btn {
         background-color: orange;
+    }
+    .back.e-toolbar-item .e-tbar-btn {
+        background-color: #6c757d;
+        color: white;
+        border-color: black;
     }
 
     .e-toolbar-item .e-tbar-btn {
