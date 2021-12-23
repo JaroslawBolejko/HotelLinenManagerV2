@@ -38,7 +38,7 @@
     </SfGrid>
 }
 
-<div class="add">
+<div class="dialog">
     <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="auto" IsModal="true">
         <DialogTemplates>
             <Header>Add Price List</Header>
@@ -231,7 +231,7 @@
     private List<Models.PriceList> PriceIndex { get; set; }
     private int CompanyId { get; set; }
     private SfGrid<Models.PriceList> priceListGrid { get; set; }
-    private List<Object> Toolbaritems = new List<Object>() {new ItemModel(){ Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Price List",
+    private List<Object> Toolbaritems = new List<Object>() {new ItemModel(){PrefixIcon="e-add", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Price List",
         TooltipText = "Add", Id = "Add"},"Edit", "Delete", "Update", "Cancel",
     new ItemModel() {CssClass="back", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right),
         Text = "Back", TooltipText = "Back", Id = "Back" } };
@@ -508,7 +508,7 @@
 
 }
 <style>
-    .add {
+    .dialog {
         min-height: 400px;
         height: 100%;
         position: relative;

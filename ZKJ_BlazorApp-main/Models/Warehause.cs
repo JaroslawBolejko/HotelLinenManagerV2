@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp.Models
 {
-    public enum WarehauseType
+    public enum WarehauseType : byte
     {
         [Display(Name = "Magazyn Czystej Bielizny")]
         Clean_Linen_Warehause = 0,

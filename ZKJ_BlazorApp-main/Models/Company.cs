@@ -21,6 +21,7 @@ namespace BlazorApp.Models
         public string ApartmentNumber { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string EMail { get; set; }
         public string TelefonNumber { get; set; }
         public string BankAccountNumber { get; set; }

@@ -7,7 +7,7 @@ namespace BlazorApp.Services.Warehauses
     interface IWarehauseService
     {
         Task<IEnumerable<Warehause>> GetAll();
-        Task<IEnumerable<Warehause>> GetWarehausesByType(int type);
+        Task<IEnumerable<Warehause>> GetWarehausesByType(byte type);
         Task<Warehause> GetWarehauseById(int id);
         Task<int> CreateWarehause(Warehause warehause);
         Task<int> Update(Warehause warehause);

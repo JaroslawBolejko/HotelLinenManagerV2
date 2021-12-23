@@ -25,7 +25,7 @@ namespace BlazorApp.Services.Warehauses
         {
             return await this.httpService.Get<IEnumerable<Warehause>>("/Warehauses");
         }
-        public async Task<IEnumerable<Warehause>> GetWarehausesByType(int type)
+        public async Task<IEnumerable<Warehause>> GetWarehausesByType(byte type)
         {
             return await this.httpService.Get<IEnumerable<Warehause>>($"/Warehauses?WarehauseType={type}");
         }

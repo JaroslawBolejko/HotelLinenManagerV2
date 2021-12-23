@@ -29,6 +29,7 @@ namespace BlazorApp.Models
         [Required]
         [MaxLength(50)]
         public string Color { get; set; }
+        [Range(0,10000)]
         public int Amount { get; set; }
         [Required]
         public Type TypeName { get; set; }

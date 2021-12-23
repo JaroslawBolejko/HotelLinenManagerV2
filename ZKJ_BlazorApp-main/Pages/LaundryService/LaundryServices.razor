@@ -59,6 +59,7 @@
         <GridColumns>
             <GridColumn IsPrimaryKey="true" Field=@nameof(LaundryService.Id) HeaderText="ID" Visible="false"></GridColumn>
             <GridColumn Field=Laundry.Name HeaderText="Laundry Name"></GridColumn>
+            <GridColumn Field=Company.Name HeaderText="Client Name"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.Number) HeaderText="Number"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.RecievedDate) Format="d" HeaderText="Recieved Date" Type="ColumnType.Date"></GridColumn>
             <GridColumn Field=@nameof(LaundryService.IssuedDate) Format="d" HeaderText="Issued Date" Type="ColumnType.Date">

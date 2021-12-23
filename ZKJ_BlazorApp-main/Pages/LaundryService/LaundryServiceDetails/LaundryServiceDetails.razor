@@ -5,6 +5,7 @@
 @inject IWarehauseService WarehauseService
 @inject ILaundryServiceService LaundryServiceService
 @inject IInvoiceService InvoiceService
+@inject ILocalStorageService LocalStorageService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 @inject Microsoft.JSInterop.IJSRuntime JS
 @using System.Linq
@@ -83,7 +84,7 @@
 
     [Parameter]
     public string Id { get; set; }
-    public bool SpinnerVisible { get; set; }
+    private bool SpinnerVisible { get; set; }
     private List<LaundryServiceDetail> LaundryDetails { get; set; }
     private WarehauseDetail cleanLaundry;
     private Warehause warehause = new Warehause();
@@ -91,9 +92,9 @@
     private int warehauseItemAmount;
     private int warehauseDetailID;
     private Invoice Invoice { get; set; }
-
-    public int DetailId { get; set; }
-    public bool IsVisible { get; set; }
+    private User User { get; set; }
+    private int DetailId { get; set; }
+    private bool IsVisible { get; set; }
 
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
         new ItemModel() {CssClass="download", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Create Document", TooltipText = "Create Document", Id = "Document"},
@@ -106,6 +107,7 @@
         SpinnerVisible = true;
         LaundryDetails = (await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id))).ToList();
         LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
+        User = await LocalStorageService.GetItem<User>("userData");
         SpinnerVisible = false;
     }
 
@@ -145,6 +147,7 @@
         }
         LaundryService.IsFinished = true;
         LaundryService.IssuedDate = DateTime.Now;
+        LaundryService.InvoiceId = null;
         await LaundryServiceService.UpdateLaundry(LaundryService);
         navigationManager.NavigateTo("/warehauses");
 
@@ -171,13 +174,18 @@
         DetailId = args.Data.Id;
     }
 
-    public void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Id == "Close")
         {
-
-            this.IsVisible = true;
-
+            if (User.Company.Type == (CompanyType)1)
+            {
+                this.IsVisible = true;
+            }
+            else
+            {
+                await CloseTheService();
+            }
         }
         if (args.Item.Id == "Back")
         {
@@ -499,14 +507,18 @@
     }
 
     .close.e-toolbar-item .e-tbar-btn {
-        background-color: #ffc107;
+      /*  background-color: #ffc107;*/
+        background-color: orange;
     }
+
     .back.e-toolbar-item .e-tbar-btn {
         background-color: #6c757d;
     }
+
     .download.e-toolbar-item .e-tbar-btn {
         background-color: #007bff;
     }
+
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }

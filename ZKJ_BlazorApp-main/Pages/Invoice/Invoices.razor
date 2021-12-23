@@ -45,8 +45,8 @@
         <DialogTemplates>
             <Header>Choose Company to issue an invoice</Header>
             <Content>
-                <SfListView @ref="@sfList" DataSource="@relatedCompanies" ShowCheckBox="true">
-                    <ListViewFieldSettings TValue="RelatedCompany" Id="Id" Text="Company.Name"></ListViewFieldSettings>
+                <SfListView @ref="@sfList" DataSource="@relatedCompanies" ShowCheckBox="true" >
+                    <ListViewFieldSettings  TValue="RelatedCompany" Id="Id" Text="Company.Name"></ListViewFieldSettings>
                 </SfListView>
             </Content>
         </DialogTemplates>
@@ -190,7 +190,7 @@
     }
 
 }
-}
+
 <style>
     .true {
         background-color: lawngreen;

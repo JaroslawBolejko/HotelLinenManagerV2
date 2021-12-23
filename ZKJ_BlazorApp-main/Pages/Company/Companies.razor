@@ -75,7 +75,7 @@
     </SfGrid>
 }
 
-<div class="add">
+<div class="dialog">
     <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="300px" IsModal="true">
         <DialogTemplates>
             <Header>Add Company</Header>
@@ -107,7 +107,7 @@
 
     private List<Object> CompanyToolbaritems = new List<Object>() { "Edit", "Update", "Cancel" };
     private List<Object> RelatedToolbaritems = new List<Object>() {new ItemModel()
-    { Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Company",
+    {PrefixIcon="e-add", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Left), Text = "Add Company",
         TooltipText = "Add", Id = "Add"}, "Delete" };
     public bool SpinnerVisible { get; set; }
     private List<RelatedCompany> RelatedCompanies { get; set; }
@@ -231,7 +231,7 @@
 
 }
 <style>
-    .add {
+    .dialog {
         min-height: 400px;
         height: 100%;
         position: relative;
