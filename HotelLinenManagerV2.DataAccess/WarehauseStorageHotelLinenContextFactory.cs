@@ -6,12 +6,13 @@ namespace HotelLinenManagerV2.DataAccess
     public class WarehauseStorageHotelLinenContextFactory : IDesignTimeDbContextFactory<WarehauseStorageHotelLinenContext>
     {
                   
-        string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=WarehauseStorageHL;Integrated Security=True";
+        string connectionStringLocal = "Data Source=.\\SQLEXPRESS;Initial Catalog=WarehauseStorageHL;Integrated Security=True";
+        string connectionStringAzure = "Server=tcp:hotellinenwarehause.database.windows.net,1433;Initial Catalog=HotelLinenWarehauseStorage;Persist Security Info=False;User ID=jarokm;Password=Kravmaga85;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
        
         public WarehauseStorageHotelLinenContext CreateDbContext(string[] args)
         {
             var optionBuilder = new DbContextOptionsBuilder<WarehauseStorageHotelLinenContext>();
-            optionBuilder.UseSqlServer(connectionString);
+            optionBuilder.UseSqlServer(connectionStringAzure);
             return new WarehauseStorageHotelLinenContext(optionBuilder.Options);
         }
 

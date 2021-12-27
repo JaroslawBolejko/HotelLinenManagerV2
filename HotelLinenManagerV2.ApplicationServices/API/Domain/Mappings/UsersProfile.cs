@@ -14,7 +14,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.FirstName, y => y.MapFrom(z => z.FirstName))
                 .ForMember(x => x.LastName, y => y.MapFrom(z => z.LastName))
-                .ForMember(x => x.Workplace, y => y.MapFrom(z => z.Workplace))
                 .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                 .ForMember(x => x.Permission, y => y.MapFrom(z => z.Permission))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.Username))
@@ -28,7 +27,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
             this.CreateMap<CreateUserRequest, DataAccess.Entities.User>()
                 .ForMember(x => x.FirstName, y => y.MapFrom(z => z.FirstName))
                 .ForMember(x => x.LastName, y => y.MapFrom(z => z.LastName))
-                .ForMember(x => x.Workplace, y => y.MapFrom(z => z.Workplace))
                 .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                 .ForMember(x => x.Permission, y => y.MapFrom(z => z.Permission))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.Username))
@@ -40,10 +38,9 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Mappings
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.FirstName, y => y.MapFrom(z => z.FirstName))
                 .ForMember(x => x.LastName, y => y.MapFrom(z => z.LastName))
-                .ForMember(x => x.Workplace, y => y.MapFrom(z => z.Workplace))
                 .ForMember(x => x.CompanyId, y => y.MapFrom(z => z.CompanyId))
                 .ForMember(x => x.Permission, y => y.MapFrom(z => z.Permission))
-                //.ForMember(x => x.Password, y => y.MapFrom(z => z.Password))
+                .ForMember(x => x.Password, y => y.MapFrom(z => z.Password))
                 .ForMember(x => x.Username, y => y.MapFrom(z => z.Username))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
 

@@ -9,11 +9,6 @@ namespace BlazorApp.Models
         UserLaundry = 2
 
     }
-    public enum PlaceOfWork
-    {
-        Hotel = 0,
-        Loundry = 1
-    }
 
     public class User
     {
@@ -30,11 +25,9 @@ namespace BlazorApp.Models
         public string AuthData { get; set; }
         public int CompanyId { get; set; }
         [Required]
-        public PlaceOfWork Workplace { get; set; }
-        [Required]
         public Role Permission { get; set; }
         [Required]
-        [EmailAddress(ErrorMessage ="Invalid email address")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string Email { get; set; }
         public string PhotoPath { get; set; }
         [Required]

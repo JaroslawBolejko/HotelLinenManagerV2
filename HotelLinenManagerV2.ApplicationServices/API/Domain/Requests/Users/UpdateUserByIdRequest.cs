@@ -9,7 +9,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Requests.Users
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public PlaceOfWork Workplace { get; set; }
         public int CompanyId { get; set; }
         public Role Permission { get; set; }
         public string Password { get; set; }

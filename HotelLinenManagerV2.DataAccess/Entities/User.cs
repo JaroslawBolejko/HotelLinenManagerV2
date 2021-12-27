@@ -6,17 +6,12 @@ namespace HotelLinenManagerV2.DataAccess.Entities
     {
         public enum Role
         {
-            AdminHotel=0,
-            UserHotel=1,
-            UserLaundry=2 
+            AdminHotel = 0,
+            UserHotel = 1,
+            UserLaundry = 2
 
         }
-        public enum PlaceOfWork
-        {
-            Hotel=0,
-            Loundry=1
-        }
-        
+
         public int CompanyId { get; set; }
         public Company Company { get; set; }
         [Required]
@@ -25,8 +20,6 @@ namespace HotelLinenManagerV2.DataAccess.Entities
         [Required]
         [MaxLength(100)]
         public string LastName { get; set; }
-        [Required]
-        public PlaceOfWork Workplace { get; set; }
         [Required]
         public Role Permission { get; set; }
         [Required]
