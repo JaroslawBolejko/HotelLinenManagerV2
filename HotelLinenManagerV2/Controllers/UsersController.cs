@@ -24,7 +24,6 @@ namespace HotelLinenManagerV2.Controllers
         {
             return await this.HandleRequest<GetAllUsersRequest, GetAllUsersResponse>(request);
         }
-            
 
         [HttpGet]
         [Route("{me}")]

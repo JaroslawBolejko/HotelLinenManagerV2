@@ -14,6 +14,7 @@ namespace BlazorApp.Services.Authentications
         private ILocalStorageService _localStorageService;
 
         public User User { get; private set; }
+        public User UserData { get; private set; }
 
         public AuthenticationService(
             IHttpService httpService,
@@ -39,8 +40,8 @@ namespace BlazorApp.Services.Authentications
 
             };
             await _localStorageService.SetItem("user", User);
-            User = await _httpService.Get<User>("/Users/me");
-            await _localStorageService.SetItem("userData", User);
+            UserData = await _httpService.Get<User>("/Users/me");
+            await _localStorageService.SetItem("userData", UserData);
 
         }
 

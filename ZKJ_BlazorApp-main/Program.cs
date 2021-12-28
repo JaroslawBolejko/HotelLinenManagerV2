@@ -31,6 +31,7 @@ namespace BlazorApp
 
             builder.RootComponents.Add<App>("app");
             builder.Services.AddSyncfusionBlazor();
+
             builder.Services
                 .AddScoped<IAuthenticationService, AuthenticationService>()
                 .AddScoped<IUserService, UserService>()
@@ -50,12 +51,11 @@ namespace BlazorApp
             // configure http client
             builder.Services.AddScoped(x =>
             {
-                var apiUrl = new Uri(builder.Configuration["apiUrl"]);
-                return new HttpClient() { BaseAddress = apiUrl };
+                var apiurl = new Uri(builder.Configuration["apiurl"]);
+                return new HttpClient() { BaseAddress = apiurl };
             });
 
             var host = builder.Build();
-
             var authenticationService = host.Services.GetRequiredService<IAuthenticationService>();
             await authenticationService.Initialize();
 

@@ -7,7 +7,6 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Domain.Validiators.UserVal
     {
         public CreateUserValidator()
         {
-            this.RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Pole {PropertyName} nie może być puste!");
             this.RuleFor(x => x.FirstName).NotEmpty().WithMessage("Pole {PropertyName} nie może być puste!")
                 .MinimumLength(2).MaximumLength(100);
             this.RuleFor(x=>x.LastName).NotEmpty().WithMessage("Pole {PropertyName} nie może być puste!")

@@ -30,7 +30,7 @@ namespace HotelLinenManagerV2
         {
             Configuration = configuration;
         }
-
+        readonly string MyAllowSpecificOrigins = "Politicy";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -47,6 +47,20 @@ namespace HotelLinenManagerV2
                         .AllowAnyMethod();
                     });
             });
+
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(MyAllowSpecificOrigins,
+            //        buldier =>
+            //        {
+            //            buldier.WithOrigins("https://hotellinenmanager.azurewebsites.net")
+            //            .AllowAnyHeader()
+            //            .AllowAnyMethod();
+            //        });
+
+
+            //});
+
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             services.AddMvcCore()
@@ -57,8 +71,6 @@ namespace HotelLinenManagerV2
             });
             services.AddTransient<INullOrEmptyChecker, NullOrEmptyChecker>();
             services.AddTransient<IPasswordHasher, PasswordHasher>();
-            //services.AddTransient<IStartsWithDigit, StartsWithDigit>();
-            //services.AddTransient<IZipCode, ZipCode>();
             services.AddTransient<IGUSDataConnector, GUSDataConnector>();
             services.AddTransient<IDocNumCreator, DocNumCreator>();
             services.AddTransient<ICommandExecutor, CommandExecutor>();
@@ -68,13 +80,13 @@ namespace HotelLinenManagerV2
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>
                 opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnectionAzure")));
-           
+
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "HotelLinenManagerV2", Version = "v2" });
-            }).AddSwaggerGenNewtonsoftSupport();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,14 +103,14 @@ namespace HotelLinenManagerV2
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            
+            //   app.UseCors(MyAllowSpecificOrigins);
             app.UseCors();
             app.UseEndpoints(endpoints =>
             {
-             endpoints.MapControllers();
+                endpoints.MapControllers();
             });
-            app.Run(async (context) => {
+            app.Run(async (context) =>
+            {
                 await context.Response.WriteAsync("Requested page is unavailable!");
             });
         }
