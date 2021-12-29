@@ -33,7 +33,6 @@ namespace BlazorApp.Services.Authentications
 
         public async Task Login(string username, string password)
         {
-            // User = await _httpService.Post<User>("/users/authenticate", new { username, password });
             User = new User()
             {
                 AuthData = $"{username}:{password}".EncodeBase64()

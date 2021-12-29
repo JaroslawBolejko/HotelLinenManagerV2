@@ -36,30 +36,30 @@ namespace HotelLinenManagerV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder
-                        .AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                    });
-            });
-
             //services.AddCors(options =>
             //{
-            //    options.AddPolicy(MyAllowSpecificOrigins,
-            //        buldier =>
+            //    options.AddDefaultPolicy(
+            //        builder =>
             //        {
-            //            buldier.WithOrigins("https://hotellinenmanager.azurewebsites.net")
+            //            builder
+            //            .AllowAnyOrigin()
             //            .AllowAnyHeader()
             //            .AllowAnyMethod();
             //        });
-
-
             //});
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                    buldier =>
+                    {
+                        buldier.WithOrigins("https://hotellinenmanagement.azurewebsites.net")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+
+
+            });
 
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
@@ -103,8 +103,8 @@ namespace HotelLinenManagerV2
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            //   app.UseCors(MyAllowSpecificOrigins);
-            app.UseCors();
+            app.UseCors(MyAllowSpecificOrigins);
+           // app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
