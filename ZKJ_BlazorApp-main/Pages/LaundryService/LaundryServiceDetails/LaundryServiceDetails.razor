@@ -481,6 +481,7 @@
         //Adds page number field to the document
         paragraphFoot.AppendText("\tPage ");
         paragraphFoot.AppendField("Page", FieldType.FieldPage);
+
         //Saves the Word document to MemoryStream
         MemoryStream stream = new MemoryStream();
         document.Save(stream, FormatType.Docx);

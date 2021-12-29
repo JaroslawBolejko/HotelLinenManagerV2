@@ -49,7 +49,9 @@ namespace BlazorApp.Services.Authentications
         public async Task Logout()
         {
             User = null;
+            UserData = null;
             await _localStorageService.RemoveItem("user");
+            await _localStorageService.RemoveItem("userData");
             _navigationManager.NavigateTo("login");
         }
     }

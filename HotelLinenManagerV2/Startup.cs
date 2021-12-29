@@ -42,7 +42,9 @@ namespace HotelLinenManagerV2
                 options.AddPolicy(MyAllowSpecificOrigins,
                     buldier =>
                     {
-                        buldier.WithOrigins("https://hotellinenmanagement.azurewebsites.net")
+                         buldier
+                        //.WithOrigins("https://hotellinenmanagement.azurewebsites.net")
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
@@ -68,6 +70,7 @@ namespace HotelLinenManagerV2
             services.AddMediatR(typeof(ResponseBase<>));
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>
+               // opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
                 opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnectionAzure")));
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
