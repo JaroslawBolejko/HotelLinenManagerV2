@@ -1,10 +1,29 @@
 ﻿@page "/"
 @inject ILocalStorageService LocalStorage
-@inject IUserService UserService 
+@inject IUserService UserService
 @attribute [Authorize]
 
 <div class="card mt-4">
     <h4 class="card-header">Hi! You're logged!</h4>
+    <br />
+    <h5>This is a test version! It is not finished, and it has few bugs...</h5>
+    <br />
+    <h6> If you are a new hotel user please fallow this steps:</h6>
+    <ol>
+        <li>Create new warehauses. It has to be  "Magazyn_Czystej_Pościeli" and "Magazyn_Brudnej_Pościeli" </li>
+        <li>If you have clean linen warehause, then you can create new hotel linen items. (By default they will be stored in clean linen warehause)</li>
+        <li>In companies please add your laundry(related company). You must input real, valid, polish tax number(NIP). It is necessary to create laundry-service.</li>
+        <li>Add your laundry price list. It is necessary to calculate laundry service value</li>
+        <li>Laundry service is created by moving hotel linen items from dirty linen warehause to the laundry. There is a button for it.</li>
+    </ol>
+    <h6> If you are a new laundry user please fallow this steps:</h6>
+    <ol>
+        <li>Add your clients to realted companies.You must input real,valid, polish tax number(NIP)</li>
+        <li>Create a price list for your client</li>
+        <li>If you have clients and their laundry services you can create invoices for them.</li>
+    </ol>
+    <h6> Only hotel user can close the laundry service. Only Laundry user can create an invoice</h6>
+
 </div>
 
 

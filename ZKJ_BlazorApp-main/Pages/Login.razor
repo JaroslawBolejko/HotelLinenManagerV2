@@ -74,14 +74,19 @@
     private int userId;
     private Models.User user = new Models.User();
 
-    protected override void OnInitialized()
-    {
-        // redirect to home if already logged in
-        if (AuthenticationService.User != null)
-        {
-            NavigationManager.NavigateTo("");
-        }
-    }
+
+    //Przy incjalizacji niech kasuje dane w local sTorage
+    // znajdzź miejsce gdzie rzeczywiście się ktoś znajduje po wpisaniu domeny tam jes tprzyczyna  
+    //AppRouteView tu jest przyczyna - TRZEBA WYZEROWAĆ USERA albo nie wiem zeby tylko przekierowywała na login nie na na ap rout view returnUrL
+
+    //protected override void OnInitialized()
+    //{
+    //    // redirect to home if already logged in
+    //    if (AuthenticationService.User != null)
+    //    {
+    //        NavigationManager.NavigateTo("");
+    //    }
+    //}
 
     private async void HandleValidSubmit()
     {

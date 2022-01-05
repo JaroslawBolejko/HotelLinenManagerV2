@@ -31,14 +31,14 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.PriceLists
 
         public async Task<CreatePriceListResponse> Handle(CreatePriceListRequest request, CancellationToken cancellationToken)
         {
-            if (request.AuthenticationRole == "UserHotel" || request.AuthenticationRole == "UserAdmin")
-            {
-                return new CreatePriceListResponse
-                {
-                    Error = new ErrorModel(ErrorType.Forbidden)
-                };
+            //if (request.AuthenticationRole == "UserHotel" || request.AuthenticationRole == "UserAdmin")
+            //{
+            //    return new CreatePriceListResponse
+            //    {
+            //        Error = new ErrorModel(ErrorType.Forbidden)
+            //    };
 
-            }
+            //}
 
             var query = new GetPriceQuery()
             {

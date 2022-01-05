@@ -5,7 +5,6 @@
 
 
 <h3>Register</h3>
-
 @if (SpinnerVisible == true)
 {
     <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap4" Size="100" Label="Data loading"></SfSpinner>
@@ -21,6 +20,7 @@
                 <div class="form-group">
                     <label for="taxNumber" class="control-label">Your Company Tax Number: </label>
                     <InputText class="form-control" Id="taxNumber" disabled=@IsTaxAdded @bind-Value="@company.TaxNumber"></InputText>
+                    <p>*It has to be real, valid, polish tax number(NIP).</p>
                 </div>
                 <button type="button" class="btn btn-primary" @onclick="() => CheckIfExists()">
                     Submit

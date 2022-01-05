@@ -34,15 +34,25 @@ namespace BlazorApp.Services.Authentications
         public async Task Login(string username, string password)
         {
             ///Do poprawy dzia³a ale najpierw powinienem pobraæ dane zeby sprawdziæ czy jest taki goœc i dopiero go zapisac w lokal
-            
+
             User = new User()
             {
                 AuthData = $"{username}:{password}".EncodeBase64()
 
             };
             await _localStorageService.SetItem("user", User);
+
             UserData = await _httpService.Get<User>("/Users/me");
-            await _localStorageService.SetItem("userData", UserData);
+            if (UserData != null)
+            {
+                await _localStorageService.SetItem("userData", UserData);
+            }
+            else
+            {
+                await _localStorageService.RemoveItem("user");
+
+            }
+
 
         }
 
