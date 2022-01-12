@@ -15,7 +15,7 @@
 
 @if (CompanyList != null)
 {
-    <SfGrid @ref="companyGrid" DataSource="@CompanyList" Toolbar="CompanyToolbaritems">
+    <SfGrid @ref="companyGrid" DataSource="@CompanyList" AllowTextWrap="true" Toolbar="CompanyToolbaritems">
         <GridEvents OnActionBegin="ActionBeginHandlerCompany" TValue="Company"></GridEvents>
         <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
         <GridEditSettings Mode="EditMode.Dialog" AllowAdding="true" AllowEditing="true" AllowDeleting="true">
@@ -48,11 +48,12 @@
 {
     if (User.Company.Type == (CompanyType)0)
     {
-        <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
+        <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" AllowTextWrap="true" Toolbar="RelatedToolbaritems">
             <GridEvents OnToolbarClick="ToolbarClickHandler" OnActionBegin="OnActionRelated" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
             <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
             <GridEditSettings Mode="EditMode.Normal" AllowAdding="false" AllowEditing="false" AllowDeleting="true">
             </GridEditSettings>
+            <GridTextWrapSettings WrapMode="WrapMode.Content"></GridTextWrapSettings>
             <GridColumns>
                 <GridColumn HeaderText="Related Companies" TextAlign="TextAlign.Center">
                     <GridColumns>
@@ -78,11 +79,12 @@
     }
     else
     {
-        <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" Toolbar="RelatedToolbaritems">
+        <SfGrid @ref="relatedGrid" DataSource="@RelatedCompanies" AllowTextWrap="true" Toolbar="RelatedToolbaritems">
             <GridEvents OnToolbarClick="ToolbarClickHandler" OnActionBegin="OnActionRelated" CommandClicked="OnCommandClicked" TValue="RelatedCompany"></GridEvents>
             <GridFilterSettings Mode="Syncfusion.Blazor.Grids.FilterBarMode.Immediate" Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
             <GridEditSettings Mode="EditMode.Normal" AllowAdding="false" AllowEditing="false" AllowDeleting="true">
             </GridEditSettings>
+            <GridTextWrapSettings WrapMode="WrapMode.Content"></GridTextWrapSettings>
             <GridColumns>
                 <GridColumn HeaderText="Related Companies" TextAlign="TextAlign.Center">
                     <GridColumns>
@@ -110,21 +112,32 @@
 }
 
 <div class="dialog">
-    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="300px" IsModal="true">
+    <SfDialog @bind-Visible="@IsVisible" ShowCloseIcon="true" Width="400px" IsModal="true">
         <DialogTemplates>
             <Header>Add Company</Header>
             <Content>
                 <EditForm Model="@newCompany" OnValidSubmit="HandleValidSubmit">
                     <div class="dialogForm">
                         <form>
-                            <label for="taxNumber">TaxNumber:</label>
+                            <label for="taxNumber">Tax Number:</label>
                             <input @bind-value="newCompany.TaxNumber" type="text" id="taxNumber" name="taxNumber" placeholder="Company Tax number..">
+
+                            <label for="companyType" class="control-label">Company type:</label>
+                            <InputSelect id="companyType" @bind-Value="@newCompany.Type" class="form-control">
+                                @foreach (var type in Enum.GetValues(typeof(CompanyType)))
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </InputSelect>
 
                             <label for="email">E-mail:</label>
                             <input @bind-value="newCompany.EMail" type="text" id="email" name="email" placeholder="Company e-mail..">
 
                             <label for="telNumber">Telefon Number:</label>
                             <input @bind-value="newCompany.TelefonNumber" type="text" id="telNumber" name="telefonNumber" placeholder="Company telefon number..">
+
+                            <label for="account">Bank Account Number:</label>
+                            <input @bind-value="newCompany.BankAccountNumber" type="text" id="account" name="bankAccount" placeholder="Banc account number...">
                         </form>
                     </div>
                 </EditForm>
@@ -167,7 +180,8 @@
         User = await LocalStorageService.GetItem<User>("userData");
         CompanyId = User.CompanyId;
         CompanyList = (await CompService.GetAll(CompanyId)).ToList();
-        RelatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies(CompanyId)).ToList();
+        //  RelatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies(CompanyId)).ToList();
+        RelatedCompanies = (await RelatedCompanyService.GetAllRelatedCompanies()).ToList();
 
         SpinnerVisible = false;
     }
@@ -230,7 +244,6 @@
     {
         this.IsVisible = false;
         SpinnerVisible = true;
-        newCompany.Type = (CompanyType)2;
         newCompany.Name = "";
         newCompany.Street = "";
         newCompany.Number = "";
@@ -242,9 +255,20 @@
         if (laundry.Count == 0)
         {
             relatedLaundryId = await CompService.Create(newCompany);
-            newRelation.CompanyId = CompanyId;
-            newRelation.LaundryId = relatedLaundryId;
-            await RelatedCompanyService.CreateRelatedCompany(newRelation);
+
+            if (User.Company.Type == (CompanyType)0)
+            {
+                newRelation.CompanyId = CompanyId;
+                newRelation.LaundryId = relatedLaundryId;
+                await RelatedCompanyService.CreateRelatedCompany(newRelation);
+            }
+            else
+            {
+                newRelation.CompanyId = relatedLaundryId;
+                newRelation.LaundryId = CompanyId;
+                await RelatedCompanyService.CreateRelatedCompany(newRelation);
+            }
+
         }
         else
         {
