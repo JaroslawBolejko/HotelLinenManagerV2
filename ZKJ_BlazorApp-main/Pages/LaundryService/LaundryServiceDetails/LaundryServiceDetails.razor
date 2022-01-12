@@ -77,6 +77,21 @@
             </DialogButtons>
         </SfDialog>
     </div>
+
+    <div class="dialog">
+        <SfDialog @bind-Visible="@IsLaundry" ShowCloseIcon="true" Width="auto" IsModal="true">
+            <DialogTemplates>
+                <Header>Alert!</Header>
+                <Content>
+                    Only hotel user can close the service.
+                </Content>
+            </DialogTemplates>
+            <DialogButtons>
+                <DialogButton CssClass="dialogButton" Content="Ok" OnClick="@LaundryAlert" />
+            </DialogButtons>
+        </SfDialog>
+    </div>
+
 }
 
 
@@ -95,6 +110,8 @@
     private User User { get; set; }
     private int DetailId { get; set; }
     private bool IsVisible { get; set; }
+    private bool IsLaundry { get; set; }
+
 
     private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "Update", "Cancel",
         new ItemModel() {CssClass="download", Align = (Syncfusion.Blazor.Navigations.ItemAlign.Right), Text = "Create Document", TooltipText = "Create Document", Id = "Document"},
@@ -108,7 +125,7 @@
         LaundryDetails = (await LaundryServiceDetailsService.GetLaundryServiceDetails(int.Parse(Id))).ToList();
         LaundryService = await LaundryServiceService.GetLaundryById(int.Parse(Id));
         User = await LocalStorageService.GetItem<User>("userData");
-        if(LaundryService.IsFinished == true)
+        if (LaundryService.IsFinished == true)
         {
             Toolbaritems.RemoveAt(5);
         }
@@ -118,42 +135,51 @@
     protected async Task CloseTheService()
     {
         //Jest na sztywno wpisany czysty 1 ale, trzeba to zmienić dając wybór w okienie dialogowym gdzie co ma iść.
-        warehause = (await WarehauseService.GetWarehausesByType(0)).First();
-        foreach (var item in LaundryDetails)
+        if (User.Company.Type == (CompanyType)0)
         {
-            cleanLaundry = new WarehauseDetail
+            warehause = (await WarehauseService.GetWarehausesByType(0)).First();
+            foreach (var item in LaundryDetails)
             {
-                HotelLinenId = item.HotelLinenId,
-                WarehauseId = warehause.Id,
-                Amount = item.Amount
-            };
-            if (warehause.WarehauseDetails.Any(x => x.HotelLinenId == cleanLaundry.HotelLinenId))
-            {
+                cleanLaundry = new WarehauseDetail
+                {
+                    HotelLinenId = item.HotelLinenId,
+                    WarehauseId = warehause.Id,
+                    Amount = item.Amount
+                };
+                if (warehause.WarehauseDetails.Any(x => x.HotelLinenId == cleanLaundry.HotelLinenId))
+                {
 
-                warehauseItemAmount = warehause.WarehauseDetails
-                .Where(x => x.HotelLinenId == cleanLaundry.HotelLinenId)
-                .Select(x => x.Amount).First();
+                    warehauseItemAmount = warehause.WarehauseDetails
+                    .Where(x => x.HotelLinenId == cleanLaundry.HotelLinenId)
+                    .Select(x => x.Amount).First();
 
-                warehauseDetailID = warehause.WarehauseDetails
-                .Where(x => x.HotelLinenId == cleanLaundry.HotelLinenId)
-                .Select(x => x.Id).First();
+                    warehauseDetailID = warehause.WarehauseDetails
+                    .Where(x => x.HotelLinenId == cleanLaundry.HotelLinenId)
+                    .Select(x => x.Id).First();
 
-                cleanLaundry.Id = warehauseDetailID;
-                cleanLaundry.Amount = warehauseItemAmount + cleanLaundry.Amount;
+                    cleanLaundry.Id = warehauseDetailID;
+                    cleanLaundry.Amount = warehauseItemAmount + cleanLaundry.Amount;
 
-                await WarehauseDetailsService.UpdateDetails(cleanLaundry);
+                    await WarehauseDetailsService.UpdateDetails(cleanLaundry);
+                }
+                else
+                {
+                    await WarehauseDetailsService.CreateDetails(cleanLaundry);
+
+                }
             }
-            else
-            {
-                await WarehauseDetailsService.CreateDetails(cleanLaundry);
+            LaundryService.IsFinished = true;
+            LaundryService.IssuedDate = DateTime.Now;
+            LaundryService.InvoiceId = null;
+            await LaundryServiceService.UpdateLaundry(LaundryService);
+            navigationManager.NavigateTo("/warehauses");
 
-            }
         }
-        LaundryService.IsFinished = true;
-        LaundryService.IssuedDate = DateTime.Now;
-        LaundryService.InvoiceId = null;
-        await LaundryServiceService.UpdateLaundry(LaundryService);
-        navigationManager.NavigateTo("/warehauses");
+        else
+        {
+            IsLaundry = true;
+
+        }
 
     }
     public async void ActionBeginHandler(ActionEventArgs<LaundryServiceDetail> args)
@@ -184,7 +210,10 @@
         {
             if (User.Company.Type == (CompanyType)1)
             {
-                this.IsVisible = true;
+                //this.IsVisible = true;
+                IsLaundry = true;
+
+
             }
             else
             {
@@ -206,6 +235,13 @@
         await CloseTheService();
         this.IsVisible = false;
     }
+
+    private void LaundryAlert()
+    {
+        IsLaundry = false;
+    }
+
+
     private void HandleValidSubmit()
     {
         Console.WriteLine("OnValidSubmit");
@@ -510,6 +546,7 @@
         border-radius: 4px;
         box-sizing: border-box;
     }
+
     .e-toolbar-item .e-tbar-btn {
         border: solid;
     }
@@ -531,6 +568,4 @@
         color: white;
         border-color: black;
     }
-
-   
 </style>

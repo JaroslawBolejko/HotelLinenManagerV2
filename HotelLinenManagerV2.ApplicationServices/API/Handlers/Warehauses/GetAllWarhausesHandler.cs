@@ -25,13 +25,13 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Warehauses
 
         public async Task<GetAllWarehausesResponse> Handle(GetAllWarehausesRequest request, CancellationToken cancellationToken)
         {
-            if(request.AuthenticationRole == "UserLaundry")
-            {
-                return new GetAllWarehausesResponse()
-                {
-                    Error = new Domain.ErrorHandling.ErrorModel(ErrorType.Forbidden)
-                };
-            }
+            //if(request.AuthenticationRole == "UserLaundry")
+            //{
+            //    return new GetAllWarehausesResponse()
+            //    {
+            //        Error = new Domain.ErrorHandling.ErrorModel(ErrorType.Forbidden)
+            //    };
+            //}
             var query = new GetWarehausesQuery() 
             {
                 WarehauseNumber=request.WarehauseNumber,
