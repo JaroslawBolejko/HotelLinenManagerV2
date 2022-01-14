@@ -1,6 +1,6 @@
-# HotelLinenManagerV2
+# HotelLinenManagerV2[^note] 
 
-Project under development. Beta version available at [Hotel Linen Manger] (https://hotellinenmanagerbeta.azurewebsites.net/S).
+Project under development. Beta version available at [Hotel Linen Manger](https://hotellinenmanagerbeta.azurewebsites.net) .
 It is designed for larger screens.
 Client-side is made in Blazor WASM with Syncfusion components.
 Server-side is a RESTful API with Asp.net Core Web API.
