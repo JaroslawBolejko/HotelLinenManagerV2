@@ -1,5 +1,6 @@
 # HotelLinenManagerV2
-Project under development. Beta version available at https://hotellinenmanagerbeta.azurewebsites.net/ .
+
+Project under development. Beta version available at [Hotel Linen Manger] (https://hotellinenmanagerbeta.azurewebsites.net/S).
 It is designed for larger screens.
 Client-side is made in Blazor WASM with Syncfusion components.
 Server-side is a RESTful API with Asp.net Core Web API.
@@ -27,6 +28,9 @@ Only hotel user can close the laundry service. Only Laundry user can create an i
 
 If you don't want to register new companies, you can use:
 -Laundry User : login : jan@kowalski.pl , password: kowalski;
--Hotel User : login : piotr@nowak, password: nowak;
+-Hotel User : login : piotr@nowak.pl, password: nowak;
+
+
+[^note]: Author: Jarosław Bolejko, contact: jaroslaw@bolejko.pl
 
 
