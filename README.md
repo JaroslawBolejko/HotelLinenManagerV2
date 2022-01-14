@@ -31,6 +31,6 @@ If you don't want to register new companies, you can use:
 -Hotel User : login : piotr@nowak.pl, password: nowak;
 
 
-[^note]: Author: Jarosław Bolejko, contact: jaroslaw@bolejko.pl
+[^note]: Author: Jarosław Bolejko, contact: jaroslawbolejko85@gmail.com
 
 
