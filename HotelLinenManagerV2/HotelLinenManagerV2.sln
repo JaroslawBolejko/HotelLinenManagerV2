@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelLinenManagerV2", "HotelLinenManagerV2.csproj", "{389A9326-F4CE-49D9-A612-8595A8D05579}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelLinenManagerV2.ApplicationServices", "..\HotelLinenManagerV2.ApplicationServices\HotelLinenManagerV2.ApplicationServices.csproj", "{6FCA1689-6676-493F-BB65-AD327AB3DB6D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "..\ZKJ_BlazorApp-main\BlazorApp.csproj", "{53088D33-5D3C-4716-A552-79E8479E79E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelLinenManagerV2.Tests", "..\HotelLinenManagerV2.Tests\HotelLinenManagerV2.Tests.csproj", "{7EE745DC-5739-42C6-9562-72E1781E4EC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{53088D33-5D3C-4716-A552-79E8479E79E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53088D33-5D3C-4716-A552-79E8479E79E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53088D33-5D3C-4716-A552-79E8479E79E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE745DC-5739-42C6-9562-72E1781E4EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE745DC-5739-42C6-9562-72E1781E4EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE745DC-5739-42C6-9562-72E1781E4EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE745DC-5739-42C6-9562-72E1781E4EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
