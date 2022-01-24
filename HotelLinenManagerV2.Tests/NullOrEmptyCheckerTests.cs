@@ -2,10 +2,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HotelLinenManagerV2.Tests
 {
@@ -32,18 +28,28 @@ namespace HotelLinenManagerV2.Tests
         public void MinOneParamIsTrue()
         {
             Assert.Inconclusive();
+
+            //Arrange
+
+            //Act
+
+            //Assert
+
         }
         [TestMethod]
         public void EveryParamIsFalse()
         {
             Assert.Inconclusive();
         }
+
+        //Obsłużenie testu za pomocą argumentu
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DontHaveIdeaYet()
         {
             Assert.Inconclusive();
         }
+        //Obsłużenie testu za pomocą try catch
         [TestMethod]
         public void DontHaveIdeaYet_UsingTryCatch()
         {
