@@ -3,7 +3,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HotelLinenManagerV2.Tests
+namespace HotelLinenManagerV2.Tests.NullOrEmptyCheckerTests
 {
 
     //parametr 1 jest null lub empty =>(zwraca) true

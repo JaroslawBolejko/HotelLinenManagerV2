@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HotelLinenManagerV2.Tests
+namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
 {
     [TestClass]
-    public class DocNumCreatorTestscs
+    public class DocNumCreatorTests
     {
         //Czy to co przychodzi jest w dopowiednim formacie?
         // czy zaczyna sie od zera => tzn czy ma postać "0/0/0

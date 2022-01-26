@@ -70,8 +70,8 @@ namespace HotelLinenManagerV2
             services.AddMediatR(typeof(ResponseBase<>));
             services.AddDbContext<WarehauseStorageHotelLinenContext>(
                 opt =>
-               // opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
-                opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnectionAzure")));
+                opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnection")));
+                //opt.UseSqlServer(this.Configuration.GetConnectionString("HotelLinenWarhauseConnectionAzure")));
 
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

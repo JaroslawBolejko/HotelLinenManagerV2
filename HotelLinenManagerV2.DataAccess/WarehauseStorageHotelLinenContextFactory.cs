@@ -12,7 +12,7 @@ namespace HotelLinenManagerV2.DataAccess
         public WarehauseStorageHotelLinenContext CreateDbContext(string[] args)
         {
             var optionBuilder = new DbContextOptionsBuilder<WarehauseStorageHotelLinenContext>();
-            optionBuilder.UseSqlServer(connectionStringAzure);
+            optionBuilder.UseSqlServer(connectionStringLocal);
             return new WarehauseStorageHotelLinenContext(optionBuilder.Options);
         }
 

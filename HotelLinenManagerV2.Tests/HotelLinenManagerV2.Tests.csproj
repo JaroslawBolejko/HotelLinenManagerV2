@@ -11,10 +11,26 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HotelLinenManagerV2\HotelLinenManagerV2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="PasswordHasherTests\PaswordTest.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PaswordTest.runsettings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PasswordHasherTests\PaswordTest.runsettings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>PaswordTest.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>
