@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Examples\FileTest.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FileTest.runsettings</DependentUpon>
+    </Compile>
     <Compile Update="PasswordHasherTests\PaswordTest.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -27,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\FileTest.runsettings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>FileTest.Designer.cs</LastGenOutput>
+    </None>
     <None Update="PasswordHasherTests\PaswordTest.runsettings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>PaswordTest.Designer.cs</LastGenOutput>

@@ -70,6 +70,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
         [TestMethod]
         [Owner("Jarek")]
         [Description("Check if salt is in proper format")]
+        [Priority(2)]
 
 
         public void CheckHashBadSaltFormat()
@@ -94,8 +95,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
         [TestMethod]
         [Owner("Jarek")]
         [Description("Chcek if password hash and hash to check return the same result with the same password")]
-
-
+        [Priority(1)]
         public void HashingAndCheckHashingIsTrue()
         {
             //Arrange
@@ -114,8 +114,6 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
         [Priority(1)]
         [TestCategory("WithException")]
         [Description("Chcek if methid Hash and HashToCheck return the same result with different passwords")]
-
-
         public void HashingAndCheckHashingIsFlase()
         {
             //Arrange
