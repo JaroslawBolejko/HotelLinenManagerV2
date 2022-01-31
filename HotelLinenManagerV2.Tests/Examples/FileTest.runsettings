@@ -4,5 +4,7 @@
     <Parameter name="GoodFilePath"
                value="[AppPath]\TestFile.txt">
     </Parameter>
+    <Parameter type="int" name="a" value="8"/>
+    <Parameter name="b" value="10"/>
   </TestRunParameters>
 </RunSettings>

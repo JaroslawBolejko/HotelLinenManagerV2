@@ -2,7 +2,7 @@
 {
     public interface IDocNumCreator
     {
-
         public string DocumentNumberCreator(string lastDocument);
+
     }
 }

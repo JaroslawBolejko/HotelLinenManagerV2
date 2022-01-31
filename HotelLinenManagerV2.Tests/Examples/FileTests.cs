@@ -1,5 +1,6 @@
 ﻿using HotelLinenManagerV2.Tests.PasswordHasherTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 
 namespace HotelLinenManagerV2.Tests.Examples
@@ -50,7 +51,34 @@ namespace HotelLinenManagerV2.Tests.Examples
             //Assert
             Assert.IsFalse(fromCall);
         }
+        [TestMethod]
+        public void IsSwapWorksTest()
+        {
+            //Arrange
+            int  a = 8;
+            int  b = 10;
+            int result;
+            int result2;
+            int[] resArr;
+            int[] init = new int[] {a,b};
+
+            //Act
+
+            TestContext.WriteLine("Checking variable: " + a);
+            result = Swapa(a,b);
+            TestContext.WriteLine("Checking variable: " + b);
+            result2 = Swapb(a,b);
+            TestContext.WriteLine($"Checking array that consist of: " +a+" "+b);
+            resArr = SwapArr(a, b); 
+            
+
+            //Assert
+            Assert.AreNotEqual(init, resArr);
+            Assert.AreEqual(b, result);
+            Assert.AreEqual(a, result2);
 
 
+        }
+     
     }
 }

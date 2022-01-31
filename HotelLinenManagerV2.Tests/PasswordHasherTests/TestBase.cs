@@ -8,6 +8,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
     {
         public TestContext TestContext { get; set; }
         protected string _GoodFilePath;
+       
 
         protected void SetGoodFileName()
         {
@@ -25,6 +26,27 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
                 File.Delete(_GoodFilePath);
             }
         }
-
+        public int Swapa(int a, int b)
+        {
+            int c = a;
+            a = b;
+            b = c;
+            return a;
+        }
+        public int Swapb(int a, int b)
+        {
+            int c = a;
+            a = b;
+            b = c;
+            return b;
+        }
+        public int[] SwapArr(int a, int b)
+        {
+            int c = a;
+            a = b;
+            b = c;
+            int[] result = new int[2] { a, b };
+            return result;
+        }
     }
 }

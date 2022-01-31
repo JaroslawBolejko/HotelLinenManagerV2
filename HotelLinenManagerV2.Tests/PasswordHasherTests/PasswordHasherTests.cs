@@ -35,7 +35,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
 
         [TestMethod]
         [Owner("Jarek")]
-        [Description("Check if hashedPassword is not null")]
+        [Description("Check if hashedPassword is trowing an ArgumentNullException")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void HashingNotNull_UsingAtribute()
         {
@@ -64,7 +64,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
             {
                 return;
             }
-            Console.WriteLine("Call to Hash() did not throw ArgumentNullException");
+            Assert.Fail("Call to Hash() did not throw ArgumentNullException");
         }
 
         [TestMethod]
