@@ -114,12 +114,9 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             //Arrange
             DocNumCreator docNumberCreator = new();
             string[] tabOfNumbersFromDocument;
-            int docNumber;
             int month;
-            int year;
-            string nextMonthDocNumber;
             //Act
-            nextMonthDocNumber = docNumberCreator.DocumentNumberCreator(randomDocNumber);
+            nextMonthDocNumber = docNumberCreator.DocumentNumberCreator(nextMonthDocNumber);
             tabOfNumbersFromDocument = nextMonthDocNumber.Split('/');
             TestContext.WriteLine("checking: is document month equals current month");
             month = int.Parse(tabOfNumbersFromDocument[1]);
@@ -137,10 +134,10 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             DocNumCreator docNumberCreator = new();
             string[] tabOfNumbersFromDocument;
             int year;
-            string nextYearDocNumber;
+            string YearDocNumber;
             //Act
-            nextYearDocNumber = docNumberCreator.DocumentNumberCreator(randomDocNumber);
-            tabOfNumbersFromDocument = nextYearDocNumber.Split('/');
+            YearDocNumber = docNumberCreator.DocumentNumberCreator(nextYearDocNumber);
+            tabOfNumbersFromDocument = YearDocNumber.Split('/');
             TestContext.WriteLine("checking: is document year equals current year");
             year = int.Parse(tabOfNumbersFromDocument[2]);
             //Assert
