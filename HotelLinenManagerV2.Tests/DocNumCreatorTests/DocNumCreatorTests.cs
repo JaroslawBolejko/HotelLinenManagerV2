@@ -169,5 +169,25 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             //Assert
             Assert.AreEqual(docNumber + 1, nextNumber);
         }
+        [TestMethod]
+        [Priority(1)]
+        [Owner("Jarek")]
+        [Description("Check if first document number is created")]
+        public void IsFirstDocNumber()
+        {
+            //Arrange
+            DocNumCreator docNumberCreator = new();
+            string[] tabOfNumbersDocument;
+            string firstDocNumber;
+            int docNumber;
+            //Act
+            SetProperties();
+            firstDocNumber = docNumberCreator.DocumentNumberCreator(ValidString);
+            tabOfNumbersDocument = firstDocNumber.Split('/');
+            TestContext.WriteLine("checking: is document number equals 1");
+            docNumber = int.Parse(tabOfNumbersDocument[0]);
+            //Assert
+            Assert.AreEqual(docNumber, 1);
+        }
     }
 }
