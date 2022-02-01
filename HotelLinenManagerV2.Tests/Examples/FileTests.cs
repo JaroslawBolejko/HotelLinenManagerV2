@@ -11,6 +11,30 @@ namespace HotelLinenManagerV2.Tests.Examples
 
         private string BadFilePath = @"C:\niema.txt";
 
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            //Metoda która jest uruchomiana za kazdym razem kiedy test są odpalone , dobra dla inicjlizacji danych
+            TestContext.WriteLine("In TestInitialize() method");
+
+            SetGoodFileName();
+
+            if (!string.IsNullOrEmpty(_GoodFilePath))
+            {
+                TestContext.WriteLine("Creating file: " + _GoodFilePath);
+
+                File.AppendAllText(_GoodFilePath, "Test test test");
+            }
+        }
+        [TestCleanup]
+        public  void TestCleanup()
+        {
+            TestContext.WriteLine("In Testclenup() method");
+            DeleteFile();
+
+        }
+
         [TestMethod]
         public void FileNameDeosExist()
         {
@@ -18,12 +42,7 @@ namespace HotelLinenManagerV2.Tests.Examples
             //Arrange
             FileManager fileManager = new FileManager();
             bool fromCall;
-            SetGoodFileName();
-
-            if (!string.IsNullOrEmpty(_GoodFilePath))
-            {
-                File.AppendAllText(_GoodFilePath, "Test test test");
-            }
+           
 
             //Act
             TestContext.WriteLine("Checking File: " + _GoodFilePath);
@@ -32,8 +51,6 @@ namespace HotelLinenManagerV2.Tests.Examples
             //Assert
             Assert.IsTrue(fromCall);
 
-            // Delete file
-            DeleteFile();
         }
         [TestMethod]
         public void FileNameDeosNotExist()

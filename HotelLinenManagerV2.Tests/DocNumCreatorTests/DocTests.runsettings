@@ -1,7 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
 <RunSettings>
-<TestRunParameters>
-  <Parameter name="ValidString" value="0/0/0"/>
-  <Parameter name="NotValidString" value="1/664/b"/>
+  <TestRunParameters>
+    <Parameter name="ValidString" value="0/0/0"/>
+    <Parameter name="NotValidString" value="1/664/b"/>
+    <Parameter name="GoodPassword" value="Test"/>
+    <Parameter name="GoodFilePath" value="[AppPath]\TestFile.txt"/>
   </TestRunParameters>
 </RunSettings>

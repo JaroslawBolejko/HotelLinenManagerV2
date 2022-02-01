@@ -23,7 +23,26 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
         -Czy numer bięzocego roku jest większy od wyciągnietego(year) jezeli tak to docNumer ma 1, month ma bieżący miesiąc a rok bieżący rok
        w pozostałych przypadkach ma zwiększyc numer dokumentu o 1;
         */
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            TestContext.WriteLine("In TestInitialize() method");
+            SetProperties();
 
+        }
+
+        [ClassInitialize()]
+        public static void ClassInitialize(TestContext tc)
+        {
+            //Initialize for class - Pojawia sie raz w pierszej metodzie testowej z klasy, która została uruchomiona do testów
+
+            tc.WriteLine("In ClassInitialize() method");
+        }
+        [ClassCleanup()]
+        public static void ClassCleanup()
+        {
+            //Clean Up for class
+        }
 
         [TestMethod]
         public void IsStrValid()
@@ -34,7 +53,6 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             string month;
             string year;
             //Act
-            SetProperties();
             tabOfNumbersFromDocument = ValidString.Split('/');
             TestContext.WriteLine("checking: document number type ");
             docNumber = tabOfNumbersFromDocument[0];
@@ -51,7 +69,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
 
         [TestMethod]
         [Owner("Jarek")]
-        [Description("Check if passed string trows a FormatException")]
+        [Description("Checking: if passed string trows a FormatException")]
         [ExpectedException(typeof(FormatException))]
         public void IsStrNotValid_UsingAtribute()
         {
@@ -61,7 +79,6 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             int month;
             int year;
             //Act
-            SetProperties();
             tabOfNumbersFromDocument = NotValidString.Split('/');
             TestContext.WriteLine("checking: document number type ");
             docNumber = int.Parse(tabOfNumbersFromDocument[0]);
@@ -74,30 +91,25 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
 
         [TestMethod]
         [Owner("Jarek")]
-        [Description("Check if passed string is in valid format")]
+        [Description("Checking: if passed string is in valid format")]
         [Priority(1)]
         public void IsStrValid_UsingRegex()
         {
             //Arrange
             var r = new Regex(@"^[0-9]+[/][0-9]+[/][0-9]+$");
-
-            //Act
-            SetProperties();
-
+                
             //Assert
             StringAssert.Matches(ValidString, r);
 
         }
         [TestMethod]
         [Owner("Jarek")]
-        [Description("Check if passed in string is in valid format")]
+        [Description("Checking: if passed in string is in valid format")]
         [Priority(1)]
         public void IsStrNotValid_UsingRegex()
         {
             //Arrange
             var r = new Regex(@"^[0-9]+[/][0-9]+[/][0-9]+$");
-
-            //Act
 
             //Assert
             StringAssert.DoesNotMatch(invalidInput, r);
@@ -106,7 +118,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
 
         [TestMethod]
         [Owner("Jarek")]
-        [Description("Check if documents number middle argument (month) equals current month")]
+        [Description("Checking: if documents number middle argument (month) equals current month")]
         [Priority(1)]
         public void IsNextMounth()
         {
@@ -118,7 +130,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             //Act
             nextMonthDocNumber = docNumberCreator.DocumentNumberCreator(nextMonthDocNumber);
             tabOfNumbersFromDocument = nextMonthDocNumber.Split('/');
-            TestContext.WriteLine("checking: is document month equals current month");
+            TestContext.WriteLine("checking: if document month equals current month");
             month = int.Parse(tabOfNumbersFromDocument[1]);
             //Assert
             Assert.AreEqual(month, DateTime.Now.Month);
@@ -126,7 +138,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
         }
         [TestMethod]
         [Owner("Jarek")]
-        [Description("Check if documents number third argument(year) equals current year")]
+        [Description("Checking: if documents number third argument(year) equals current year")]
         [Priority(1)]
         public void IsNextYear()
         {
@@ -138,7 +150,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             //Act
             YearDocNumber = docNumberCreator.DocumentNumberCreator(nextYearDocNumber);
             tabOfNumbersFromDocument = YearDocNumber.Split('/');
-            TestContext.WriteLine("checking: is document year equals current year");
+            TestContext.WriteLine("checking: if document year equals current year");
             year = int.Parse(tabOfNumbersFromDocument[2]);
             //Assert
             Assert.AreEqual(year, DateTime.Now.Year);
@@ -146,7 +158,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
         [TestMethod]
         [Priority(1)]
         [Owner("Jarek")]
-        [Description("Check if documents number first argument(consecutive number) equals is incrementing")]
+        [Description("Check if documents number first argument(consecutive number) is incrementing")]
         public void IsNextDocNumber()
         {
             //Arrange
@@ -160,7 +172,9 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             nextDocNumber = docNumberCreator.DocumentNumberCreator(randomDocNumber2);
             tabOfNumbersFromNextDocument = nextDocNumber.Split('/');
             tabOfNumbersFromPreviousDocument = randomDocNumber2.Split('/');
-            TestContext.WriteLine("checking: is document number increasing by 1");
+            TestContext.WriteLine("checking: if document number increased by 1");
+            TestContext.WriteLine("if a test is on the first day of the month, and randomDocNumber2" +
+                " is from previous month the test will faill because next number will always be 1 which is correct.");
             docNumber = int.Parse(tabOfNumbersFromPreviousDocument[0]);
             nextNumber = int.Parse(tabOfNumbersFromNextDocument[0]);
             //Assert
@@ -178,7 +192,6 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
             string firstDocNumber;
             int docNumber;
             //Act
-            SetProperties();
             firstDocNumber = docNumberCreator.DocumentNumberCreator(ValidString);
             tabOfNumbersDocument = firstDocNumber.Split('/');
             TestContext.WriteLine("checking: is document number equals 1");

@@ -24,30 +24,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DocTests.runsettings</DependentUpon>
     </Compile>
-    <Compile Update="Examples\FileTest.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FileTest.runsettings</DependentUpon>
-    </Compile>
-    <Compile Update="PasswordHasherTests\PaswordTest.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PaswordTest.runsettings</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="DocNumCreatorTests\DocTests.runsettings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>DocTests.Designer.cs</LastGenOutput>
-    </None>
-    <None Update="Examples\FileTest.runsettings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>FileTest.Designer.cs</LastGenOutput>
-    </None>
-    <None Update="PasswordHasherTests\PaswordTest.runsettings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>PaswordTest.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

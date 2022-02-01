@@ -12,6 +12,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
 
         protected void SetGoodFileName()
         {
+            // dobra metoda do przeniesienia na testinitialize
             _GoodFilePath = TestContext.Properties["GoodFilePath"].ToString();
             if (_GoodFilePath.Contains("[AppPath]"))
             {
@@ -23,6 +24,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
         {
             if (File.Exists(_GoodFilePath))
             {
+                TestContext.WriteLine("Deleting file: " + _GoodFilePath);
                 File.Delete(_GoodFilePath);
             }
         }

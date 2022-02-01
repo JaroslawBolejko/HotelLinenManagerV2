@@ -16,18 +16,16 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
         public string NotValidString { get; set; }
         public string invalidInput = "invalidInput";
         public string randomDocNumber = "1/11/2021";
-        public string randomDocNumber2 = "1/01/2022";
-        public string nextMonthDocNumber = "1/12/2021";
+        public string randomDocNumber2 = "3/02/2022";
+        public string nextMonthDocNumber = "1/01/2021";
         public string nextYearDocNumber = "1/1/2022";
         protected void SetProperties()
         {
+            TestContext.WriteLine("Setting properties");
             this.ValidString = TestContext.Properties["ValidString"].ToString();
             this.NotValidString = TestContext.Properties["NotValidString"].ToString();
 
         }
 
-
-
-        // _ZeroDocNumber = TestContext.Properties["ZeroDocNumber"].ToString();
     }
 }

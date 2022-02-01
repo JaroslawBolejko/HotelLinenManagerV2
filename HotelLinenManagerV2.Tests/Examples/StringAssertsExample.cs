@@ -14,7 +14,7 @@ namespace HotelLinenManagerV2.Tests.Examples
             string str1 = "Adam";
             string str2 = "Adam Małysz";
 
-            StringAssert.Contains(str1, str2);
+            StringAssert.Contains(str2, str1);
 
         }
         [TestMethod]
@@ -49,7 +49,7 @@ namespace HotelLinenManagerV2.Tests.Examples
         {
             var r = new Regex(@"^([^A-Z])+$");
 
-            StringAssert.Matches("Wszystko małymi", r);
+            StringAssert.Matches("wszystko małymi", r);
 
         }
         [TestMethod]
