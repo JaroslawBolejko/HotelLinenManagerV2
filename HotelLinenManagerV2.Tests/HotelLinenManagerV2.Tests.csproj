@@ -31,6 +31,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>DocTests.Designer.cs</LastGenOutput>
     </None>
+    <None Update="Examples\file.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

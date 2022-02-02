@@ -96,6 +96,42 @@ namespace HotelLinenManagerV2.Tests.Examples
 
 
         }
-     
+        [TestMethod]
+        [Owner("Jarek")]
+        [Description("simple test, just to practise DataRowAtribute")]
+        [DataRow(1,21,DisplayName ="NumbersAreEqual")]
+        [DataRow(55,55,DisplayName ="NumbersAreEqual")]
+        [DataRow(18,18,DisplayName ="NumbersAreEqual")]
+        public void AreNumberEqual(int a, int b)
+        {
+            Assert.AreEqual((int)a, (int)b);
+        }
+
+        [TestMethod]
+        [DeploymentItem("file.txt")]
+        [DataRow(@"C:\windows\notepad.exe", DisplayName = "FileNameUsingDataRow")]
+        [DataRow("file.txt", DisplayName = "FileNameUsingDataRow")]
+        public void FileNameDeosExist_UsingDataRow_Deploy(string fileName)
+        {
+
+            //Arrange
+            FileManager fileManager = new FileManager();
+            bool fromCall;
+
+
+            //Act
+            if (!fileName.Contains(@"\"))
+            {
+                fileName = TestContext.DeploymentDirectory + @"\Examples\" + fileName;
+            }
+
+            TestContext.WriteLine("Checking file: " + fileName);
+            fromCall = fileManager.IsFileExists(fileName);
+
+            //Assert
+            Assert.IsTrue(fromCall);
+
+        }
+
     }
 }

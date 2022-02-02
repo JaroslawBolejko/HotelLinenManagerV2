@@ -71,6 +71,7 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
         [Owner("Jarek")]
         [Description("Checking: if passed string trows a FormatException")]
         [ExpectedException(typeof(FormatException))]
+        [Ignore]
         public void IsStrNotValid_UsingAtribute()
         {
             //Arrange
@@ -93,11 +94,12 @@ namespace HotelLinenManagerV2.Tests.DocNumCreatorTests
         [Owner("Jarek")]
         [Description("Checking: if passed string is in valid format")]
         [Priority(1)]
+        [Timeout(3000)]
         public void IsStrValid_UsingRegex()
         {
             //Arrange
             var r = new Regex(@"^[0-9]+[/][0-9]+[/][0-9]+$");
-                
+
             //Assert
             StringAssert.Matches(ValidString, r);
 
