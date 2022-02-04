@@ -5,5 +5,7 @@
     <Parameter name="NotValidString" value="1/664/b"/>
     <Parameter name="GoodPassword" value="Test"/>
     <Parameter name="GoodFilePath" value="[AppPath]\TestFile.txt"/>
+    <Parameter name="ConnectionString"
+               value="Data Source=.\SQLEXPRESS;Initial Catalog=UnitTesting;Integrated Security=True"/>
   </TestRunParameters>
 </RunSettings>

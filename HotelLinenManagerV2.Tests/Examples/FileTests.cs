@@ -1,6 +1,7 @@
 ﻿using HotelLinenManagerV2.Tests.PasswordHasherTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Data;
 using System.IO;
 
 namespace HotelLinenManagerV2.Tests.Examples
@@ -17,6 +18,7 @@ namespace HotelLinenManagerV2.Tests.Examples
         {
             //Metoda która jest uruchomiana za kazdym razem kiedy test są odpalone , dobra dla inicjlizacji danych
             TestContext.WriteLine("In TestInitialize() method");
+            //WriteDescription(this.GetType());
 
             SetGoodFileName();
 
@@ -107,6 +109,8 @@ namespace HotelLinenManagerV2.Tests.Examples
             Assert.AreEqual((int)a, (int)b);
         }
 
+     
+
         [TestMethod]
         [DeploymentItem("file.txt")]
         [DataRow(@"C:\windows\notepad.exe", DisplayName = "FileNameUsingDataRow")]
@@ -132,6 +136,72 @@ namespace HotelLinenManagerV2.Tests.Examples
             Assert.IsTrue(fromCall);
 
         }
+        [TestMethod]
+        [Owner("Jarek")]
+        [Priority(1)]
+        [Description("Chcking: if file exists. Data taken from DB")]
 
+        public void FileExistsTestsFromDb()
+        {
+            //Arrange
+            var fileManager = new FileManager();
+            bool fromCall = false;
+            bool testFailed = false;
+            string fileName;
+            bool expectedValue;
+            bool causesException;
+            string sql = "SELECT * FROM TestsSessions";
+            string conn = TestContext.Properties["ConnectionString"].ToString();
+
+            //Act
+            LocalDataTable(sql, conn);
+            if(TestDataTable != null)
+            {
+                foreach (DataRow row in TestDataTable.Rows)
+                {
+                    //Gets value from data row
+                    fileName = row["FileName"].ToString();
+                    expectedValue = Convert.ToBoolean(row["ExpectedValue"]);
+                    causesException= Convert.ToBoolean(row["CausesException"]);
+
+                    try
+                    {
+                        //see if file existas
+                        fromCall = fileManager.IsFileExists(fileName);
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        //See if a null value was expected
+                        if (!causesException)
+                        {
+                            testFailed = true;
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        testFailed=true;
+                    }
+
+
+                    TestContext.WriteLine("Testing File : '{0}', Expected value: '{1}', Actual Value: '{2}'," +
+                        " Result: '{3}'", fileName, expectedValue, fromCall, (expectedValue==fromCall ? true : false));
+
+                    // Check Assertion
+                    if(expectedValue != fromCall)
+                    {
+                        testFailed = true;
+
+                    }
+
+                }
+                
+                if (testFailed)
+                {
+                    Assert.Fail("Data Driven Tests Have Failed, Chceck Additional Output For More Information");
+                }
+            }
+
+        }
     }
 }
