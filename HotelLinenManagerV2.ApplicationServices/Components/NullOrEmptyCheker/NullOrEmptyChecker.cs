@@ -4,11 +4,11 @@ namespace HotelLinenManagerV2.ApplicationServices.Components.NullOrEmptyCheker
 {
     public class NullOrEmptyChecker : INullOrEmptyChecker
     {
-        public bool IsEmptyOrNull<T>(T parameter1, T parameter2, T parameter3)
+        public bool IsEmptyOrNull(string name, string city, string street)
         {
-            if (string.IsNullOrEmpty(parameter1.ToString())
-                || string.IsNullOrEmpty(parameter2.ToString())
-                || string.IsNullOrEmpty(parameter3.ToString())) return true;
+            if (string.IsNullOrEmpty(name.ToString())
+                || string.IsNullOrEmpty(city.ToString())
+                || string.IsNullOrEmpty(street.ToString())) return true;
             return false;
         }
     }

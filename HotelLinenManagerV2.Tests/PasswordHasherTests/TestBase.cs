@@ -60,7 +60,7 @@ namespace HotelLinenManagerV2.Tests.PasswordHasherTests
         //        var attribute = method.GetCustomAttributes(typeof(DescriptionAttribute));
         //        if (attribute != null)
         //        {
-        //            var datr =  (DescriptionAttribute)attribute.FirstOrDefault();
+        //            var datr = (DescriptionAttribute)attribute.FirstOrDefault();
         //            TestContext.WriteLine("Test Description: " + datr.Description);
         //        }
 
