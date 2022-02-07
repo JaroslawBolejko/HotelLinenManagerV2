@@ -1,5 +1,6 @@
 ﻿
 
+using HotelLinenManagerV2.ApplicationServices.Components.NullOrEmptyCheker;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -22,38 +23,60 @@ namespace HotelLinenManagerV2.Tests.NullOrEmptyCheckerTests
 
 
     [TestClass]
-    public class NullOrEmptyCheckerTests
+    public class NullOrEmptyCheckerTests : NullCheckerBase
     {
+        [ClassInitialize()]
+        public static void ClassInitialize(TestContext tc)
+        {
+            tc.WriteLine("In NullOrCheckerInitialize() method");
+        }
         [TestMethod]
+        [Owner("Jarek")]
+        [Description("Checking if method is returnig true with one,two parameters initialized, empty or null parameters")]
+        [Priority(1)]
         public void MinOneParamIsTrue()
         {
-            Assert.Inconclusive();
 
             //Arrange
-
+            NullOrEmptyChecker nullOrEmptyChecker = new NullOrEmptyChecker();
+            bool fromCall;
+            bool fromCallWithAllNull;
+            bool fromCallWithAllEmpty;
+            bool fromCallStreet;
             //Act
-
+            city = "Jelenia Góra";
+            TestContext.WriteLine("checking: is true with one parameter initialized");
+            fromCall = nullOrEmptyChecker.IsEmptyOrNull(name, city, street);
+            TestContext.WriteLine("checking: is true with two parameter initialized");
+            fromCallStreet = nullOrEmptyChecker.IsEmptyOrNull(name, city, street = "Parkowa");
+            TestContext.WriteLine("checking: is true with all parameter equal null");
+            fromCallWithAllNull = nullOrEmptyChecker.IsEmptyOrNull(name, city = null, street);
+            TestContext.WriteLine("checking: is true with empty parameters");
+            fromCallWithAllEmpty = nullOrEmptyChecker.IsEmptyOrNull(name = "", city = "", street = "");
             //Assert
-
+            Assert.IsTrue(fromCall);
+            Assert.IsTrue(fromCallStreet);
+            Assert.IsTrue(fromCallWithAllNull);
+            Assert.IsTrue(fromCallWithAllEmpty);
         }
         [TestMethod]
+        [Owner("Jarek")]
+        [Description("Checking if method is returnig false with all parameters initialized")]
+        [Priority(1)]
         public void EveryParamIsFalse()
         {
-            Assert.Inconclusive();
+            //Arange
+            NullOrEmptyChecker nullOrEmptyChecker = new NullOrEmptyChecker();
+            bool fromCall;
+            city = "Cieplice";
+            name = "Edward";
+            street = "Parkowa";
+            //Act
+            fromCall = nullOrEmptyChecker.IsEmptyOrNull(name, city, street);
+            //Assert
+            Assert.IsFalse(fromCall);
         }
 
-        //Obsłużenie testu za pomocą argumentu
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DontHaveIdeaYet()
-        {
-            Assert.Inconclusive();
-        }
-        //Obsłużenie testu za pomocą try catch
-        [TestMethod]
-        public void DontHaveIdeaYet_UsingTryCatch()
-        {
-            Assert.Inconclusive();
-        }
+       
     }
 }

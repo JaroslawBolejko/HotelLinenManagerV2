@@ -60,7 +60,7 @@ namespace HotelLinenManagerV2.ApplicationServices.API.Handlers.Companies
                     this.logger.LogError("Podano nieistniejący w bazie GUS NIP");
                     return new CreateCompanyResponse()
                     {
-                        Error = new ErrorModel(ErrorType.NotFound + " Podana firma nie istnieje w bazie GUS!")
+                        Error = new ErrorModel(ErrorType.NotFound)
                     };
                 }
 
